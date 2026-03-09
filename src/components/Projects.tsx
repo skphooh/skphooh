@@ -4,29 +4,32 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import ProjectCard, { ProjectType } from "./ProjectCard";
 
-/** プロジェクトデータ */
+/** プロジェクトデータ - 実際の使用技術と詳細な説明 */
 const projects: ProjectType[] = [
     {
         title: "Wear-Cast",
         description:
-            "ユーザーの記録や他のユーザーとの交流を通して、日々の生活をアップデートするコンセプトのアプリケーション。",
-        techStack: ["Next.js", "React", "Tailwind CSS"],
+            "日々のコーディネートと天気を記録し、他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。天気に基づいたおすすめの服装提案機能も搭載。",
+        features: ["コーディネート記録", "ソーシャルフィード", "天気連動レコメンド", "プロフィール管理"],
+        techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
         liveUrl: "https://wear-cast.vercel.app/",
         status: "live",
     },
     {
         title: "Meguri24",
         description:
-            "AIがあなたの生活リズムを最適化する生活習慣改善アプリ。Clerkを用いたセキュアな認証基盤と、洗練されたダッシュボードを提供します。",
-        techStack: ["Next.js", "Clerk", "Tailwind CSS", "AI"],
+            "AIが24時間の生活リズムを分析し、最適な行動パターンを提案する生活習慣改善アプリ。円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
+        features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
+        techStack: ["Next.js", "Clerk", "Supabase", "Tailwind CSS", "AI"],
         liveUrl: "https://meguri24.vercel.app/",
         status: "live",
     },
     {
         title: "skphooh.dev",
         description:
-            "このポートフォリオサイトです。Next.js 16 + Framer Motionによる滑らかなアニメーションと、パーティクルエフェクトで洗練されたUXを実現しています。",
-        techStack: ["Next.js", "Framer Motion", "Tailwind CSS"],
+            "このポートフォリオサイト自体。Next.js 16 + Framer Motionを使い、パーティクルエフェクトやタイピングアニメーションなどの洗練されたインタラクションを実装。",
+        features: ["パーティクル背景", "タイピングアニメーション", "スクロール進捗バー", "レスポンシブ対応"],
+        techStack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
     },
@@ -71,7 +74,10 @@ export default function Projects() {
                         Selected{" "}
                         <span className="text-gradient">Projects</span>
                     </h2>
-                    <div className="w-20 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full" />
+                    <p className="text-gray-500 text-sm max-w-xl mx-auto mt-4">
+                        Next.js × Supabase × AI を中心に、実際にデプロイ済みのプロダクトです
+                    </p>
+                    <div className="w-20 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mt-6" />
                 </motion.div>
 
                 {/* フィルタータグ */}
