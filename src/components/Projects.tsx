@@ -40,6 +40,8 @@ const projects: ProjectType[] = [
         liveUrl: "https://skphooh.vercel.app/",
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
+        iframePreview: true,
+        image: "https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1470&auto=format&fit=crop", // skphooh.devの代替えデモ
     },
 ];
 
@@ -154,7 +156,7 @@ export default function Projects() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+                        className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-24 pb-6 sm:p-6 sm:pt-28 sm:pb-8"
                         onClick={() => setSelectedProject(null)}
                     >
                         {/* 背景のブラー */}
@@ -165,7 +167,7 @@ export default function Projects() {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
                             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-                            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto glass rounded-2xl shadow-2xl ring-1 ring-white/10 flex flex-col pointer-events-auto"
+                            className="relative w-full max-w-4xl max-h-full overflow-y-auto glass rounded-2xl shadow-2xl ring-1 ring-white/10 flex flex-col pointer-events-auto"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* モーダル閉じるボタン */}
