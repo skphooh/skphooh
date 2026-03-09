@@ -58,8 +58,9 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             className="group relative rounded-2xl overflow-hidden glass hover:bg-white/[0.06] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)] flex flex-col"
         >
             {/* 画像 / プレースホルダー */}
-            <div className="relative h-48 w-full overflow-hidden bg-gray-900 shrink-0">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent z-10" />
+            <div className="relative h-48 w-full overflow-hidden shrink-0 border-b border-white/5 bg-[#0a0a0a]">
+                {/* 画像下部に向かってわずかなグラデーション（暗すぎないように調整） */}
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent z-10 pointer-events-none" />
 
                 {/* ステータスバッジ */}
                 <div className="absolute top-3 right-3 z-20">
@@ -75,7 +76,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                     <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100"
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
                         loading="lazy"
                     />
                 ) : (

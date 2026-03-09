@@ -14,7 +14,7 @@ const projects: ProjectType[] = [
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
         liveUrl: "https://wear-cast.vercel.app/",
         status: "live",
-        image: "/api/assets/wearcast",
+        image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=1470&auto=format&fit=crop", // Wear-Castの代替えデモ
     },
     {
         title: "Meguri24",
@@ -24,7 +24,7 @@ const projects: ProjectType[] = [
         techStack: ["Next.js", "Clerk", "Supabase", "Tailwind CSS", "AI"],
         liveUrl: "https://meguri24.vercel.app/",
         status: "live",
-        image: "/api/assets/meguri24",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470&auto=format&fit=crop", // Meguri24の代替えデモ
     },
     {
         title: "skphooh.dev",
