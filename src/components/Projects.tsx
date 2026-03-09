@@ -14,6 +14,7 @@ const projects: ProjectType[] = [
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
         liveUrl: "https://wear-cast.vercel.app/",
         status: "live",
+        image: "/api/assets/wearcast",
     },
     {
         title: "Meguri24",
@@ -23,6 +24,7 @@ const projects: ProjectType[] = [
         techStack: ["Next.js", "Clerk", "Supabase", "Tailwind CSS", "AI"],
         liveUrl: "https://meguri24.vercel.app/",
         status: "live",
+        image: "/api/assets/meguri24",
     },
     {
         title: "skphooh.dev",
@@ -91,8 +93,8 @@ export default function Projects() {
                     <button
                         onClick={() => setActiveFilter(null)}
                         className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 cursor-pointer ${activeFilter === null
-                                ? "bg-white text-black"
-                                : "text-gray-400 ring-1 ring-white/10 hover:ring-white/20 hover:text-white"
+                            ? "bg-white text-black"
+                            : "text-gray-400 ring-1 ring-white/10 hover:ring-white/20 hover:text-white"
                             }`}
                     >
                         All
@@ -104,8 +106,8 @@ export default function Projects() {
                                 setActiveFilter(activeFilter === tag ? null : tag)
                             }
                             className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 cursor-pointer ${activeFilter === tag
-                                    ? "bg-white text-black"
-                                    : "text-gray-400 ring-1 ring-white/10 hover:ring-white/20 hover:text-white"
+                                ? "bg-white text-black"
+                                : "text-gray-400 ring-1 ring-white/10 hover:ring-white/20 hover:text-white"
                                 }`}
                         >
                             {tag}
