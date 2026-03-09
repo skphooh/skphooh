@@ -28,13 +28,21 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         >
             <div className="relative h-64 w-full overflow-hidden bg-gray-800">
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10" />
-                {/* Placeholder for real image */}
-                <div className="w-full h-full flex flex-col items-center justify-center bg-gray-900 group-hover:scale-105 transition-transform duration-700 ease-out">
-                    <div className="w-24 h-24 mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center ring-1 ring-white/10 shadow-lg">
-                        <span className="text-4xl font-light text-white/50">{project.title.charAt(0)}</span>
+                {project.image ? (
+                    <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-900 group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <div className="w-24 h-24 mb-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center ring-1 ring-white/10 shadow-lg">
+                            <span className="text-4xl font-light text-white/50">{project.title.charAt(0)}</span>
+                        </div>
+                        <span className="text-xs text-gray-500 tracking-widest uppercase">Project Preview</span>
                     </div>
-                    <span className="text-xs text-gray-500 tracking-widest uppercase">Project Preview</span>
-                </div>
+                )}
             </div>
 
             <div className="p-8 relative z-20 -mt-10">
