@@ -6,9 +6,9 @@ import { ArrowDown, Sparkles } from "lucide-react";
 
 /** タイピングアニメーションで表示するフレーズ */
 const phrases = [
-    "AIと共に創るWeb開発",
-    "Vibe Codingで加速する実装",
+    "Next.js × Supabase で構築",
     "美しいUIを、圧倒的スピードで",
+    "AIを活用したモダン開発",
     "アイデアを形にする最短ルート",
 ];
 
@@ -28,22 +28,18 @@ export default function Hero() {
 
         if (!isDeleting) {
             if (displayText.length < currentPhrase.length) {
-                /* 一文字ずつ追加 */
                 timeout = setTimeout(() => {
                     setDisplayText(currentPhrase.slice(0, displayText.length + 1));
                 }, 80);
             } else {
-                /* フレーズ完成後、少し待ってから削除開始 */
                 timeout = setTimeout(() => setIsDeleting(true), 2000);
             }
         } else {
             if (displayText.length > 0) {
-                /* 一文字ずつ削除 */
                 timeout = setTimeout(() => {
                     setDisplayText(displayText.slice(0, -1));
                 }, 40);
             } else {
-                /* 全削除後、次のフレーズへ */
                 setIsDeleting(false);
                 setPhraseIndex((prev) => (prev + 1) % phrases.length);
             }

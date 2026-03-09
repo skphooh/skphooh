@@ -4,21 +4,25 @@ import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
+import BackToTop from "@/components/BackToTop";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col bg-[#0a0a0a] text-white overflow-hidden">
-      {/* ナビゲーションとスクロール進捗バー */}
+      {/* ナビゲーション */}
       <Navbar />
       <ScrollProgress />
 
-      {/* Heroセクション: Framer Motionによるエントリーアニメーション */}
+      {/* Heroセクション: Framer Motionエントリーアニメーション */}
       <Hero />
 
-      {/* 各セクション: whileInViewによるスクロール表示アニメーション */}
+      {/* 各セクション: スクロールで表示 */}
       <Projects />
       <About />
       <Contact />
+
+      {/* フローティングUI */}
+      <BackToTop />
     </main>
   );
 }
