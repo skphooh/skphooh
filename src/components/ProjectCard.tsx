@@ -15,11 +15,14 @@ export interface ProjectType {
     githubUrl?: string;
     liveUrl?: string;
     status?: ProjectStatus;
+    iframePreview?: boolean;
+    details?: string;
 }
 
 interface ProjectCardProps {
     project: ProjectType;
     index: number;
+    onClick: () => void;
 }
 
 /** ステータスバッジの表示設定 */
@@ -45,7 +48,7 @@ const statusConfig: Record<ProjectStatus, { label: string; color: string; dot: s
  * プロジェクトカード
  * ホバー時のグロウエフェクト、ステータスバッジ、機能リスト表示付き
  */
-export default function ProjectCard({ project, index }: ProjectCardProps) {
+export default function ProjectCard({ project, index, onClick }: ProjectCardProps) {
     const status = project.status || "live";
     const badge = statusConfig[status];
 
@@ -55,9 +58,10 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-2xl overflow-hidden glass hover:bg-white/[0.06] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)] flex flex-col"
+            className="group relative rounded-2xl overflow-hidden glass hover:bg-white/[0.06] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)] flex flex-col cursor-pointer"
+            onClick={onClick}
         >
-            {/* 画像 / プレースホルダー */}
+            {/* 画像 / プレースホルダー / iframe */}
             <div className="relative h-48 w-full overflow-hidden shrink-0 border-b border-white/5 bg-[#0a0a0a]">
                 {/* 画像下部に向かってわずかなグラデーション（暗すぎないように調整） */}
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent z-10 pointer-events-none" />
@@ -72,7 +76,22 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                     </span>
                 </div>
 
-                {project.image ? (
+                {/* ライブサイトのiframeプレビュー */}
+                {project.iframePreview && project.liveUrl ? (
+                    <div className="absolute inset-0 w-full h-full overflow-hidden flex items-start justify-start">
+                        {/* 4倍のサイズでレンダリングし、0.25倍に縮小してサムネイル化するCSSトリック */}
+                        <div className="w-[400%] h-[400%] origin-top-left scale-[0.25] pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-500 bg-white">
+                            <iframe
+                                src={project.liveUrl}
+                                className="w-full h-full border-0 select-none"
+                                title={`${project.title} Preview`}
+                                loading="lazy"
+                                scrolling="no"
+                                tabIndex={-1}
+                            />
+                        </div>
+                    </div>
+                ) : project.image ? (
                     <img
                         src={project.image}
                         alt={project.title}
@@ -132,14 +151,15 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                     ))}
                 </div>
 
-                {/* リンク */}
+                {/* リンク（イベント伝播を停止してカード全体のクリックと分離） */}
                 <div className="flex items-center gap-4 pt-4 border-t border-white/5">
                     {project.githubUrl && (
                         <a
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition-colors relative z-30"
                             aria-label={`${project.title} GitHub Repository`}
                         >
                             <Github className="w-4 h-4" />
@@ -151,7 +171,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                             href={project.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition-colors ml-auto group/link"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition-colors ml-auto group/link relative z-30"
                             aria-label={`${project.title} Live Site`}
                         >
                             <ExternalLink className="w-4 h-4" />
