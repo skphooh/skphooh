@@ -4,10 +4,11 @@ import path from 'path';
 
 export async function GET(
     request: Request,
-    { params }: { params: { name: string } }
+    { params }: { params: Promise<{ name: string }> }
 ) {
     // Await params based on Next.js 15+ constraints (Next 13/14 handles it fine too if not awaited but good practice)
-    const name = params.name;
+    const resolvedParams = await params;
+    const name = resolvedParams.name;
 
     let filePath = '';
 
