@@ -5,28 +5,18 @@ import ProjectCard, { ProjectType } from "./ProjectCard";
 
 const projects: ProjectType[] = [
     {
-        title: "E-Commerce Experience",
-        description: "洗練されたUIと高速なレスポンスを実現したモダンなECサイトモックアップ。シームレスなカート操作と決済フローを備えています。",
-        image: "/placeholder-1.jpg",
-        techStack: ["Next.js", "Tailwind CSS", "Stripe API"],
-        githubUrl: "#",
-        liveUrl: "#",
+        title: "Wear-Cast",
+        description: "ユーザーの記録や他のユーザーとの交流を通して、日々の生活をアップデートするコンセプトのアプリケーション。",
+        image: "https://image.thum.io/get/width/1200/crop/800/https://wear-cast.vercel.app/",
+        techStack: ["Next.js", "React", "Tailwind CSS"],
+        liveUrl: "https://wear-cast.vercel.app/",
     },
     {
-        title: "Task Management App",
-        description: "ドラッグ＆ドロップで直感的にタスクを管理できるアプリケーション。ユーザーの生産性を向上させるためのアニメーションを取り入れています。",
-        image: "/placeholder-2.jpg",
-        techStack: ["React", "Firebase", "Framer Motion"],
-        githubUrl: "#",
-        liveUrl: "#",
-    },
-    {
-        title: "AI Chat Interface",
-        description: "AIモデルと対話するためのシンプルでクリーンなチャットインターフェース。リアルタイムなストリーミング応答とシンタックスハイライトに対応。",
-        image: "/placeholder-3.jpg",
-        techStack: ["TypeScript", "Supabase", "OpenAI API"],
-        githubUrl: "#",
-        liveUrl: "#",
+        title: "Meguri24",
+        description: "AIがあなたの生活リズムを最適化する生活習慣改善アプリ。Clerkを用いたセキュアな認証基盤と、洗練されたダッシュボードを提供します。",
+        image: "https://image.thum.io/get/width/1200/crop/800/https://meguri24.vercel.app/",
+        techStack: ["Next.js", "Clerk", "Tailwind CSS", "AI"],
+        liveUrl: "https://meguri24.vercel.app/",
     },
 ];
 
