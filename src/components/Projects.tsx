@@ -37,6 +37,7 @@ const projects: ProjectType[] = [
             "このポートフォリオサイト自体。Next.js 16 + Framer Motionを使い、パーティクルエフェクトやタイピングアニメーションなどの洗練されたインタラクションを実装。",
         features: ["パーティクル背景", "タイピングアニメーション", "スクロール進捗バー", "レスポンシブ対応"],
         techStack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
+        liveUrl: "https://skphooh.vercel.app/",
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
     },
@@ -153,7 +154,7 @@ export default function Projects() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
                         onClick={() => setSelectedProject(null)}
                     >
                         {/* 背景のブラー */}
@@ -170,7 +171,7 @@ export default function Projects() {
                             {/* モーダル閉じるボタン */}
                             <button
                                 onClick={() => setSelectedProject(null)}
-                                className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
+                                className="absolute top-4 right-4 z-[110] p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
                             >
                                 <X className="w-5 h-5" />
                             </button>
