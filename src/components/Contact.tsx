@@ -1,12 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 
 const socialLinks = [
-    { name: "GitHub", icon: Github, url: "#" },
-    { name: "Twitter", icon: Twitter, url: "#" },
-    { name: "LinkedIn", icon: Linkedin, url: "#" },
+    { name: "GitHub", icon: Github, url: "https://github.com/skphooh" },
 ];
 
 export default function Contact() {
@@ -30,16 +28,16 @@ export default function Contact() {
                     </p>
 
                     <a
-                        href="mailto:hello@example.com"
+                        href="mailto:skphooh@gmail.com"
                         className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-medium hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300"
                     >
                         <Mail className="w-5 h-5" />
-                        Hello@example.com
+                        skphooh@gmail.com
                     </a>
 
                     <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
                         <p className="text-gray-500 text-sm">
-                            © {new Date().getFullYear()} Your Name. All rights reserved.
+                            © 2026 skphooh. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
                             {socialLinks.map((social) => (

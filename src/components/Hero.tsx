@@ -18,8 +18,8 @@ export default function Hero() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                     <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-                        Crafting Digital <br className="hidden md:block" />
-                        <span className="text-gradient">Experiences</span>
+                        Welcome to <br className="hidden md:block" />
+                        <span className="text-gradient">skphooh's Portfolio</span>
                     </h1>
                 </motion.div>
 
