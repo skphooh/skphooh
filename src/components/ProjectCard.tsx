@@ -78,12 +78,15 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
 
                 {/* ライブサイトのiframeプレビュー */}
                 {project.iframePreview && project.liveUrl ? (
-                    <div className="absolute inset-0 w-full h-full overflow-hidden flex items-start justify-start">
-                        {/* 4倍のサイズでレンダリングし、0.25倍に縮小してサムネイル化するCSSトリック */}
-                        <div className="w-[400%] h-[400%] origin-top-left scale-[0.25] pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-500 bg-white">
+                    <div className="absolute inset-0 overflow-hidden bg-[#0a0a0a]">
+                        {/* デスクトップ幅でレンダリングさせ、カードに収まるようにCSS transformで縮小表示 */}
+                        <div
+                            className="absolute top-0 left-0 w-[1280px] h-[800px] origin-top-left pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-500 bg-[#0a0a0a]"
+                            style={{ transform: "scale(0.35)" }}
+                        >
                             <iframe
                                 src={project.liveUrl}
-                                className="w-full h-full border-0 select-none"
+                                className="w-full h-full border-0 select-none bg-[#0a0a0a]"
                                 title={`${project.title} Preview`}
                                 loading="lazy"
                                 scrolling="no"
