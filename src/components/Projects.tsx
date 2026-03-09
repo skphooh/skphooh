@@ -175,9 +175,18 @@ export default function Projects() {
                                 <X className="w-5 h-5" />
                             </button>
 
-                            {/* モーダルのヘッダー画像 */}
-                            <div className="relative w-full h-64 sm:h-80 bg-gray-900 shrink-0">
-                                {selectedProject.image ? (
+                            {/* モーダルのヘッダー領域（iframe または 画像 または タイトル） */}
+                            <div className="relative w-full h-64 sm:h-96 bg-[#0a0a0a] shrink-0 overflow-hidden border-b border-white/5">
+                                {selectedProject.iframePreview && selectedProject.liveUrl ? (
+                                    <div className="absolute inset-0 w-full h-full pointer-events-auto">
+                                        <iframe
+                                            src={selectedProject.liveUrl}
+                                            className="w-full h-full border-0"
+                                            title={`${selectedProject.title} Live Demo`}
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                ) : selectedProject.image ? (
                                     <img
                                         src={selectedProject.image}
                                         alt={selectedProject.title}
@@ -188,7 +197,8 @@ export default function Projects() {
                                         <span className="text-4xl text-white/30 font-light">{selectedProject.title}</span>
                                     </div>
                                 )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
+                                {/* ダークグラデーションのオーバーレイ（iframe下部へのフェードアウト効果） */}
+                                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
                             </div>
 
                             {/* モーダルのコンテンツ */}
