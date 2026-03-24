@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, Github, ChevronRight } from "lucide-react";
 import ProjectCard, { ProjectType } from "./ProjectCard";
 
-/** プロジェクトデータ - 実際の使用技術と詳細な説明 */
+/** プロジェクトデータ */
 const projects: ProjectType[] = [
     {
         title: "Wear-Cast",
@@ -16,7 +16,7 @@ const projects: ProjectType[] = [
         liveUrl: "https://wear-cast.vercel.app/",
         status: "live",
         iframePreview: true,
-        image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=1470&auto=format&fit=crop", // Wear-Castの代替えデモ
+        image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=1470&auto=format&fit=crop",
         details: "Wear-Castは、毎日の気象データと連動してユーザーの服装記録をサポートするSNSアプリケーションです。\n洗練されたUIとスムーズなトランジションで、ストレスのない記録体験を提供します。",
     },
     {
@@ -28,26 +28,23 @@ const projects: ProjectType[] = [
         liveUrl: "https://meguri24.vercel.app/",
         status: "live",
         iframePreview: true,
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470&auto=format&fit=crop", // Meguri24の代替えデモ
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470&auto=format&fit=crop",
         details: "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
     },
     {
         title: "skphooh.dev",
         description:
-            "このポートフォリオサイト自体。\nNext.js 16 + Framer Motionを使い、\nパーティクルエフェクトやタイピングアニメーションなどの洗練されたインタラクションを実装。",
-        features: ["パーティクル背景", "タイピングアニメーション", "スクロール進捗バー", "レスポンシブ対応"],
+            "このポートフォリオサイト自体。\nNeo-Brutalismデザインを採用し、\n圧倒的なインパクトと個性を表現したフロントエンド体験。",
+        features: ["Neo-Brutalism UI", "タイピング・マーキー", "カスタムカーソル(予定)", "レスポンシブ対応"],
         techStack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
         liveUrl: "https://skphooh.vercel.app/",
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
         iframePreview: true,
-        image: "https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1470&auto=format&fit=crop", // skphooh.devの代替えデモ
+        image: "https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1470&auto=format&fit=crop",
     },
 ];
 
-/**
- * 全プロジェクトから重複なしの技術タグリストを取得
- */
 function getAllTags(items: ProjectType[]): string[] {
     const set = new Set<string>();
     items.forEach((p) => p.techStack.forEach((t) => set.add(t)));
@@ -55,8 +52,7 @@ function getAllTags(items: ProjectType[]): string[] {
 }
 
 /**
- * プロジェクトセクション
- * フィルタータグ付き。技術スタックでプロジェクトを絞り込める
+ * プロジェクトセクション (Neo-Brutalism)
  */
 export default function Projects() {
     const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -80,45 +76,49 @@ export default function Projects() {
     }, [selectedProject]);
 
     return (
-        <section id="projects" className="py-32 relative z-10">
+        <section id="projects" className="py-32 relative z-10 bg-white border-y-4 border-black">
             <div className="container px-6 mx-auto max-w-7xl">
                 {/* セクションタイトル */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
+                    transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
+                    className="mb-16"
                 >
-                    <span className="text-xs uppercase tracking-[0.3em] text-blue-400 font-medium mb-4 block">
-                        Portfolio
-                    </span>
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
-                        Selected{" "}
-                        <span className="text-gradient">Projects</span>
+                    <div className="inline-block bg-[var(--color-neo-pink)] text-black border-4 border-black shadow-[6px_6px_0_#000] px-6 py-2 mb-6 transform -rotate-2">
+                        <span className="text-xl font-black uppercase tracking-widest">
+                            Portfolio
+                        </span>
+                    </div>
+                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-4 uppercase text-stroke-sm">
+                        Selected
+                        <br />
+                        <span className="bg-[var(--color-neo-yellow)] px-4 py-2 border-4 border-black shadow-[8px_8px_0_#000] inline-block mt-4 transform rotate-1">
+                            Projects
+                        </span>
                     </h2>
-                    <p className="text-gray-500 text-sm max-w-xl mx-auto mt-4">
+                    <p className="text-black font-bold text-lg md:text-xl max-w-2xl mt-10 border-l-4 border-black pl-6 py-2">
                         個人開発で制作した、これまでの代表的なプロダクトです。
                     </p>
-                    <div className="w-20 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mt-6" />
                 </motion.div>
 
                 {/* フィルタータグ */}
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: 0.2 }}
-                    className="flex flex-wrap justify-center gap-2 mb-12"
+                    className="flex flex-wrap gap-4 mb-16"
                 >
                     <button
                         onClick={() => setActiveFilter(null)}
-                        className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 cursor-pointer ${activeFilter === null
-                            ? "bg-white text-black"
-                            : "text-gray-400 ring-1 ring-white/10 hover:ring-white/20 hover:text-white"
+                        className={`px-6 py-2 text-sm font-black uppercase border-2 border-black transition-all cursor-pointer ${activeFilter === null
+                            ? "bg-black text-white shadow-[4px_4px_0_var(--color-neo-pink)] translate-x-[-2px] translate-y-[-2px]"
+                            : "bg-white text-black shadow-[4px_4px_0_#000] hover:bg-gray-100"
                             }`}
                     >
-                        All
+                        ALL
                     </button>
                     {allTags.map((tag) => (
                         <button
@@ -126,9 +126,9 @@ export default function Projects() {
                             onClick={() =>
                                 setActiveFilter(activeFilter === tag ? null : tag)
                             }
-                            className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 cursor-pointer ${activeFilter === tag
-                                ? "bg-white text-black"
-                                : "text-gray-400 ring-1 ring-white/10 hover:ring-white/20 hover:text-white"
+                            className={`px-6 py-2 text-sm font-black uppercase border-2 border-black transition-all cursor-pointer ${activeFilter === tag
+                                ? "bg-black text-white shadow-[4px_4px_0_var(--color-neo-blue)] translate-x-[-2px] translate-y-[-2px]"
+                                : "bg-white text-black shadow-[4px_4px_0_#000] hover:bg-[var(--color-neo-blue)] hover:shadow-[4px_4px_0_#000]"
                                 }`}
                         >
                             {tag}
@@ -137,7 +137,7 @@ export default function Projects() {
                 </motion.div>
 
                 {/* プロジェクトグリッド */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     {filtered.map((project, index) => (
                         <ProjectCard
                             key={project.title}
@@ -156,32 +156,29 @@ export default function Projects() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-24 pb-6 sm:p-6 sm:pt-28 sm:pb-8"
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
                         onClick={() => setSelectedProject(null)}
                     >
-                        {/* 背景のブラー */}
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
-
                         <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                            initial={{ scale: 0.95, opacity: 0, y: 50 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                            transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-                            className="relative w-full max-w-4xl max-h-full overflow-y-auto glass rounded-2xl shadow-2xl ring-1 ring-white/10 flex flex-col pointer-events-auto"
+                            exit={{ scale: 0.95, opacity: 0, y: 50 }}
+                            transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
+                            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white border-4 border-black shadow-[16px_16px_0_#000] flex flex-col pointer-events-auto"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* モーダル閉じるボタン */}
                             <button
                                 onClick={() => setSelectedProject(null)}
-                                className="absolute top-4 right-4 z-[110] p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
+                                className="absolute top-4 right-4 z-[110] p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-6 h-6 stroke-[3]" />
                             </button>
 
-                            {/* モーダルのヘッダー領域（iframe または 画像 または タイトル） */}
-                            <div className="relative w-full h-64 sm:h-96 bg-[#0a0a0a] shrink-0 overflow-hidden border-b border-white/5">
+                            {/* モーダルのヘッダー領域 */}
+                            <div className="relative w-full h-64 sm:h-96 bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group">
                                 {selectedProject.iframePreview && selectedProject.liveUrl ? (
-                                    <div className="absolute inset-0 w-full h-full pointer-events-auto">
+                                    <div className="absolute inset-0 w-full h-full pointer-events-auto bg-white">
                                         <iframe
                                             src={selectedProject.liveUrl}
                                             className="w-full h-full border-0"
@@ -193,73 +190,73 @@ export default function Projects() {
                                     <img
                                         src={selectedProject.image}
                                         alt={selectedProject.title}
-                                        className="w-full h-full object-cover opacity-90"
+                                        className="w-full h-full object-cover border-b-4 border-black"
                                     />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900/40 to-purple-900/40">
-                                        <span className="text-4xl text-white/30 font-light">{selectedProject.title}</span>
+                                    <div className="w-full h-full flex items-center justify-center">
+                                        <span className="text-6xl font-black uppercase text-black/20 transform -rotate-12">
+                                            {selectedProject.title}
+                                        </span>
                                     </div>
                                 )}
-                                {/* ダークグラデーションのオーバーレイ（iframe下部へのフェードアウト効果） */}
-                                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
                             </div>
 
                             {/* モーダルのコンテンツ */}
-                            <div className="p-6 sm:p-10 relative z-10 -mt-10 sm:-mt-16">
-                                <div className="flex flex-wrap items-end gap-4 mb-4">
-                                    <h3 className="text-3xl sm:text-5xl font-bold text-white drop-shadow-md">
+                            <div className="p-8 sm:p-12 relative z-10 bg-white">
+                                <div className="flex flex-wrap items-end gap-6 mb-8 border-b-4 border-black pb-8">
+                                    <h3 className="text-4xl sm:text-6xl font-black text-black uppercase tracking-tighter">
                                         {selectedProject.title}
                                     </h3>
                                     {selectedProject.status && (
-                                        <span className="px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full ring-1 bg-white/10 text-white ring-white/20 mb-2">
+                                        <span className="px-4 py-2 text-sm font-black uppercase tracking-wider bg-[var(--color-neo-green)] border-2 border-black shadow-[4px_4px_0_#000] transform rotate-2">
                                             {selectedProject.status}
                                         </span>
                                     )}
                                 </div>
 
-                                <div className="flex flex-wrap gap-2 mb-8">
+                                <div className="flex flex-wrap gap-3 mb-10">
                                     {selectedProject.techStack.map((tech) => (
                                         <span
                                             key={tech}
-                                            className="px-3 py-1 text-xs font-medium text-blue-300 bg-blue-500/10 rounded-full ring-1 ring-blue-500/20"
+                                            className="px-4 py-2 text-xs font-black uppercase bg-black text-white border-2 border-transparent shadow-[4px_4px_0_var(--color-neo-blue)]"
                                         >
                                             {tech}
                                         </span>
                                     ))}
                                 </div>
 
-                                <div className="prose prose-invert max-w-none">
-                                    <h4 className="text-lg font-semibold text-white mb-2">概要</h4>
-                                    <p className="text-gray-300 leading-relaxed mb-8 whitespace-pre-wrap">
+                                <div className="prose prose-lg max-w-none text-black font-medium leading-relaxed mb-10">
+                                    <h4 className="text-2xl font-black uppercase inline-block bg-yellow-300 border-2 border-black px-4 py-1 mb-6 shadow-[4px_4px_0_#000]">OVERVIEW</h4>
+                                    <p className="whitespace-pre-wrap border-l-4 border-black pl-6 py-2 bg-gray-50 text-lg">
                                         {selectedProject.details || selectedProject.description}
                                     </p>
 
                                     {selectedProject.features && selectedProject.features.length > 0 && (
-                                        <>
-                                            <h4 className="text-lg font-semibold text-white mb-4">主な機能</h4>
-                                            <div className="grid sm:grid-cols-2 gap-3 mb-8">
+                                        <div className="mt-12">
+                                            <h4 className="text-2xl font-black uppercase inline-block bg-[var(--color-neo-pink)] border-2 border-black px-4 py-1 mb-6 shadow-[4px_4px_0_#000]">FEATURES</h4>
+                                            <ul className="grid sm:grid-cols-2 gap-6 list-none pl-0">
                                                 {selectedProject.features.map((feature) => (
-                                                    <div key={feature} className="flex items-start gap-2 text-gray-400 bg-white/5 p-3 rounded-lg ring-1 ring-white/10">
-                                                        <ChevronRight className="w-5 h-5 text-blue-400 shrink-0" />
-                                                        <span className="text-sm">{feature}</span>
-                                                    </div>
+                                                    <li key={feature} className="flex items-center gap-4 bg-white border-4 border-black p-4 shadow-[4px_4px_0_#000]">
+                                                        <span className="w-8 h-8 flex items-center justify-center bg-black text-white font-black">✓</span>
+                                                        <span className="font-bold">{feature}</span>
+                                                    </li>
                                                 ))}
-                                            </div>
-                                        </>
+                                            </ul>
+                                        </div>
                                     )}
                                 </div>
 
                                 {/* リンクアクション */}
-                                <div className="flex flex-col sm:flex-row items-center gap-4 mt-8 pt-8 border-t border-white/10">
+                                <div className="flex flex-col sm:flex-row items-center gap-6 mt-12 pt-12 border-t-4 border-black">
                                     {selectedProject.liveUrl && (
                                         <a
                                             href={selectedProject.liveUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-medium text-sm hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group"
+                                            className="neo-brutal-btn w-full sm:w-auto px-10 py-5 bg-[var(--color-neo-blue)] flex items-center justify-center gap-3"
                                         >
-                                            サイトを開く
-                                            <ExternalLink className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                            VISIT SITE
+                                            <ExternalLink className="w-6 h-6 stroke-[3]" />
                                         </a>
                                     )}
                                     {selectedProject.githubUrl && (
@@ -267,10 +264,10 @@ export default function Projects() {
                                             href={selectedProject.githubUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="w-full sm:w-auto px-8 py-3.5 text-gray-300 rounded-xl font-medium text-sm ring-1 ring-white/10 hover:ring-white/30 hover:text-white hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2"
+                                            className="neo-brutal-btn w-full sm:w-auto px-10 py-5 bg-white flex items-center justify-center gap-3"
                                         >
-                                            <Github className="w-4 h-4" />
-                                            ソースコード
+                                            <Github className="w-6 h-6" />
+                                            SOURCE CODE
                                         </a>
                                     )}
                                 </div>

@@ -7,15 +7,14 @@ import Image from "next/image";
 
 /** ナビゲーションリンクの定義 */
 const navLinks = [
-    { href: "#top", label: "Home" },
-    { href: "#projects", label: "Projects" },
-    { href: "#about", label: "About" },
-    { href: "#contact", label: "Contact" },
+    { href: "#top", label: "HOME" },
+    { href: "#projects", label: "PROJECTS" },
+    { href: "#about", label: "ABOUT" },
+    { href: "#contact", label: "CONTACT" },
 ];
 
 /**
- * 固定ナビバーコンポーネント
- * スクロール時にブラー付き背景を表示し、アクティブセクションをハイライトする
+ * 固定ナビバーコンポーネント (Neo-Brutalism版)
  */
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -80,8 +79,8 @@ export default function Navbar() {
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-                        ? "bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.3)]"
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+                        ? "bg-white border-b-4 border-black shadow-[0_4px_0_#000]"
                         : "bg-transparent"
                     }`}
             >
@@ -89,33 +88,33 @@ export default function Navbar() {
                     {/* ロゴ */}
                     <button
                         onClick={() => handleClick("#top")}
-                        className="hover:opacity-80 transition-opacity cursor-pointer"
+                        className="neo-brutal-box p-1 hover:translate-x-[2px] hover:translate-y-[2px] transition-transform cursor-pointer overflow-hidden rounded-none"
                     >
                         <Image
                             src="/logo.png"
                             alt="skphooh"
-                            width={36}
-                            height={36}
-                            className="rounded-lg"
+                            width={32}
+                            height={32}
+                            className="object-cover"
                             priority
                         />
                     </button>
 
                     {/* デスクトップナビ */}
-                    <div className="hidden md:flex items-center gap-1">
+                    <div className="hidden md:flex items-center gap-2">
                         {navLinks.map((link) => (
                             <button
                                 key={link.href}
                                 onClick={() => handleClick(link.href)}
-                                className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-full cursor-pointer ${activeSection === link.href.replace("#", "")
-                                        ? "text-white"
-                                        : "text-gray-400 hover:text-white"
+                                className={`relative px-4 py-2 text-sm font-black transition-colors cursor-pointer border-2 border-transparent ${activeSection === link.href.replace("#", "")
+                                        ? "text-black"
+                                        : "text-gray-600 hover:text-black hover:border-black hover:bg-yellow-100 hover:shadow-[2px_2px_0_#000] hover:-translate-y-0.5"
                                     }`}
                             >
                                 {activeSection === link.href.replace("#", "") && (
                                     <motion.div
                                         layoutId="activeNav"
-                                        className="absolute inset-0 bg-white/10 rounded-full"
+                                        className="absolute inset-0 bg-[var(--color-neo-yellow)] border-2 border-black shadow-[2px_2px_0_#000]"
                                         transition={{
                                             type: "spring",
                                             stiffness: 380,
@@ -131,10 +130,10 @@ export default function Navbar() {
                     {/* モバイルメニューボタン */}
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
-                        className="md:hidden p-2 text-gray-400 hover:text-white transition-colors cursor-pointer"
+                        className="md:hidden p-2 border-2 border-black bg-white shadow-[2px_2px_0_#000] text-black hover:bg-[var(--color-neo-yellow)] transition-all cursor-pointer hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
                         aria-label="メニュー"
                     >
-                        {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                        {mobileOpen ? <X size={22} className="stroke-[3]" /> : <Menu size={22} className="stroke-[3]" />}
                     </button>
                 </div>
             </motion.nav>
@@ -143,26 +142,24 @@ export default function Navbar() {
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed inset-x-0 top-16 z-40 bg-[#0a0a0a]/95 backdrop-blur-2xl border-b border-white/5 md:hidden"
+                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                        transition={{ duration: 0.2, type: "spring" }}
+                        className="fixed inset-x-4 top-20 z-40 bg-white border-4 border-black shadow-[8px_8px_0_#000] md:hidden p-4 flex flex-col gap-3"
                     >
-                        <div className="container mx-auto px-6 py-6 flex flex-col gap-2">
-                            {navLinks.map((link) => (
-                                <button
-                                    key={link.href}
-                                    onClick={() => handleClick(link.href)}
-                                    className={`text-left px-4 py-3 rounded-xl text-sm font-medium transition-colors cursor-pointer ${activeSection === link.href.replace("#", "")
-                                            ? "text-white bg-white/10"
-                                            : "text-gray-400 hover:text-white hover:bg-white/5"
-                                        }`}
-                                >
-                                    {link.label}
-                                </button>
-                            ))}
-                        </div>
+                        {navLinks.map((link) => (
+                            <button
+                                key={link.href}
+                                onClick={() => handleClick(link.href)}
+                                className={`text-left px-5 py-3 text-lg font-black transition-all cursor-pointer border-2 border-black ${activeSection === link.href.replace("#", "")
+                                        ? "bg-[var(--color-neo-yellow)] shadow-[4px_4px_0_#000] -translate-y-1"
+                                        : "bg-white text-black hover:bg-gray-100 hover:shadow-[4px_4px_0_#000] hover:-translate-y-1"
+                                    }`}
+                            >
+                                {link.label}
+                            </button>
+                        ))}
                     </motion.div>
                 )}
             </AnimatePresence>

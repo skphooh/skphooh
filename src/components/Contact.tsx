@@ -9,17 +9,14 @@ const socialLinks = [
 ];
 
 /**
- * お問い合わせセクション
- * メールCTA、SNSリンク、フッターを含む
+ * お問い合わせセクション (Neo-Brutalism)
  */
 export default function Contact() {
     return (
-        <section id="contact" className="py-32 relative z-20 overflow-hidden">
-            {/* 背景エフェクト */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-indigo-600/8 rounded-full blur-[120px]" />
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            </div>
+        <section id="contact" className="py-32 relative z-20 overflow-hidden bg-[var(--color-neo-pink)] border-b-4 border-black">
+            {/* 装飾 */}
+            <div className="absolute top-10 left-10 w-32 h-32 border-4 border-black bg-[var(--color-neo-yellow)] rounded-full shadow-[8px_8px_0_#000] pointer-events-none" />
+            <div className="absolute bottom-40 right-10 w-48 h-48 border-4 border-black bg-[var(--color-neo-blue)] shadow-[8px_8px_0_#000] pointer-events-none transform rotate-12" />
 
             <div className="container px-6 mx-auto max-w-4xl text-center relative z-10">
                 {/* セクションヘッダー */}
@@ -28,16 +25,22 @@ export default function Contact() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ duration: 0.6 }}
-                    className="mb-16"
+                    className="mb-16 bg-white border-4 border-black p-10 shadow-[12px_12px_0_#000]"
                 >
-                    <span className="text-xs uppercase tracking-[0.3em] text-blue-400 font-medium mb-4 block">
-                        Contact
-                    </span>
-                    <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-                        Let&apos;s Work{" "}
-                        <span className="text-gradient">Together</span>
+                    <div className="inline-block bg-black text-white border-2 border-black px-6 py-2 mb-8 transform -rotate-2">
+                        <span className="text-sm font-black uppercase tracking-widest">
+                            Contact
+                        </span>
+                    </div>
+                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 uppercase">
+                        Let&apos;s Work
+                        <br />
+                        <span className="text-stroke relative">
+                            Together
+                            <span className="absolute inset-0 text-[var(--color-neo-yellow)] stroke-black" style={{WebkitTextStroke: "2px black", transform: "translate(4px, 4px)", zIndex: -1}}>Together</span>
+                        </span>
                     </h2>
-                    <p className="text-gray-400 text-lg font-light max-w-xl mx-auto">
+                    <p className="text-black font-bold text-xl max-w-xl mx-auto border-t-4 border-black pt-6">
                         新しいプロジェクトの立ち上げや、既存プロダクトの改善など、お気軽にご相談ください。
                     </p>
                 </motion.div>
@@ -51,11 +54,11 @@ export default function Contact() {
                 >
                     <a
                         href="mailto:skphooh@gmail.com"
-                        className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-medium text-sm hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-all duration-300"
+                        className="neo-brutal-btn inline-flex items-center gap-4 px-10 py-6 text-xl md:text-2xl bg-[var(--color-neo-green)] group"
                     >
-                        <Mail className="w-5 h-5" />
+                        <Mail className="w-8 h-8 stroke-[3]" />
                         skphooh@gmail.com
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        <ArrowUpRight className="w-8 h-8 stroke-[3] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </a>
                 </motion.div>
 
@@ -65,11 +68,12 @@ export default function Contact() {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    className="mt-24 pt-8 border-t border-white/5"
+                    className="mt-32 p-8 bg-black border-4 border-black text-white shadow-[8px_8px_0_var(--color-neo-yellow)]"
                 >
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                        <p className="text-gray-600 text-xs">
-                            © 2026 skphooh. Built with Next.js & Framer Motion.
+                        <p className="text-white font-black text-sm uppercase">
+                            © 2026 skphooh.
+                            <br className="md:hidden" /> Built with Next.js & Tailwind.
                         </p>
 
                         {/* ソーシャルアイコン */}
@@ -80,10 +84,10 @@ export default function Contact() {
                                     href={social.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-gray-600 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"
+                                    className="p-3 bg-white text-black border-2 border-white hover:bg-[var(--color-neo-yellow)] hover:border-black hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all"
                                     aria-label={social.name}
                                 >
-                                    <social.icon className="w-5 h-5" />
+                                    <social.icon className="w-6 h-6 stroke-[3]" />
                                 </a>
                             ))}
                         </div>
