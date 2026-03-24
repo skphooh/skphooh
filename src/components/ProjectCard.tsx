@@ -121,7 +121,7 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
                     {project.title}
                 </h3>
-                <p className="text-gray-400 mb-4 font-light text-sm leading-relaxed">
+                <p className="text-gray-400 mb-4 font-light text-sm leading-relaxed whitespace-pre-wrap">
                     {project.description}
                 </p>
 

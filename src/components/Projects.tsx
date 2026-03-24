@@ -10,31 +10,31 @@ const projects: ProjectType[] = [
     {
         title: "Wear-Cast",
         description:
-            "日々のコーディネートと天気を記録し、他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。天気に基づいたおすすめの服装提案機能も搭載。",
+            "日々のコーディネートと天気を記録し、\n他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。\n天気に基づいたおすすめの服装提案機能も搭載。",
         features: ["コーディネート記録", "ソーシャルフィード", "天気連動レコメンド", "プロフィール管理"],
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
         liveUrl: "https://wear-cast.vercel.app/",
         status: "live",
         iframePreview: true,
         image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=1470&auto=format&fit=crop", // Wear-Castの代替えデモ
-        details: "Wear-Castは、毎日の気象データと連動してユーザーの服装記録をサポートするSNSアプリケーションです。洗練されたUIとスムーズなトランジションで、ストレスのない記録体験を提供します。",
+        details: "Wear-Castは、毎日の気象データと連動してユーザーの服装記録をサポートするSNSアプリケーションです。\n洗練されたUIとスムーズなトランジションで、ストレスのない記録体験を提供します。",
     },
     {
         title: "Meguri24",
         description:
-            "AIが24時間の生活リズムを分析し、最適な行動パターンを提案する生活習慣改善アプリ。円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
+            "AIが24時間の生活リズムを分析し、\n最適な行動パターンを提案する生活習慣改善アプリ。\n円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
         features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
         techStack: ["Next.js", "Clerk", "Supabase", "Tailwind CSS", "AI"],
         liveUrl: "https://meguri24.vercel.app/",
         status: "live",
         iframePreview: true,
         image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470&auto=format&fit=crop", // Meguri24の代替えデモ
-        details: "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。AIを活用し、日々の記録からより良い習慣形成をサポートします。Clerkによる安全な認証基盤を備えています。",
+        details: "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
     },
     {
         title: "skphooh.dev",
         description:
-            "このポートフォリオサイト自体。Next.js 16 + Framer Motionを使い、パーティクルエフェクトやタイピングアニメーションなどの洗練されたインタラクションを実装。",
+            "このポートフォリオサイト自体。\nNext.js 16 + Framer Motionを使い、\nパーティクルエフェクトやタイピングアニメーションなどの洗練されたインタラクションを実装。",
         features: ["パーティクル背景", "タイピングアニメーション", "スクロール進捗バー", "レスポンシブ対応"],
         techStack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
         liveUrl: "https://skphooh.vercel.app/",
@@ -98,7 +98,7 @@ export default function Projects() {
                         <span className="text-gradient">Projects</span>
                     </h2>
                     <p className="text-gray-500 text-sm max-w-xl mx-auto mt-4">
-                        Next.js × Supabase × AI を中心に、実際にデプロイ済みのプロダクトです
+                        個人開発で制作した、これまでの代表的なプロダクトです。
                     </p>
                     <div className="w-20 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mt-6" />
                 </motion.div>
@@ -230,7 +230,7 @@ export default function Projects() {
 
                                 <div className="prose prose-invert max-w-none">
                                     <h4 className="text-lg font-semibold text-white mb-2">概要</h4>
-                                    <p className="text-gray-300 leading-relaxed mb-8">
+                                    <p className="text-gray-300 leading-relaxed mb-8 whitespace-pre-wrap">
                                         {selectedProject.details || selectedProject.description}
                                     </p>
 
