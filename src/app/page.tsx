@@ -8,7 +8,7 @@ import BackToTop from "@/components/BackToTop";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-[#0a0a0a] text-white overflow-hidden">
+    <main className="flex min-h-screen flex-col bg-transparent text-black overflow-hidden z-10 relative">
       {/* ナビゲーション */}
       <Navbar />
       <ScrollProgress />

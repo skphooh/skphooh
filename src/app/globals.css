@@ -2,15 +2,18 @@
 
 @theme {
   --font-sans: var(--font-inter);
-  --color-accent-start: #3b82f6;
-  --color-accent-end: #a855f7;
-  --color-background: #0a0a0a;
-  --color-foreground: #ffffff;
+  --color-neo-yellow: #ffe600;
+  --color-neo-pink: #ff90e8;
+  --color-neo-blue: #00e5ff;
+  --color-neo-green: #00ff66;
+  --color-neo-red: #ff3333;
+  --color-background: #fafafa;
+  --color-foreground: #000000;
 }
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
+  --background: #fafafa;
+  --foreground: #000000;
 }
 
 /* スムーズスクロール */
@@ -27,131 +30,71 @@ body {
 
 /* カスタムスクロールバー */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #fafafa;
+  border-left: 2px solid #000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  background: #000;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #333;
 }
 
-/* ユーティリティ: グラスモーフィズム */
-@utility glass {
-  background-color: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* ユーティリティ: テキストグラデーション */
-@utility text-gradient {
-  background-image: linear-gradient(135deg,
-      var(--color-accent-start),
-      var(--color-accent-end));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* ユーティリティ: グラデーションボーダー */
-@utility gradient-border {
-  position: relative;
-}
-
-/* スケールYアニメーション */
-@keyframes scale-y {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
+/* ユーティリティ: ネオ・ブルータリズム共通 */
+@layer components {
+  .neo-brutal-box {
+    background-color: #fff;
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    transition: all 0.2s ease-in-out;
   }
 
-  50% {
-    transform: scaleY(1);
-    transform-origin: top;
+  .neo-brutal-btn {
+    background-color: var(--color-neo-yellow);
+    color: #000;
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0px 0px #000;
+    font-weight: 800;
+    text-transform: uppercase;
+    transition: all 0.15s ease-out;
+    cursor: pointer;
   }
 
-  50.1% {
-    transform: scaleY(1);
-    transform-origin: bottom;
+  .neo-brutal-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px 0px #000;
   }
 
-  100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
+  .neo-brutal-btn:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px 0px #000;
+  }
+
+  .neo-brutal-tag {
+    border: 2px solid #000;
+    font-weight: 700;
+    box-shadow: 2px 2px 0px 0px #000;
   }
 }
 
-@utility animate-scale-y {
-  animation: scale-y 1.5s ease-in-out infinite;
-}
-
-/* フェードインアニメーション */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@utility animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* パルス-グロウアニメーション */
-@keyframes pulse-glow {
-
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
-    opacity: 0.8;
-  }
-}
-
-@utility animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
-/* フロートアニメーション */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@utility animate-float {
-  animation: float 6s ease-in-out infinite;
+/* テキストの強い縁取り */
+@utility text-stroke {
+  -webkit-text-stroke: 2px #000;
+  color: #fff;
 }
 
 /* タイピングカーソル */
 @keyframes blink {
-
   0%,
   100% {
     opacity: 1;
   }
-
   50% {
     opacity: 0;
   }
@@ -161,7 +104,26 @@ body {
   animation: blink 1s step-end infinite;
 }
 
-/* ノイズテクスチャオーバーレイ */
-@utility noise {
-  position: relative;
+/* 幾何学図形の回転アニメーション */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@utility animate-spin-slow {
+  animation: spin-slow 15s linear infinite;
+}
+
+/* グリッチエフェクト */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@utility animate-marquee {
+  animation: marquee 20s linear infinite;
 }

@@ -2,19 +2,19 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { ArrowDown, Flame } from "lucide-react";
 
 /** タイピングアニメーションで表示するフレーズ */
 const phrases = [
     "Next.js × Supabase で構築",
-    "美しいUIを、圧倒的スピードで",
-    "AIを活用したモダン開発",
-    "アイデアを形にする最短ルート",
+    "圧倒的インパクトを、Webに",
+    "常識を壊すUIデザイン",
+    "アイデアを形にする爆速開発",
 ];
 
 /**
- * ヒーローセクションコンポーネント
- * タイピングアニメーション、フローティングオーブ、CTAボタンを含む
+ * ヒーローセクションコンポーネント (Neo-Brutalism)
+ * 太いフォント、ネオンカラー、はっきりした影を特徴とする
  */
 export default function Hero() {
     const [phraseIndex, setPhraseIndex] = useState(0);
@@ -57,31 +57,25 @@ export default function Hero() {
     return (
         <section
             id="top"
-            className="relative min-h-screen flex items-center justify-center overflow-hidden"
+            className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
         >
-            {/* フローティングオーブ */}
-            <div className="absolute inset-0 z-0">
-                <div className="absolute top-[15%] left-[15%] w-[30rem] h-[30rem] bg-blue-600/15 rounded-full blur-[120px] animate-pulse-glow" />
-                <div
-                    className="absolute bottom-[15%] right-[15%] w-[25rem] h-[25rem] bg-purple-600/15 rounded-full blur-[120px] animate-pulse-glow"
-                    style={{ animationDelay: "2s" }}
-                />
-                <div
-                    className="absolute top-[50%] left-[50%] w-[20rem] h-[20rem] bg-pink-600/10 rounded-full blur-[120px] animate-pulse-glow"
-                    style={{ animationDelay: "4s" }}
-                />
+            {/* 装飾の幾何学シェイプ */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-[20%] left-[10%] w-32 h-32 bg-[var(--color-neo-pink)] border-4 border-black shadow-[8px_8px_0_#000] animate-spin-slow" />
+                <div className="absolute bottom-[20%] right-[10%] w-40 h-40 bg-[var(--color-neo-blue)] border-4 border-black rounded-full shadow-[8px_8px_0_#000] animate-bounce" style={{ animationDuration: '3s' }}/>
+                <div className="absolute top-[60%] left-[80%] w-24 h-24 bg-[var(--color-neo-green)] border-4 border-black shadow-[6px_6px_0_#000] rotate-45" />
             </div>
 
-            <div className="container px-6 mx-auto relative z-10 text-center max-w-4xl">
+            <div className="container px-6 mx-auto relative z-10 text-center max-w-5xl">
                 {/* ステータスバッジ */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="mb-8"
+                    initial={{ opacity: 0, y: -20, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.5, type: "spring", bounce: 0.5 }}
+                    className="mb-10 inline-block"
                 >
-                    <span className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-blue-300 bg-blue-500/10 rounded-full ring-1 ring-blue-500/20">
-                        <Sparkles className="w-3.5 h-3.5" />
+                    <span className="inline-flex items-center gap-2 px-5 py-2 text-sm font-black text-black bg-[var(--color-neo-yellow)] border-4 border-black shadow-[4px_4px_0_#000] uppercase tracking-wider">
+                        <Flame className="w-5 h-5 fill-red-500" />
                         Open for Collaboration
                     </span>
                 </motion.div>
@@ -90,12 +84,13 @@ export default function Hero() {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                    <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tight mb-6 leading-[1.1]">
-                        <span className="text-white">Hi, I&apos;m</span>
-                        <br />
-                        <span className="text-gradient">skphooh</span>
+                    <h1 className="text-6xl sm:text-7xl md:text-9xl font-black tracking-tighter mb-8 leading-[1.0] uppercase">
+                        <span className="block text-stroke mb-4 text-black">Hi, I&apos;m</span>
+                        <span className="block bg-[var(--color-neo-blue)] text-black border-4 border-black shadow-[8px_8px_0_#000] px-6 py-4 inline-block -rotate-2 hover:rotate-2 transition-transform duration-300">
+                            skphooh
+                        </span>
                     </h1>
                 </motion.div>
 
@@ -103,12 +98,12 @@ export default function Hero() {
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="h-10 flex items-center justify-center mb-10"
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="h-16 flex items-center justify-center mb-12"
                 >
-                    <p className="text-lg md:text-xl text-gray-400 font-light">
+                    <p className="text-xl md:text-3xl text-black font-black bg-white border-4 border-black px-6 py-3 shadow-[6px_6px_0_#000] inline-flex items-center">
                         {displayText}
-                        <span className="inline-block w-[2px] h-5 bg-blue-400 ml-1 animate-blink" />
+                        <span className="inline-block w-[4px] h-8 bg-[var(--color-neo-red)] ml-2 animate-blink" />
                     </p>
                 </motion.div>
 
@@ -116,18 +111,18 @@ export default function Hero() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
                     <button
                         onClick={() => scrollTo("projects")}
-                        className="group px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full font-medium text-sm hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:scale-105 transition-all duration-300 cursor-pointer"
+                        className="neo-brutal-btn px-10 py-5 text-lg w-full sm:w-auto bg-[var(--color-neo-yellow)]"
                     >
                         プロジェクトを見る
                     </button>
                     <button
                         onClick={() => scrollTo("contact")}
-                        className="px-8 py-3.5 text-gray-300 rounded-full font-medium text-sm ring-1 ring-white/10 hover:ring-white/30 hover:text-white hover:bg-white/5 transition-all duration-300 cursor-pointer"
+                        className="neo-brutal-btn px-10 py-5 text-lg w-full sm:w-auto bg-white hover:bg-gray-100"
                     >
                         お問い合わせ
                     </button>
@@ -135,21 +130,28 @@ export default function Hero() {
 
                 {/* スクロールインジケーター */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
-                    className="mt-20"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, type: "spring", delay: 0.8 }}
+                    className="mt-24 inline-block"
                 >
                     <button
                         onClick={() => scrollTo("projects")}
-                        className="group flex flex-col items-center text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
+                        className="group flex items-center justify-center w-16 h-16 bg-[var(--color-neo-pink)] border-4 border-black rounded-full shadow-[4px_4px_0_#000] hover:translate-y-1 hover:shadow-[2px_2px_0_#000] transition-all cursor-pointer"
                     >
-                        <span className="text-xs uppercase tracking-[0.2em] mb-3">
-                            Scroll
-                        </span>
-                        <ArrowDown className="w-4 h-4 animate-bounce" />
+                        <ArrowDown className="w-8 h-8 stroke-[3]" />
                     </button>
                 </motion.div>
+            </div>
+
+            {/* マーキーエフェクト（バナー） */}
+            <div className="absolute bottom-0 left-0 right-0 bg-black text-[var(--color-neo-yellow)] py-3 border-t-4 border-black overflow-hidden whitespace-nowrap z-20">
+                <div className="inline-block animate-marquee whitespace-nowrap font-black text-xl uppercase tracking-widest">
+                    <span>WEB DEVELOPMENT • UI/UX DESIGN • NEO-BRUTALISM • FULLSTACK • NEXT.JS • REACT • </span>
+                    <span>WEB DEVELOPMENT • UI/UX DESIGN • NEO-BRUTALISM • FULLSTACK • NEXT.JS • REACT • </span>
+                    <span>WEB DEVELOPMENT • UI/UX DESIGN • NEO-BRUTALISM • FULLSTACK • NEXT.JS • REACT • </span>
+                    <span>WEB DEVELOPMENT • UI/UX DESIGN • NEO-BRUTALISM • FULLSTACK • NEXT.JS • REACT • </span>
+                </div>
             </div>
         </section>
     );

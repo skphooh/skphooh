@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, ExternalLink, ChevronRight } from "lucide-react";
+import { Github, ExternalLink, ArrowUpRight } from "lucide-react";
 
-/** プロジェクトのステータス */
 type ProjectStatus = "live" | "development" | "archived";
 
 export interface ProjectType {
@@ -25,148 +24,138 @@ interface ProjectCardProps {
     onClick: () => void;
 }
 
-/** ステータスバッジの表示設定 */
 const statusConfig: Record<ProjectStatus, { label: string; color: string; dot: string }> = {
     live: {
-        label: "Live",
-        color: "bg-emerald-500/20 text-emerald-400 ring-emerald-500/30",
-        dot: "bg-emerald-400",
+        label: "LIVE",
+        color: "bg-[var(--color-neo-green)] text-black",
+        dot: "bg-black",
     },
     development: {
-        label: "In Dev",
-        color: "bg-amber-500/20 text-amber-400 ring-amber-500/30",
-        dot: "bg-amber-400",
+        label: "IN DEV",
+        color: "bg-[var(--color-neo-yellow)] text-black",
+        dot: "bg-black",
     },
     archived: {
-        label: "Archived",
-        color: "bg-gray-500/20 text-gray-400 ring-gray-500/30",
-        dot: "bg-gray-400",
+        label: "ARCHIVED",
+        color: "bg-gray-300 text-black",
+        dot: "bg-black",
     },
 };
 
 /**
- * プロジェクトカード
- * ホバー時のグロウエフェクト、ステータスバッジ、機能リスト表示付き
+ * プロジェクトカード (Neo-Brutalism)
  */
 export default function ProjectCard({ project, index, onClick }: ProjectCardProps) {
     const status = project.status || "live";
     const badge = statusConfig[status];
 
+    // ランダムな色をカードの背景に適用してみる
+    const cardBgColors = ["bg-white", "bg-[#fffbcc]", "bg-[#f5e6fd]", "bg-[#e6fbfd]"];
+    const bgColorClass = cardBgColors[index % cardBgColors.length];
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-2xl overflow-hidden glass hover:bg-white/[0.06] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_0_50px_rgba(59,130,246,0.1)] flex flex-col cursor-pointer"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.4, delay: index * 0.1, type: "spring" }}
+            className={`neo-brutal-box p-4 gap-4 flex flex-col cursor-pointer ${bgColorClass} hover:bg-white group overflow-hidden`}
             onClick={onClick}
         >
-            {/* 画像 / プレースホルダー / iframe */}
-            <div className="relative h-48 w-full overflow-hidden shrink-0 border-b border-white/5 bg-[#0a0a0a]">
-                {/* 画像下部に向かってわずかなグラデーション（暗すぎないように調整） */}
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent z-10 pointer-events-none" />
-
+            {/* 画像 / iframe プレビューエリア */}
+            <div className="relative h-56 w-full overflow-hidden shrink-0 border-4 border-black bg-white">
                 {/* ステータスバッジ */}
                 <div className="absolute top-3 right-3 z-20">
                     <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-full ring-1 ${badge.color}`}
+                        className={`inline-flex items-center gap-2 px-3 py-1 text-xs font-black uppercase tracking-widest border-2 border-black shadow-[2px_2px_0_#000] ${badge.color}`}
                     >
-                        <span className={`w-1.5 h-1.5 rounded-full ${badge.dot} animate-pulse`} />
+                        <span className={`w-2 h-2 ${badge.dot} animate-pulse`} />
                         {badge.label}
                     </span>
                 </div>
 
-                {/* ライブサイトのiframeプレビュー */}
                 {project.iframePreview && project.liveUrl ? (
-                    <div className="absolute inset-0 overflow-hidden bg-[#0a0a0a]">
-                        {/* デスクトップ幅でレンダリングさせ、カードに収まるようにCSS transformで縮小表示 */}
+                    <div className="absolute inset-0 bg-white">
                         <div
-                            className="absolute top-0 left-0 w-[1280px] h-[800px] origin-top-left pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-500 bg-[#0a0a0a]"
+                            className="absolute top-0 left-0 w-[1280px] h-[800px] origin-top-left pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white"
                             style={{ transform: "scale(0.35)" }}
                         >
                             <iframe
                                 src={project.liveUrl}
-                                className="w-full h-full border-0 select-none bg-[#0a0a0a]"
+                                className="w-full h-full border-0 select-none"
                                 title={`${project.title} Preview`}
                                 loading="lazy"
                                 scrolling="no"
                                 tabIndex={-1}
                             />
                         </div>
+                        {/* デフォルト画像 (ホバー前) */}
+                        <img
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover border-b-4 border-black group-hover:opacity-0 transition-opacity duration-300 pointer-events-none"
+                            loading="lazy"
+                        />
                     </div>
                 ) : project.image ? (
                     <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out border-b-4 border-black"
                         loading="lazy"
                     />
                 ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-700 ease-out">
-                        {/* 抽象パターンプレースホルダー */}
-                        <div className="relative w-16 h-16 mb-3">
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 ring-1 ring-white/10 rotate-6 group-hover:rotate-12 transition-transform duration-500" />
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 ring-1 ring-white/10 -rotate-3 group-hover:-rotate-6 transition-transform duration-500 flex items-center justify-center">
-                                <span className="text-2xl font-light text-white/40">
-                                    {project.title.charAt(0)}
-                                </span>
-                            </div>
-                        </div>
+                    <div className="w-full h-full flex items-center justify-center bg-[var(--color-neo-yellow)]">
+                        <span className="text-4xl font-black text-black opacity-20 transform -rotate-12">
+                            {project.title}
+                        </span>
                     </div>
                 )}
             </div>
 
             {/* カード本体 */}
-            <div className="p-6 relative z-20 flex flex-col flex-1">
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
-                    {project.title}
-                </h3>
-                <p className="text-gray-400 mb-4 font-light text-sm leading-relaxed whitespace-pre-wrap">
+            <div className="pt-4 pb-2 relative z-20 flex flex-col flex-1">
+                <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-2xl font-black text-black uppercase tracking-tighter w-[80%] leading-none">
+                        {project.title}
+                    </h3>
+                    <div className="w-10 h-10 bg-[var(--color-neo-pink)] border-2 border-black flex items-center justify-center shadow-[4px_4px_0_#000] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                        <ArrowUpRight className="w-6 h-6 stroke-[3]" />
+                    </div>
+                </div>
+                
+                <p className="text-black/80 font-bold text-sm mb-6 leading-relaxed line-clamp-3">
                     {project.description}
                 </p>
 
-                {/* 主な機能リスト */}
-                {project.features && project.features.length > 0 && (
-                    <div className="mb-4">
-                        <div className="flex flex-wrap gap-x-4 gap-y-1">
-                            {project.features.map((feature) => (
-                                <span
-                                    key={feature}
-                                    className="flex items-center gap-1 text-[11px] text-gray-500"
-                                >
-                                    <ChevronRight className="w-3 h-3 text-blue-400/60" />
-                                    {feature}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
                 {/* 技術タグ */}
-                <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
-                    {project.techStack.map((tech) => (
+                <div className="flex flex-wrap gap-2 mb-6 mt-auto">
+                    {project.techStack.slice(0, 3).map((tech) => (
                         <span
                             key={tech}
-                            className="px-2.5 py-0.5 text-[11px] font-medium text-blue-300 bg-blue-500/10 rounded-full ring-1 ring-blue-500/20"
+                            className="neo-brutal-tag px-3 py-1 text-[10px] font-black uppercase bg-white text-black"
                         >
                             {tech}
                         </span>
                     ))}
+                    {project.techStack.length > 3 && (
+                        <span className="neo-brutal-tag px-3 py-1 text-[10px] font-black uppercase bg-white text-black">
+                            +{project.techStack.length - 3}
+                        </span>
+                    )}
                 </div>
 
-                {/* リンク（イベント伝播を停止してカード全体のクリックと分離） */}
-                <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+                {/* リンク群 */}
+                <div className="flex items-center gap-4 pt-4 border-t-4 border-black mt-auto">
                     {project.githubUrl && (
                         <a
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition-colors relative z-30"
-                            aria-label={`${project.title} GitHub Repository`}
+                            className="flex-1 text-center py-2 bg-black text-white font-black text-sm uppercase hover:bg-[var(--color-neo-yellow)] hover:text-black border-2 border-black transition-colors"
                         >
-                            <Github className="w-4 h-4" />
-                            <span>Source</span>
+                            SOURCE
                         </a>
                     )}
                     {project.liveUrl && (
@@ -175,12 +164,9 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white transition-colors ml-auto group/link relative z-30"
-                            aria-label={`${project.title} Live Site`}
+                            className="flex-1 text-center py-2 bg-[var(--color-neo-blue)] text-black font-black text-sm uppercase border-2 border-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
                         >
-                            <ExternalLink className="w-4 h-4" />
-                            <span>Visit Site</span>
-                            <ChevronRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
+                            VISIT
                         </a>
                     )}
                 </div>
