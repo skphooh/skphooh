@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 /** ナビゲーションリンクの定義 */
 const navLinks = [
@@ -88,9 +89,16 @@ export default function Navbar() {
                     {/* ロゴ */}
                     <button
                         onClick={() => handleClick("#top")}
-                        className="text-lg font-bold tracking-tight hover:opacity-80 transition-opacity cursor-pointer"
+                        className="hover:opacity-80 transition-opacity cursor-pointer"
                     >
-                        <span className="text-gradient">skphooh</span>
+                        <Image
+                            src="/logo.png"
+                            alt="skphooh"
+                            width={36}
+                            height={36}
+                            className="rounded-lg"
+                            priority
+                        />
                     </button>
 
                     {/* デスクトップナビ */}
