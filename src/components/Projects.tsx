@@ -176,15 +176,19 @@ export default function Projects() {
                             </button>
 
                             {/* モーダルのヘッダー領域 */}
-                            <div className="relative w-full h-64 sm:h-96 bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group">
+                            <div className="relative w-full h-[50vh] min-h-[400px] bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group">
                                 {selectedProject.iframePreview && selectedProject.liveUrl ? (
-                                    <div className="absolute inset-0 w-full h-full pointer-events-auto bg-white">
-                                        <iframe
-                                            src={selectedProject.liveUrl}
-                                            className="w-full h-full border-0"
-                                            title={`${selectedProject.title} Live Demo`}
-                                            loading="lazy"
-                                        />
+                                    <div className="absolute inset-0 w-full h-full pointer-events-auto bg-white overflow-hidden">
+                                        <div 
+                                           className="absolute top-0 left-0 w-[200%] h-[200%] origin-top-left flex items-center justify-center scale-[0.5]"
+                                        >
+                                            <iframe
+                                                src={selectedProject.liveUrl}
+                                                className="w-full h-full border-0"
+                                                title={`${selectedProject.title} Live Demo`}
+                                                loading="lazy"
+                                            />
+                                        </div>
                                     </div>
                                 ) : selectedProject.image ? (
                                     <img

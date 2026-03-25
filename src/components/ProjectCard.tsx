@@ -75,10 +75,9 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
                 </div>
 
                 {project.iframePreview && project.liveUrl ? (
-                    <div className="absolute inset-0 bg-white">
+                    <div className="absolute inset-0 bg-white overflow-hidden">
                         <div
-                            className="absolute top-0 left-0 w-[1280px] h-[800px] origin-top-left pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white"
-                            style={{ transform: "scale(0.35)" }}
+                            className="absolute top-0 left-0 w-[400%] h-[400%] origin-top-left pointer-events-none bg-white scale-[0.25]"
                         >
                             <iframe
                                 src={project.liveUrl}
@@ -89,13 +88,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
                                 tabIndex={-1}
                             />
                         </div>
-                        {/* デフォルト画像 (ホバー前) */}
-                        <img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full object-cover border-b-4 border-black group-hover:opacity-0 transition-opacity duration-300 pointer-events-none"
-                            loading="lazy"
-                        />
+                        {/* 透過レイヤーを重ねてiframe上のクリックイベントを無効化 */}
+                        <div className="absolute inset-0 z-10 bg-transparent group-hover:bg-white/10 transition-colors pointer-events-auto" />
                     </div>
                 ) : project.image ? (
                     <img
@@ -105,7 +99,7 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
                         loading="lazy"
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-[var(--color-neo-yellow)]">
+                    <div className="w-full h-full flex items-center justify-center bg-[var(--color-neo-yellow)] border-b-4 border-black">
                         <span className="text-4xl font-black text-black opacity-20 transform -rotate-12">
                             {project.title}
                         </span>
