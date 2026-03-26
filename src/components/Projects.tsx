@@ -167,51 +167,39 @@ export default function Projects() {
                             className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white border-4 border-black shadow-[16px_16px_0_#000] flex flex-col pointer-events-auto"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {/* モーダル閉じるボタン */}
-                            <button
-                                onClick={() => setSelectedProject(null)}
-                                className="absolute top-4 right-8 sm:right-10 z-[110] p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
-                            >
-                                <X className="w-6 h-6 stroke-[3]" />
-                            </button>
+                            {/* モーダル閉じるボタン（スティッキーバー） */}
+                            <div className="sticky top-0 z-[110] flex justify-end p-3 bg-white border-b-4 border-black shrink-0">
+                                <button
+                                    onClick={() => setSelectedProject(null)}
+                                    className="p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
+                                >
+                                    <X className="w-6 h-6 stroke-[3]" />
+                                </button>
+                            </div>
 
                             {/* モーダルのヘッダー領域 */}
-                            <div className="relative w-full h-[60vh] min-h-[400px] bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group flex items-center justify-center p-6 sm:p-12">
+                            <div className="relative w-full h-[50vh] min-h-[400px] bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group">
                                 {selectedProject.iframePreview && selectedProject.liveUrl ? (
-                                    <div className="w-full h-full bg-white border-4 border-black shadow-[8px_8px_0_#000] flex flex-col pointer-events-auto rounded-xl overflow-hidden relative z-50">
-                                        {/* ブラウザのモックアップヘッダー */}
-                                        <div className="h-10 border-b-4 border-black bg-gray-200 flex items-center px-4 gap-3 shrink-0">
-                                            <div className="w-4 h-4 rounded-full border-2 border-black bg-[var(--color-neo-pink)]" />
-                                            <div className="w-4 h-4 rounded-full border-2 border-black bg-[var(--color-neo-yellow)]" />
-                                            <div className="w-4 h-4 rounded-full border-2 border-black bg-[var(--color-neo-green)]" />
-                                            <div className="flex-1 text-center font-bold text-xs uppercase opacity-50 px-8 truncate">
-                                                {selectedProject.liveUrl.replace("https://", "")}
-                                            </div>
-                                        </div>
-                                        {/* iframeコンテナ */}
-                                        <div className="relative flex-1 bg-white overflow-hidden">
-                                            <div 
-                                               className="absolute top-0 left-0 origin-top-left flex items-center justify-center w-[300%] h-[300%] scale-[0.3333] sm:w-[200%] sm:h-[200%] sm:scale-[0.5] lg:w-[125%] lg:h-[125%] lg:scale-[0.8]"
-                                            >
-                                                <iframe
-                                                    src={selectedProject.liveUrl}
-                                                    className="w-full h-full border-0"
-                                                    title={`${selectedProject.title} Live Demo`}
-                                                    loading="lazy"
-                                                />
-                                            </div>
+                                    <div className="absolute inset-0 w-full h-full pointer-events-auto bg-white overflow-hidden">
+                                        <div 
+                                           className="absolute top-0 left-0 origin-top-left w-[300%] h-[300%] scale-[0.3333] sm:w-[200%] sm:h-[200%] sm:scale-[0.5] lg:w-[125%] lg:h-[125%] lg:scale-[0.8]"
+                                        >
+                                            <iframe
+                                                src={selectedProject.liveUrl}
+                                                className="w-full h-full border-0"
+                                                title={`${selectedProject.title} Live Demo`}
+                                                loading="lazy"
+                                            />
                                         </div>
                                     </div>
                                 ) : selectedProject.image ? (
-                                    <div className="w-full h-full border-4 border-black shadow-[8px_8px_0_#000] overflow-hidden rounded-xl">
-                                        <img
-                                            src={selectedProject.image}
-                                            alt={selectedProject.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
+                                    <img
+                                        src={selectedProject.image}
+                                        alt={selectedProject.title}
+                                        className="w-full h-full object-cover"
+                                    />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-white border-4 border-black shadow-[8px_8px_0_#000] rounded-xl">
+                                    <div className="w-full h-full flex items-center justify-center">
                                         <span className="text-6xl font-black uppercase text-black/20 transform -rotate-12">
                                             {selectedProject.title}
                                         </span>
