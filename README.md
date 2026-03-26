@@ -4,7 +4,7 @@
 
 個人開発のプロジェクトや自身のスキルセットを魅力的に伝えるための、モダンでインタラクティブなポートフォリオサイトです。Next.js 16（App Router）、Tailwind CSS、そしてFramer Motionを活用し、リッチなアニメーションと洗練されたUIを実現しています。
 
-**Live Demo:** [https://skphooh.vercel.app/](https://skphooh.vercel.app/)
+**Live Demo:** [https://www.skphooh.com/)
 
 ---
 
