@@ -109,11 +109,11 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
 
             {/* カード本体 */}
             <div className="pt-4 pb-2 relative z-20 flex flex-col flex-1">
-                <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-black text-black uppercase tracking-tighter w-[80%] leading-none">
+                <div className="flex justify-between items-start gap-4 mb-4">
+                    <h3 className="text-2xl font-black text-black uppercase tracking-tighter leading-none flex-1 break-words">
                         {project.title}
                     </h3>
-                    <div className="w-10 h-10 bg-[var(--color-neo-pink)] border-2 border-black flex items-center justify-center shadow-[4px_4px_0_#000] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                    <div className="w-10 h-10 shrink-0 bg-[var(--color-neo-pink)] border-2 border-black flex items-center justify-center shadow-[4px_4px_0_#000] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
                         <ArrowUpRight className="w-6 h-6 stroke-[3]" />
                     </div>
                 </div>

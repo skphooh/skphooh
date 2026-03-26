@@ -13,7 +13,7 @@ const projects: ProjectType[] = [
             "日々のコーディネートと天気を記録し、\n他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。\n天気に基づいたおすすめの服装提案機能も搭載。",
         features: ["コーディネート記録", "ソーシャルフィード", "天気連動レコメンド", "プロフィール管理"],
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
-        liveUrl: "https://wear-cast.vercel.app/",
+        liveUrl: "https://wearcast.skphooh.com/",
         status: "live",
         iframePreview: true,
         image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=1470&auto=format&fit=crop",
@@ -25,19 +25,19 @@ const projects: ProjectType[] = [
             "AIが24時間の生活リズムを分析し、\n最適な行動パターンを提案する生活習慣改善アプリ。\n円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
         features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
         techStack: ["Next.js", "Clerk", "Supabase", "Tailwind CSS", "AI"],
-        liveUrl: "https://meguri24.vercel.app/",
+        liveUrl: "https://meguri24.skphooh.com/",
         status: "live",
         iframePreview: true,
         image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470&auto=format&fit=crop",
         details: "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
     },
     {
-        title: "skphooh.dev",
+        title: "skphooh.com",
         description:
             "このポートフォリオサイト自体。\nNeo-Brutalismデザインを採用し、\n圧倒的なインパクトと個性を表現したフロントエンド体験。",
         features: ["Neo-Brutalism UI", "タイピング・マーキー", "カスタムカーソル(予定)", "レスポンシブ対応"],
         techStack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
-        liveUrl: "https://skphooh.vercel.app/",
+        liveUrl: "https://skphooh.com/",
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
         iframePreview: true,
@@ -170,7 +170,7 @@ export default function Projects() {
                             {/* モーダル閉じるボタン */}
                             <button
                                 onClick={() => setSelectedProject(null)}
-                                className="absolute top-4 right-4 z-[110] p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
+                                className="absolute top-4 right-8 sm:right-10 z-[110] p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
                             >
                                 <X className="w-6 h-6 stroke-[3]" />
                             </button>
@@ -180,7 +180,7 @@ export default function Projects() {
                                 {selectedProject.iframePreview && selectedProject.liveUrl ? (
                                     <div className="absolute inset-0 w-full h-full pointer-events-auto bg-white overflow-hidden">
                                         <div 
-                                           className="absolute top-0 left-0 w-[200%] h-[200%] origin-top-left flex items-center justify-center scale-[0.5]"
+                                           className="absolute top-0 left-0 origin-top-left flex items-center justify-center w-[300%] h-[300%] scale-[0.3333] sm:w-[200%] sm:h-[200%] sm:scale-[0.5] lg:w-[125%] lg:h-[125%] lg:scale-[0.8]"
                                         >
                                             <iframe
                                                 src={selectedProject.liveUrl}
