@@ -156,26 +156,27 @@ export default function Projects() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
+                        className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
                         onClick={() => setSelectedProject(null)}
                     >
-                        <motion.div
-                            initial={{ scale: 0.95, opacity: 0, y: 50 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 50 }}
-                            transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
-                            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white border-4 border-black shadow-[16px_16px_0_#000] flex flex-col pointer-events-auto"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {/* モーダル閉じるボタン（スティッキーバー） */}
-                            <div className="sticky top-0 z-[110] flex justify-end p-3 bg-white border-b-4 border-black shrink-0">
-                                <button
-                                    onClick={() => setSelectedProject(null)}
-                                    className="p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
-                                >
-                                    <X className="w-6 h-6 stroke-[3]" />
-                                </button>
-                            </div>
+                        {/* モーダル全体のラッパー（×ボタン + カード） */}
+                        <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+                            {/* モーダル閉じるボタン（カードの外側、右上に配置） */}
+                            <button
+                                onClick={() => setSelectedProject(null)}
+                                className="absolute -top-5 -right-3 sm:-top-6 sm:-right-6 z-[10000] p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
+                            >
+                                <X className="w-6 h-6 stroke-[3]" />
+                            </button>
+
+                            {/* スクロール可能なモーダルカード本体 */}
+                            <motion.div
+                                initial={{ scale: 0.95, opacity: 0, y: 50 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                exit={{ scale: 0.95, opacity: 0, y: 50 }}
+                                transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
+                                className="w-full max-h-[85vh] overflow-y-auto bg-white border-4 border-black shadow-[16px_16px_0_#000] flex flex-col pointer-events-auto"
+                            >
 
                             {/* モーダルのヘッダー領域 */}
                             <div className="relative w-full h-[50vh] min-h-[400px] bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group">
@@ -279,6 +280,7 @@ export default function Projects() {
                                 </div>
                             </div>
                         </motion.div>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
