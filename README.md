@@ -1,86 +1,92 @@
-# skphooh.dev - Personal Portfolio 🚀
+<div align="center">
 
-![Portfolio Preview](./public/og-image.png) <!-- 必要に応じてOGP画像などのリンクに差し替えてください -->
+# 🟡 skphooh.com
 
-個人開発のプロジェクトや自身のスキルセットを魅力的に伝えるための、モダンでインタラクティブなポートフォリオサイトです。Next.js 16（App Router）、Tailwind CSS、そしてFramer Motionを活用し、リッチなアニメーションと洗練されたUIを実現しています。
+**Neo-Brutalism × モダンWeb — 個性で魅せるポートフォリオ**
 
-**Live Demo:** [https://www.skphooh.com/)
+[![Live](https://img.shields.io/badge/🌐_LIVE-skphooh.com-FFD700?style=for-the-badge&labelColor=000000)](https://skphooh.com)
+[![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
----
-
-## ✨ Features (主な機能)
-
-- **モダンなUI/UX:** グラスモーフィズム（Glassmorphism）を取り入れた透明感のあるデザイン。
-- **リッチなアニメーション:** Framer Motionを用いたスクロール連動アニメーション、パーティクルエフェクト、タイピングエフェクト。
-- **プロジェクトのインタラクティブプレビュー:** iframeを用いたモーダル内でのライブサイトの直接プレビュー機能。
-- **レスポンシブデザイン:** モバイルからデスクトップまで、あらゆるデバイスで最適化された美しいレイアウト。
-- **パフォーマンス最適化:** Next.jsによるSSR/SSG活用と画像最適化。
+</div>
 
 ---
 
-## 🛠 Tech Stack (技術スタック)
+## 💡 About
 
-- **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Animation:** [Framer Motion](https://www.framer.com/motion/)
-- **Icons:** [Lucide React](https://lucide.dev/)
-- **Deployment:** [Vercel](https://vercel.com/)
+**太い線、原色、ブロック状のレイアウト。** トレンドの「綺麗で整った」デザインとは一線を画す、**Neo-Brutalism（ネオ・ブルータリズム）** を全面に採用したポートフォリオサイトです。
+
+ポスターや雑誌のような強烈なビジュアルインパクトで、訪れた人の記憶に残る体験を提供します。
 
 ---
 
-## 📦 Featured Projects (掲載プロジェクト)
+## ✨ Features
 
-ポートフォリオ内で紹介している主なプロジェクトです。実運用中のWebアプリケーションを中心に掲載しています。
-
-1. **Wear-Cast**
-   毎日のコーディネートと天気を記録し、他のユーザーと交流できるSNS型ライフスタイルアプリ。
-   - Tech: Next.js, React, Tailwind CSS, Supabase
-
-2. **Meguri24**
-   24時間の円形時計UIでタスク・睡眠・日記を管理し、AIが生活リズムを分析する習慣改善アプリ。
-   - Tech: Next.js, Clerk, Supabase, Tailwind CSS, AI
-
-3. **skphooh.dev** *(本リポジトリ)*
-   モダンなWeb技術を駆使して作成された自身のポートフォリオサイト。
+| 機能 | 説明 |
+|:-----|:-----|
+| **Neo-Brutalism UI** | 太い境界線・ドロップシャドウ・原色アクセントで構成された、力強いデザインシステム |
+| **ライブプレビュー** | プロジェクトカードにiframeを埋め込み、実際のサイト画面をそのまま表示 |
+| **リッチアニメーション** | Framer Motionによるスクロール連動・タイピング・マーキーエフェクト |
+| **レスポンシブ対応** | モバイルからデスクトップまで最適化されたレイアウト |
 
 ---
 
-## 🚀 Getting Started (ローカル環境での実行方法)
+## 🛠 Tech Stack
 
-このプロジェクトを手元で動かすための手順です。
+```
+Framework   → Next.js 16 (App Router)
+Language    → TypeScript
+Styling     → Tailwind CSS
+Animation   → Framer Motion
+Icons       → Lucide React
+Deployment  → Vercel
+```
 
-### 1. リポジトリをクローン
+---
+
+## 📂 Projects
+
+このポートフォリオで紹介している代表プロダクトです。
+
+### [Wear-Cast](https://wearcast.skphooh.com/)
+> 天気×ファッションのSNSアプリ。コーディネート記録・天気連動レコメンド・ソーシャルフィードを搭載。
+>
+> `Next.js` `React` `Tailwind CSS` `Supabase`
+
+### [Meguri24](https://meguri24.skphooh.com/)
+> 24時間時計UIで生活リズムを可視化。AIが行動パターンを分析し、習慣改善を提案。
+>
+> `Next.js` `Clerk` `Supabase` `AI`
+
+---
+
+## 🚀 Getting Started
+
 ```bash
+# クローン
 git clone https://github.com/skphooh/skphooh.git
 cd skphooh
-```
 
-### 2. 依存パッケージのインストール
-```bash
+# 依存パッケージのインストール
 npm install
-# or
-yarn install
-# or
-pnpm install
-```
 
-### 3. 開発用サーバーの起動
-```bash
+# 開発サーバーの起動
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-ブラウザで [http://localhost:3000](http://localhost:3000) にアクセスすると、ローカルでサイトが表示されます。
+[http://localhost:3000](http://localhost:3000) にアクセスしてください。
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+MIT License — [LICENSE.md](LICENSE.md)
 
 ---
-**Created by [skphooh](https://github.com/skphooh)**
+
+<div align="center">
+
+**Built by [skphooh](https://github.com/skphooh)**
+
+</div>
