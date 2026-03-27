@@ -57,7 +57,7 @@ Deployment  → Vercel
 ### [Meguri24](https://meguri24.skphooh.com/)
 > 24時間時計UIで生活リズムを可視化。AIが行動パターンを分析し、習慣改善を提案。
 >
-> `Next.js` `Clerk` `Supabase` `AI`
+> `Next.js` `Clerk` `Neon` `Tailwind CSS` `AI`
 
 ---
 
