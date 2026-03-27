@@ -24,7 +24,7 @@ const projects: ProjectType[] = [
         description:
             "AIが24時間の生活リズムを分析し、\n最適な行動パターンを提案する生活習慣改善アプリ。\n円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
         features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
-        techStack: ["Next.js", "Clerk", "Supabase", "Tailwind CSS", "AI"],
+        techStack: ["Next.js", "Clerk", "Neon", "Tailwind CSS", "AI"],
         liveUrl: "https://meguri24.skphooh.com/",
         status: "live",
         iframePreview: true,

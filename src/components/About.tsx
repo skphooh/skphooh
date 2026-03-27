@@ -39,6 +39,7 @@ const techStack = [
     { name: "Tailwind CSS", icon: Palette },
     { name: "Framer Motion", icon: Zap },
     { name: "Supabase", icon: Database },
+    { name: "Neon", icon: Database },
     { name: "Clerk", icon: Lock },
     { name: "Vercel", icon: Server },
     { name: "PostgreSQL", icon: Database },
@@ -96,7 +97,7 @@ export default function About() {
                             テクノロジーで価値を届ける
                         </h3>
                         <p className="text-black font-bold leading-relaxed mb-6 text-lg">
-                            Next.js や React を中心としたモダンなフロントエンド技術と、Supabase・Clerk といったBaaSを組み合わせ、高品質なWebアプリケーションを構築しています。
+                            Next.js や React を中心としたモダンなフロントエンド技術と、Supabase・Neon・Clerk といったサーバーレスDBやBaaSを組み合わせ、高品質なWebアプリケーションを構築しています。
                         </p>
                         <p className="text-black font-bold leading-relaxed text-lg bg-[var(--color-neo-yellow)] p-4 border-2 border-black">
                             AIとの協働開発スタイルにより、ロジックの複雑さに囚われることなく「どのような価値を届けるか」「どれだけ美しい体験を作るか」というクリエイティブな部分に集中。アイデアを驚異的なスピードで形にします。
