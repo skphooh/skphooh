@@ -27,6 +27,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7449511351198603"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body
         className={`${inter.variable} antialiased bg-[#fafafa] text-black min-h-screen selection:bg-[#ffe600] selection:text-black`}
       >
