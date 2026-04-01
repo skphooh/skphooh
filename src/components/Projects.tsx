@@ -192,6 +192,7 @@ export default function Projects() {
                                                     className="w-full h-full border-0"
                                                     title={`${selectedProject.title} Live Demo`}
                                                     loading="lazy"
+                                                    allow="geolocation"
                                                 />
                                             </div>
                                         </div>
