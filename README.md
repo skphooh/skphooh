@@ -18,7 +18,9 @@
 
 <br/>
 
-![HACK-1 GRAND PRIX 2026](https://img.shields.io/badge/HACK--1_GRAND_PRIX_2026-ff90e8?style=for-the-badge&labelColor=000000)
+![Hack-1グランプリ2026](https://img.shields.io/badge/🏆_Hack--1グランプリ_2026-ff90e8?style=for-the-badge&labelColor=000000)
+![オーディエンス賞](https://img.shields.io/badge/🎖_オーディエンス賞-ffe600?style=for-the-badge&labelColor=000000)
+![セガサミーイノベーション賞](https://img.shields.io/badge/🎖_セガサミーイノベーション賞-00e5ff?style=for-the-badge&labelColor=000000)
 
 ### [🏺 うちの子製作所](https://utinoko.skphooh.com)
 
