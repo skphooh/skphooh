@@ -32,6 +32,26 @@ const projects: ProjectType[] = [
         details: "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
     },
     {
+        title: "うちの子製作所",
+        description:
+            "写真・イラスト1枚からAIが高品質な3Dモデルを生成し、\n3Dプリンター用STLデータを即時出力するクリエイティブプラットフォーム。\nマーケットプレイス・Stripe決済・コンペ機能も搭載。",
+        features: [
+            "AI 3D Generation (Tripo3D)",
+            "ターンアラウンド生成 (Gemini API)",
+            "ブラウザ内 3D Viewer (Three.js)",
+            "Print-Ready STL エクスポート",
+            "マーケットプレイス",
+            "Stripe 決済",
+        ],
+        techStack: ["React", "Vite", "TypeScript", "FastAPI", "Firebase", "Three.js", "Stripe", "Gemini API"],
+        liveUrl: "https://utinoko.skphooh.com",
+        githubUrl: "https://github.com/skphooh/Hack-1",
+        status: "live",
+        iframePreview: true,
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1470&auto=format&fit=crop",
+        details: "「うちの子製作所」は、好きなキャラクターや思い出の写真・イラスト1枚から、AIが3Dモデルを自動生成するサービスです。\nTripo3D APIで高品質なGLBを生成し、GeminiAPIで裏面補完、trimeshでSTL変換・台座追加まで全自動。\nHack-1 グランプリ 2026 出展作品。",
+    },
+    {
         title: "skphooh.com",
         description:
             "このポートフォリオサイト自体。\nNeo-Brutalismデザインを採用し、\n圧倒的なインパクトと個性を表現したフロントエンド体験。",
