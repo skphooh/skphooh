@@ -167,14 +167,32 @@ const FRAMES: Joints[] = Array.from({ length: SAMPLES }, (_, i) =>
 /** framer-motion に渡す等間隔の times 配列 */
 const TIMES = FRAMES.map((_, i) => i / (SAMPLES - 1));
 
+/**
+ * 姿勢。
+ *   dive       … クラウチングから流線型まで通しで動く
+ *   crouch     … 台の上で構えたまま静止
+ *   streamline … 伸びきったまま静止
+ */
+export type SwimmerPose = "dive" | "crouch" | "streamline";
+
+/**
+ * 静止ポーズは体が収まる範囲だけを切り出す。動く場合は全ポーズが
+ * 入る広い枠が要るが、静止なら余白を詰めたほうが大きく見える。
+ */
+const VIEW_BOX: Record<SwimmerPose, string> = {
+    dive: "-72 -100 144 160",
+    crouch: "-6 -32 58 62",
+    streamline: "-16 -76 32 128",
+};
+
 interface SwimmerProps {
     className?: string;
+    /** 姿勢 */
+    pose?: SwimmerPose;
     /** 飛び込み動作の再生時間(秒) */
     duration?: number;
     /** 再生を始めるまでの待ち(秒) */
     delay?: number;
-    /** アニメーションせず、流線型で静止する */
-    still?: boolean;
 }
 
 const SUIT = "#01223e";
@@ -189,20 +207,27 @@ const SKIN = "#ffffff";
  */
 export default function Swimmer({
     className = "",
+    pose = "dive",
     duration = 1.0,
     delay = 0,
-    still = false,
 }: SwimmerProps) {
-    const last = FRAMES[FRAMES.length - 1];
+    const moving = pose === "dive";
+    const held = pose === "crouch" ? FRAMES[0] : FRAMES[FRAMES.length - 1];
 
-    /** 静止時は最終ポーズ、動くときは全フレームを渡す */
+    /** 静止時は 1 ポーズ、動くときは全フレームを渡す */
     const seq = (joint: keyof Joints, axis: 0 | 1) =>
-        still ? last[joint][axis] : FRAMES.map((f) => f[joint][axis]);
+        moving ? FRAMES.map((f) => f[joint][axis]) : held[joint][axis];
+
+    /**
+     * 最初のフレームの値。これを素の属性としても渡しておかないと、
+     * 初回レンダーで x1/cx などが undefined になり SVG が警告を出す。
+     */
+    const head = (v: number | number[]) => (Array.isArray(v) ? v[0] : v);
 
     // ポーズ列に時間配分を織り込み済みなので、再生は等速でよい
-    const transition = still
-        ? undefined
-        : { duration, delay, times: TIMES, ease: "linear" as const };
+    const transition = moving
+        ? { duration, delay, times: TIMES, ease: "linear" as const }
+        : undefined;
 
     /**
      * 2 点を結ぶ線を、全フレーム追従させる。
@@ -218,6 +243,16 @@ export default function Swimmer({
         <motion.line
             stroke={color}
             strokeWidth={width}
+            x1={head(seq(from, 0))}
+            y1={head(seq(from, 1))}
+            x2={head(seq(to, 0))}
+            y2={head(seq(to, 1))}
+            initial={{
+                x1: head(seq(from, 0)),
+                y1: head(seq(from, 1)),
+                x2: head(seq(to, 0)),
+                y2: head(seq(to, 1)),
+            }}
             animate={{
                 x1: seq(from, 0),
                 y1: seq(from, 1),
@@ -230,7 +265,7 @@ export default function Swimmer({
 
     return (
         <svg
-            viewBox="-72 -100 144 160"
+            viewBox={VIEW_BOX[pose]}
             className={className}
             fill="none"
             strokeLinecap="round"
@@ -266,6 +301,9 @@ export default function Swimmer({
             <motion.circle
                 r={L.head}
                 fill={CAP}
+                cx={head(seq("head", 0))}
+                cy={head(seq("head", 1))}
+                initial={{ cx: head(seq("head", 0)), cy: head(seq("head", 1)) }}
                 animate={{ cx: seq("head", 0), cy: seq("head", 1) }}
                 transition={transition}
             />

@@ -21,12 +21,17 @@ function EntryRow({ label, value }: { label: string; value: string }) {
     );
 }
 
+interface EntryCardProps {
+    /** public/ に顔写真が実在するか。サーバー側で判定して渡す */
+    photoAvailable: boolean;
+}
+
 /**
  * エントリーカード。
  *
  * 大会の選手紹介パネル。表示する値は src/data/profile.ts にのみ置く。
  */
-export default function EntryCard() {
+export default function EntryCard({ photoAvailable }: EntryCardProps) {
     const [photoFailed, setPhotoFailed] = useState(false);
 
     const affiliationLine = [profile.affiliation, profile.grade]
@@ -56,7 +61,7 @@ export default function EntryCard() {
                     <div className="grid gap-8 p-7 sm:p-10 md:grid-cols-[180px_1fr] md:gap-12">
                         {/* 顔写真 */}
                         <div className="relative mx-auto aspect-square w-40 shrink-0 overflow-hidden rounded-[3px] bg-foam md:mx-0 md:w-full">
-                            {profile.photo && !photoFailed ? (
+                            {photoAvailable && !photoFailed ? (
                                 <Image
                                     src={profile.photo}
                                     alt={profile.fullName || profile.handle}
