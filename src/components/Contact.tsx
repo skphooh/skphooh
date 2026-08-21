@@ -45,7 +45,7 @@ export default function Contact() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ duration: 0.5, delay: 0.15 }}
-                    className="group mt-12 inline-flex items-center gap-4 rounded-[3px] bg-white/95 px-8 py-5 text-base font-semibold text-pool-deep transition-all duration-300 hover:bg-white hover:shadow-[0_0_40px_-8px_rgba(0,180,216,0.7)] sm:text-lg"
+                    className="group animate-float-idle mt-12 inline-flex items-center gap-4 rounded-[3px] bg-white/95 px-8 py-5 text-base font-semibold text-pool-deep transition-all duration-300 hover:bg-white hover:shadow-[0_0_40px_-8px_rgba(0,180,216,0.7)] sm:text-lg"
                 >
                     <Mail className="h-5 w-5" />
                     skphooh@gmail.com

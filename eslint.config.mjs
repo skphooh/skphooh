@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // アプリ外の単体 Node スクリプト。CommonJS が正しいので
+    // TypeScript 向けの import ルールは適用しない。
+    "copy_images.js",
   ]),
 ]);
 
