@@ -5,6 +5,7 @@ import {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useRef,
     useState,
     type ReactNode,
@@ -50,8 +51,22 @@ export interface DiveOrigin {
     y: number;
 }
 
+/** 飛び込みの見た目と開始位置 */
+export interface DiveOptions {
+    origin: DiveOrigin;
+    start: StartType;
+    capColor: string;
+    goggleColor: string;
+}
+
 interface DiveContextValue {
-    dive: (href: string, origin: DiveOrigin, start: StartType) => void;
+    dive: (href: string, options: DiveOptions) => void;
+    /**
+     * いま飛び込み中の行き先。レーン側はこれを見て、飛び出した
+     * 本人を台から消す。消さないと台に residual が残って、
+     * 同じ人が 2 人いるように見える。
+     */
+    divingHref: string | null;
 }
 
 const DiveContext = createContext<DiveContextValue | null>(null);
@@ -65,11 +80,14 @@ export function useDive() {
 interface DiveState {
     /** 再マウントして演出を頭から流すためのキー */
     key: number;
+    href: string;
     origin: DiveOrigin;
     /** 入水点 */
     entry: DiveOrigin;
     timing: Timing;
     start: StartType;
+    capColor: string;
+    goggleColor: string;
 }
 
 /**
@@ -129,7 +147,7 @@ export default function DiveProvider({ children }: { children: ReactNode }) {
     const divedOnce = useRef(false);
 
     const dive = useCallback(
-        (href: string, origin: DiveOrigin, start: StartType) => {
+        (href: string, { origin, start, capColor, goggleColor }: DiveOptions) => {
             const reduceMotion = window.matchMedia(
                 "(prefers-reduced-motion: reduce)"
             ).matches;
@@ -149,7 +167,16 @@ export default function DiveProvider({ children }: { children: ReactNode }) {
             };
 
             setDraining(false);
-            setState({ key: Date.now(), origin, entry, timing, start });
+            setState({
+                key: Date.now(),
+                href,
+                origin,
+                entry,
+                timing,
+                start,
+                capColor,
+                goggleColor,
+            });
 
             window.setTimeout(() => {
                 router.push(href);
@@ -161,8 +188,14 @@ export default function DiveProvider({ children }: { children: ReactNode }) {
         [router]
     );
 
+    // 水が引き始めたら本人はもう水中なので、台は元に戻してよい
+    const value = useMemo(
+        () => ({ dive, divingHref: draining ? null : (state?.href ?? null) }),
+        [dive, draining, state]
+    );
+
     return (
-        <DiveContext.Provider value={{ dive }}>
+        <DiveContext.Provider value={value}>
             {children}
             <DiveOverlay state={state} draining={draining} />
         </DiveContext.Provider>
@@ -202,7 +235,7 @@ function DiveOverlay({
 }
 
 function DiveScene({ state, draining }: { state: DiveState; draining: boolean }) {
-    const { origin, entry, timing, start } = state;
+    const { origin, entry, timing, start, capColor, goggleColor } = state;
     const arc = ARC[start];
 
     const waterDuration = draining ? timing.drain : timing.cover;
@@ -266,7 +299,7 @@ function DiveScene({ state, draining }: { state: DiveState; draining: boolean })
 
                     {/* スイマー。レーンの台と同じ大きさから飛び、落ちながら少し大きくなる */}
                     <motion.div
-                        className="absolute h-14 w-14"
+                        className="absolute h-14 w-14 text-white"
                         style={{ left: origin.x, top: origin.y }}
                         initial={{ x: 0, y: 0, rotate: 0, scale: 1 }}
                         animate={{
@@ -292,6 +325,8 @@ function DiveScene({ state, draining }: { state: DiveState; draining: boolean })
                             className="h-full w-full drop-shadow-[0_4px_10px_rgba(1,34,62,0.4)]"
                             duration={timing.flight}
                             delay={timing.crouch}
+                            capColor={capColor}
+                            goggleColor={goggleColor}
                         />
                     </motion.div>
 

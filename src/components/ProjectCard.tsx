@@ -4,14 +4,21 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import StartBlock from "./pool/StartBlock";
-import type { StartType } from "./pool/Swimmer";
+import { colorsForLane, type StartType } from "./pool/Swimmer";
 import type { ProjectStatus, ProjectType } from "@/data/projects";
 
 interface ProjectLaneProps {
     project: ProjectType;
     index: number;
-    /** 飛び込みの開始点（ビューポート座標 px）とスタート種別を渡す */
-    onSelect: (origin: { x: number; y: number }, start: StartType) => void;
+    /** 飛び込みの開始点（ビューポート座標 px）と見た目を渡す */
+    onSelect: (options: {
+        origin: { x: number; y: number };
+        start: StartType;
+        capColor: string;
+        goggleColor: string;
+    }) => void;
+    /** この行から飛び出した直後か */
+    launched?: boolean;
 }
 
 const statusLabel: Record<ProjectStatus, string> = {
@@ -27,7 +34,12 @@ const statusLabel: Record<ProjectStatus, string> = {
  * その子がそのまま飛び込む。ホバーすると水がレーンを満たし、
  * スイマーが構えを深くする。
  */
-export default function ProjectLane({ project, index, onSelect }: ProjectLaneProps) {
+export default function ProjectLane({
+    project,
+    index,
+    onSelect,
+    launched = false,
+}: ProjectLaneProps) {
     const status = project.status ?? "live";
     const swimmerRef = useRef<HTMLDivElement>(null);
     const [ready, setReady] = useState(false);
@@ -35,17 +47,17 @@ export default function ProjectLane({ project, index, onSelect }: ProjectLanePro
     // レーンごとに通常スタートと背泳ぎスタートを交互に置く
     const start: StartType = index % 2 === 0 ? "forward" : "backstroke";
 
+    // レーンごとにキャップとゴーグルの色を変える
+    const { cap, goggle } = colorsForLane(index);
+
     const handleSelect = () => {
         const rect = swimmerRef.current?.getBoundingClientRect();
-        if (!rect) {
-            onSelect({ x: window.innerWidth / 2, y: window.innerHeight / 3 }, start);
-            return;
-        }
         // ref はスイマー自身に付いているので、実際に人がいる位置から飛ぶ
-        onSelect(
-            { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
-            start
-        );
+        const origin = rect
+            ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+            : { x: window.innerWidth / 2, y: window.innerHeight / 3 };
+
+        onSelect({ origin, start, capColor: cap, goggleColor: goggle });
     };
 
     return (
@@ -71,7 +83,15 @@ export default function ProjectLane({ project, index, onSelect }: ProjectLanePro
                     <span className="block font-display text-5xl leading-none text-hairline transition-colors duration-300 group-hover:text-pool-light sm:text-6xl">
                         {String(index + 1).padStart(2, "0")}
                     </span>
-                    <StartBlock ref={swimmerRef} start={start} ready={ready} className="text-ink" />
+                    <StartBlock
+                        ref={swimmerRef}
+                        start={start}
+                        ready={ready}
+                        launched={launched}
+                        capColor={cap}
+                        goggleColor={goggle}
+                        className="text-ink"
+                    />
                 </span>
 
                 {/* 内容 */}

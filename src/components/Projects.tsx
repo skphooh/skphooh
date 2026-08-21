@@ -13,7 +13,7 @@ import { projects } from "@/data/projects";
  * レーンロープ。行を選ぶと飛び込み、詳細ページへ移動する。
  */
 export default function Projects() {
-    const { dive } = useDive();
+    const { dive, divingHref } = useDive();
 
     return (
         <section id="projects" className="relative z-10 bg-surface py-24 sm:py-32">
@@ -43,8 +43,9 @@ export default function Projects() {
                         <ProjectLane
                             project={project}
                             index={index}
-                            onSelect={(origin, start) =>
-                                dive(`/projects/${project.slug}`, origin, start)
+                            launched={divingHref === `/projects/${project.slug}`}
+                            onSelect={(options) =>
+                                dive(`/projects/${project.slug}`, options)
                             }
                         />
                         <LaneRope reverse={index % 2 === 1} />
