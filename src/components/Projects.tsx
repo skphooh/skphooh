@@ -34,7 +34,7 @@ const projects: ProjectType[] = [
     {
         title: "うちの子製作所",
         description:
-            "写真・イラスト1枚からAIが高品質な3Dモデルを生成し、\n3Dプリンター用STLデータを即時出力するクリエイティブプラットフォーム。\n🏆 Hack-1グランプリ2026 グランプリ / オーディエンス賞 / セガサミーイノベーション賞",
+            "写真・イラスト1枚からAIが高品質な3Dモデルを生成し、\n3Dプリンター用STLデータを即時出力するクリエイティブプラットフォーム。\n🎖 Hack-1グランプリ2026 オーディエンス賞 / セガサミーイノベーション賞 W受賞",
         features: [
             "AI 3D Generation (Tripo3D)",
             "ターンアラウンド生成 (Gemini API)",
@@ -49,7 +49,7 @@ const projects: ProjectType[] = [
         status: "live",
         iframePreview: true,
         image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1470&auto=format&fit=crop",
-        details: "「うちの子製作所」は、好きなキャラクターや思い出の写真・イラスト1枚から、AIが3Dモデルを自動生成するサービスです。\nTripo3D APIで高品質なGLBを生成し、GeminiAPIで裏面補完、trimeshでSTL変換・台座追加まで全自動。\n🏆 Hack-1 グランプリ 2026 グランプリ受賞\n🎖 オーディエンス賞・セガサミーイノベーション賞 W受賞",
+        details: "「うちの子製作所」は、好きなキャラクターや思い出の写真・イラスト1枚から、AIが3Dモデルを自動生成するサービスです。\nTripo3D APIで高品質なGLBを生成し、GeminiAPIで裏面補完、trimeshでSTL変換・台座追加まで全自動。\n🎖 Hack-1グランプリ2026 オーディエンス賞・セガサミーイノベーション賞 W受賞",
     },
     {
         title: "skphooh.com",
