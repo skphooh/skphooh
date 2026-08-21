@@ -299,7 +299,7 @@ function DiveScene({ state, draining }: { state: DiveState; draining: boolean })
 
                     {/* スイマー。レーンの台と同じ大きさから飛び、落ちながら少し大きくなる */}
                     <motion.div
-                        className="absolute h-14 w-14 text-white"
+                        className="absolute h-14 w-14 text-pool-deep"
                         style={{ left: origin.x, top: origin.y }}
                         initial={{ x: 0, y: 0, rotate: 0, scale: 1 }}
                         animate={{
@@ -322,7 +322,8 @@ function DiveScene({ state, draining }: { state: DiveState; draining: boolean })
                         <Swimmer
                             pose="dive"
                             start={start}
-                            className="h-full w-full drop-shadow-[0_4px_10px_rgba(1,34,62,0.4)]"
+                            // 水の上では紺の体が沈むので、白いふちを回して輪郭を出す
+                            className="h-full w-full drop-shadow-[0_0_5px_rgba(255,255,255,0.9)]"
                             duration={timing.flight}
                             delay={timing.crouch}
                             capColor={capColor}

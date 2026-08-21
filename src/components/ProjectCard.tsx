@@ -90,7 +90,7 @@ export default function ProjectLane({
                         launched={launched}
                         capColor={cap}
                         goggleColor={goggle}
-                        className="text-ink"
+                        className="text-pool-deep"
                     />
                 </span>
 

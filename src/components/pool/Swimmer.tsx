@@ -65,6 +65,8 @@ const FORWARD_KEYFRAMES: { at: number; pose: Pose }[] = [
  * 背泳ぎのスタート。
  *
  * 選手は水中にいて、壁に足を掛け、上のグリップを掴んで縮こまっている。
+ * 壁は左。したがって太腿は左上（壁の方）へ向き、脛が折れて足が壁に着く。
+ * 脚を伸ばすときは左下へ抜けるよう、股の角度を 156 度から下げていく。
  *
  *   0.00 膝を抱え込み、腕は頭上のグリップへ
  *   0.34 頭を後ろへ投げ出し、体を反らせながら壁を蹴る
@@ -72,9 +74,9 @@ const FORWARD_KEYFRAMES: { at: number; pose: Pose }[] = [
  *   1.00 わずかに反りを残した流線型
  */
 const BACKSTROKE_KEYFRAMES: { at: number; pose: Pose }[] = [
-    { at: 0.0, pose: { torso: -24, shoulder: -10, elbow: 64, hip: -116, knee: 94, ankle: -10 } },
-    { at: 0.34, pose: { torso: -36, shoulder: -8, elbow: 24, hip: -60, knee: 46, ankle: -50 } },
-    { at: 0.66, pose: { torso: -24, shoulder: -3, elbow: 8, hip: -22, knee: 14, ankle: -80 } },
+    { at: 0.0, pose: { torso: -20, shoulder: -49, elbow: 60, hip: 156, knee: 100, ankle: -10 } },
+    { at: 0.34, pose: { torso: -32, shoulder: -30, elbow: 30, hip: 100, knee: 62, ankle: -50 } },
+    { at: 0.66, pose: { torso: -22, shoulder: -12, elbow: 8, hip: 40, knee: 24, ankle: -80 } },
     { at: 1.0, pose: { torso: -12, shoulder: 0, elbow: 0, hip: -8, knee: 0, ankle: -95 } },
 ];
 
@@ -274,9 +276,13 @@ interface SwimmerProps {
     capColor?: string;
     /** ゴーグルの色 */
     goggleColor?: string;
+    /**
+     * 水着の色。既定でキャップと同色。
+     * 体と同じ紺にすると輪郭が溶けて 1 本の棒に見えてしまうため、
+     * キャップに合わせた差し色にしている（実際の選手も揃えることが多い）。
+     */
+    suitColor?: string;
 }
-
-const SUIT = "#01223e";
 
 /**
  * レーンごとのキャップとゴーグルの色。
@@ -310,7 +316,9 @@ export default function Swimmer({
     delay = 0,
     capColor = LANE_COLORS[0].cap,
     goggleColor = LANE_COLORS[0].goggle,
+    suitColor,
 }: SwimmerProps) {
+    const suit = suitColor ?? capColor;
     const frames = FRAMES[start];
     const moving = pose === "dive";
     const held = pose === "crouch" ? frames[0] : frames[SAMPLES - 1];
@@ -389,7 +397,7 @@ export default function Swimmer({
             {bone("ankle", "toe", 5)}
 
             {/* 水着 */}
-            {bone("hip", "suitEnd", 13, SUIT)}
+            {bone("hip", "suitEnd", 13, suit)}
 
             {/* 手前の腕 */}
             {bone("shoulder", "elbow", 6.5)}
