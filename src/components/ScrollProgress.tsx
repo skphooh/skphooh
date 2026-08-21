@@ -53,16 +53,20 @@ export default function ScrollProgress() {
                         className="absolute inset-x-0 top-0 h-full origin-top bg-pool-light"
                         style={{ scaleY: progress }}
                     />
-                    {/* 進捗にあわせてレーンを下っていくスイマー */}
+                    {/*
+                     * 進捗にあわせてレーンを下っていくスイマー。
+                     * レールが縦なので、頭を下に向けて縦のまま泳がせる。
+                     * 幅ではなく高さで大きさを決め、レールに対して細く保つ。
+                     */}
                     <motion.div
-                        className="absolute -left-[14px] -mt-3 w-7 text-pool"
+                        className="absolute left-0 flex -translate-x-1/2 -translate-y-1/2 text-pool-deep"
                         style={{ top: markerTop }}
                     >
                         <Swimmer
                             pose="streamline"
                             capColor="var(--color-rope-red)"
                             goggleColor="var(--color-pool-deep)"
-                            className="w-full rotate-90"
+                            className="h-9 w-auto rotate-180"
                         />
                     </motion.div>
                 </div>
