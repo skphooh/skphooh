@@ -2,22 +2,26 @@
 
 import { motion } from "framer-motion";
 
-/** スキル。4 泳法に対応させている */
+/**
+ * スキル。4 泳法に対応させている。
+ * 個人メドレーの泳順（バタフライ→背泳ぎ→平泳ぎ→自由形）に合わせ、
+ * 第一泳法にいま一番力を入れている領域を置く。
+ */
 const skills = [
     {
         stroke: "BUTTERFLY",
-        name: "Fullstack Development",
-        desc: "フロントエンドからバックエンドまで一貫して設計・実装する",
+        name: "Security",
+        desc: "Webアプリケーションの脆弱性診断。攻撃者の視点から設計を見直す",
     },
     {
         stroke: "BACKSTROKE",
-        name: "AI Integration",
-        desc: "AIを活用した機能設計とプロンプトエンジニアリング",
+        name: "Web Application",
+        desc: "Next.js / React を軸にしたフロントエンドとバックエンドの実装",
     },
     {
         stroke: "BREASTSTROKE",
-        name: "Auth & Security",
-        desc: "セキュアな認証基盤の構築と脆弱性の観点からの設計",
+        name: "AI Integration",
+        desc: "AIを活用した機能設計とプロンプトエンジニアリング",
     },
     {
         stroke: "FREESTYLE",
@@ -71,12 +75,19 @@ export default function About() {
                     className="max-w-2xl space-y-6 text-base leading-loose text-ink-soft"
                 >
                     <p>
-                        Next.js や React を中心としたモダンなフロントエンド技術と、Supabase・Neon・Clerk
-                        といったサーバーレスDBやBaaSを組み合わせ、Webアプリケーションを構築しています。
+                        大学院で研究を進めながら、Next.js や React を中心に Web
+                        アプリケーションを個人開発しています。作ったものは、すべて公開して動かし続けることにしています。
                     </p>
                     <p>
-                        AIとの協働開発により、ロジックの複雑さに時間を奪われることなく「どのような価値を届けるか」
-                        「どれだけ良い体験を作るか」に集中する。アイデアを形にするまでの距離を、できるだけ短くしています。
+                        いま一番の関心は
+                        <strong className="font-medium text-ink">セキュリティ</strong>
+                        です。現在は LINEヤフー株式会社でセキュリティエンジニアとして
+                        Web アプリケーションの脆弱性診断に取り組んでいます。自分で作ってきたからこそ、
+                        どこが壊れやすいのかを実装の側から考えられる——
+                        <strong className="font-medium text-ink">
+                            作る視点と壊す視点の両方を持つこと
+                        </strong>
+                        を、これからの軸にしたいと考えています。
                     </p>
                 </motion.div>
 
@@ -89,8 +100,10 @@ export default function About() {
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true, margin: "-40px" }}
                             transition={{ duration: 0.5, delay: index * 0.08 }}
-                            className="bg-surface p-8 transition-colors duration-300 hover:bg-canvas"
+                            className="group relative bg-surface p-8 transition-colors duration-300 hover:bg-canvas"
                         >
+                            {/* ホバーで左端に水が差す */}
+                            <span className="pointer-events-none absolute inset-y-0 left-0 w-0.5 origin-top scale-y-0 bg-pool-light transition-transform duration-400 ease-out group-hover:scale-y-100" />
                             <span className="font-led text-[0.65rem] tracking-[0.22em] text-pool-light">
                                 {skill.stroke}
                             </span>
@@ -114,10 +127,17 @@ export default function About() {
                 >
                     <span className="lap-label">TECH STACK</span>
                     <div className="mt-5 flex flex-wrap gap-2">
-                        {techStack.map((tech) => (
-                            <span key={tech} className="tag bg-surface">
+                        {techStack.map((tech, i) => (
+                            <motion.span
+                                key={tech}
+                                initial={{ opacity: 0, y: 6 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.3, delay: i * 0.03 }}
+                                className="tag"
+                            >
                                 {tech}
-                            </span>
+                            </motion.span>
                         ))}
                     </div>
                 </motion.div>

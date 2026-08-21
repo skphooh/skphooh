@@ -5,23 +5,39 @@ import { useState, useEffect } from "react";
 import { ArrowDown } from "lucide-react";
 import WaterSurface from "./pool/WaterSurface";
 import LaneRope from "./pool/LaneRope";
+import { projects } from "@/data/projects";
+import { awards, seasonLog } from "@/data/records";
+
+/** 名前の下に固定で置く肩書き */
+const TAGLINE = "SECURITY × WEB ENGINEERING";
 
 /** タイピングで切り替えるフレーズ */
 const phrases = [
-    "Next.js × Supabase で構築",
-    "アイデアを形にする爆速開発",
-    "研究とプロダクトを行き来する",
+    "作る側から、壊れ方を知る側へ",
+    "脆弱性診断とプロダクト開発、その両方から",
+    "設計から守りまで、一貫して考える",
 ];
 
 /** 「位置について」から号砲までの時間(ms) */
 const START_SIGNAL_DELAY = 1800;
 
+const NAME = "skphooh";
+
+/** 掲示板に出す実績。すべて実データから数える */
+const stats = [
+    { value: projects.length, label: "PRODUCTS" },
+    {
+        value: seasonLog.filter((e) => e.kind === "conference").length,
+        label: "TALKS",
+    },
+    { value: awards.length, label: "AWARDS" },
+];
+
 /**
  * ヒーローセクション (START)
  *
- * 画面いっぱいの水。中央に名前だけを置き、装飾は足さない。
- * 面白さは水そのもの（コースティクス・泡・クリックの波紋）と、
- * 下端のレーンロープが担う。
+ * 画面いっぱいの水の上に、名前・肩書き・実績を重ねる。
+ * 名前は 1 文字ずつ水面から浮き上がり、その下に反射が映る。
  */
 export default function Hero() {
     const [phraseIndex, setPhraseIndex] = useState(0);
@@ -46,7 +62,7 @@ export default function Hero() {
                     setDisplayText(currentPhrase.slice(0, displayText.length + 1));
                 }, 80);
             } else {
-                timeout = setTimeout(() => setIsDeleting(true), 2200);
+                timeout = setTimeout(() => setIsDeleting(true), 2400);
             }
         } else if (displayText.length > 0) {
             timeout = setTimeout(() => {
@@ -63,8 +79,7 @@ export default function Hero() {
     }, [displayText, isDeleting, phraseIndex]);
 
     const scrollTo = (id: string) => {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     };
 
     return (
@@ -75,60 +90,121 @@ export default function Hero() {
             {/* 水 */}
             <WaterSurface depth={0.12} density={1} />
 
-            {/* プール底のレーンライン。ごく薄く敷いて奥行きだけ出す */}
+            {/* プール底のレーンライン */}
             <div className="pointer-events-none absolute inset-0">
                 <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-white/20" />
                 <div className="absolute inset-y-0 left-[18%] w-px bg-white/10" />
                 <div className="absolute inset-y-0 right-[18%] w-px bg-white/10" />
             </div>
 
-            <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center">
+            <div className="relative z-10 mx-auto w-full max-w-4xl px-6 py-28 text-center">
                 {/* スタート合図 */}
                 <motion.div
                     initial={{ opacity: 0, y: -12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="mb-12 inline-flex items-center gap-3"
+                    className="mb-10 inline-flex items-center gap-3"
                 >
                     <span
                         className={`h-2 w-2 rounded-full ${
-                            started
-                                ? "animate-pulse-lamp bg-[#3ddc84]"
-                                : "bg-rope-red"
+                            started ? "animate-pulse-lamp bg-[#3ddc84]" : "bg-rope-red"
                         }`}
                     />
-                    <span className="font-led text-[0.7rem] tracking-[0.3em] text-white/80 sm:text-xs">
+                    <span className="font-led text-[0.7rem] tracking-[0.3em] text-white/80">
                         {started ? "OPEN FOR COLLABORATION" : "TAKE YOUR MARKS"}
                     </span>
                 </motion.div>
 
-                {/* 名前 */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.2, 0.7, 0.3, 1] }}
-                    className="font-display text-[3.5rem] leading-[0.92] tracking-tight text-white sm:text-8xl md:text-[9rem]"
+                {/* 名前。1 文字ずつ浮き上がる */}
+                <h1 className="font-display text-[3.5rem] leading-[0.92] tracking-tight text-white sm:text-8xl md:text-[9rem]">
+                    <span className="sr-only">{NAME}</span>
+                    <span aria-hidden="true" className="inline-flex">
+                        {NAME.split("").map((char, i) => (
+                            <motion.span
+                                key={i}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    duration: 0.7,
+                                    delay: 0.1 + i * 0.055,
+                                    ease: [0.2, 0.7, 0.3, 1],
+                                }}
+                                className="inline-block"
+                            >
+                                {char}
+                            </motion.span>
+                        ))}
+                    </span>
+                </h1>
+
+                {/* 水面に映る反射 */}
+                <motion.span
+                    aria-hidden="true"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.22 }}
+                    transition={{ duration: 1.2, delay: 0.6 }}
+                    className="-mt-3 block select-none font-display text-[3.5rem] leading-[0.92] tracking-tight text-white blur-[3px] sm:text-8xl md:text-[9rem]"
+                    style={{
+                        transform: "scaleY(-1)",
+                        maskImage: "linear-gradient(to top, transparent 15%, black 85%)",
+                        WebkitMaskImage:
+                            "linear-gradient(to top, transparent 15%, black 85%)",
+                    }}
                 >
-                    skphooh
-                </motion.h1>
+                    {NAME}
+                </motion.span>
+
+                {/* 肩書き */}
+                <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.55 }}
+                    className="mt-6 flex flex-col items-center gap-4"
+                >
+                    <span className="font-led text-xs tracking-[0.28em] text-white sm:text-sm">
+                        {TAGLINE}
+                    </span>
+                    <span className="block w-40">
+                        <LaneRope onWater />
+                    </span>
+                </motion.div>
 
                 {/* タイピング */}
                 <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.35 }}
-                    className="mt-8 flex min-h-[2rem] items-center justify-center text-base text-white/85 sm:text-lg"
+                    transition={{ duration: 0.8, delay: 0.7 }}
+                    className="mt-7 flex min-h-[2rem] items-center justify-center text-sm text-white/85 sm:text-base"
                 >
                     {displayText}
-                    <span className="animate-blink ml-1 inline-block h-5 w-px bg-white/70" />
+                    <span className="animate-blink ml-1 inline-block h-4 w-px bg-white/70" />
                 </motion.p>
+
+                {/* 実績カウント */}
+                <motion.dl
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.85 }}
+                    className="mx-auto mt-12 flex max-w-md justify-center divide-x divide-white/20"
+                >
+                    {stats.map((stat) => (
+                        <div key={stat.label} className="flex-1 px-5 sm:px-8">
+                            <dd className="font-display text-3xl leading-none text-white sm:text-4xl">
+                                {stat.value}
+                            </dd>
+                            <dt className="mt-2 font-led text-[0.6rem] tracking-[0.2em] text-white/60">
+                                {stat.label}
+                            </dt>
+                        </div>
+                    ))}
+                </motion.dl>
 
                 {/* CTA */}
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                    className="mt-14 flex flex-col items-center justify-center gap-4 sm:flex-row"
+                    transition={{ duration: 0.6, delay: 1 }}
+                    className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
                 >
                     <button
                         onClick={() => scrollTo("projects")}
@@ -149,9 +225,9 @@ export default function Hero() {
             <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
+                transition={{ duration: 0.6, delay: 1.2 }}
                 onClick={() => scrollTo("entry")}
-                className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-2 text-white/70 transition-colors hover:text-white"
+                className="absolute bottom-12 left-1/2 z-10 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-2 text-white/70 transition-colors hover:text-white"
                 aria-label="次のセクションへ"
             >
                 <span className="font-led text-[0.65rem] tracking-[0.25em]">SCROLL</span>

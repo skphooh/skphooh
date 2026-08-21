@@ -1,24 +1,29 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface DiveTransitionProps {
-    /** 飛び込み中かどうか */
+    /** 飛び込みを始める */
     active: boolean;
     /** 入水する横位置(0-1)。クリックした場所に合わせる */
     originX?: number;
-    /** 演出が終わったときに呼ぶ */
-    onComplete: () => void;
+    /** 水が画面を覆いきった瞬間。この裏で中身を差し替える */
+    onReveal: () => void;
+    /** 水が引ききって演出が終わった */
+    onDone: () => void;
 }
 
-/** 水面が上がりきってから中身を出すまでの合計時間(ms) */
-const DURATION = 1150;
+/** 水が立ち上がって画面を覆いきるまで(ms) */
+const RISE_MS = 620;
+/** 覆いきってから引き始めるまでの溜め(ms) */
+const HOLD_MS = 260;
+/** 水が引ききるまで(ms) */
+const DRAIN_MS = 620;
 
-/**
- * 流線姿勢のスイマー。頭・腕・胴・脚を分けず、
- * ひとつながりのシルエットとして読ませる。
- */
+type Phase = "rise" | "drain";
+
+/** 流線姿勢のスイマー */
 function Swimmer({ className = "" }: { className?: string }) {
     return (
         <svg viewBox="0 0 104 24" className={className} fill="currentColor">
@@ -34,84 +39,182 @@ function Swimmer({ className = "" }: { className?: string }) {
     );
 }
 
+/** 入水点から飛び散るしぶき。角度と距離をばらけさせる */
+const DROPLETS = Array.from({ length: 14 }, (_, i) => {
+    const angle = (-160 + i * 11) * (Math.PI / 180);
+    const distance = 70 + ((i * 37) % 90);
+    return {
+        id: i,
+        x: Math.cos(angle) * distance,
+        y: Math.sin(angle) * distance * 0.85,
+        size: 3 + ((i * 13) % 5),
+        delay: 0.02 * (i % 5),
+    };
+});
+
+/** スイマーを追う気泡 */
+const TRAIL = Array.from({ length: 9 }, (_, i) => ({
+    id: i,
+    offset: (i % 3) * 14 - 14,
+    size: 4 + ((i * 7) % 7),
+    delay: 0.06 * i,
+}));
+
 /**
- * プロダクトを選んだときに挟む飛び込み演出。
+ * プロダクトを選んだときの画面遷移。
  *
- *   1. 水面が下から立ち上がる
- *   2. スイマーが弧を描いて入水する
- *   3. 入水点から波紋が広がる
+ *   1. 水が下から立ち上がり、画面を覆いきる
+ *      同時にスイマーが弧を描いて入水し、気泡の尾を引く
+ *   2. 覆いきった裏側で詳細を差し替える (onReveal)
+ *   3. 水位が下がって、水中から詳細が現れる
  *
- * prefers-reduced-motion のときは呼び出し側が丸ごと省略する前提。
+ * 覆っている間に中身を入れ替えるので、切り替わりの瞬間が
+ * 見えない。ページ遷移そのものを水で隠す作りになっている。
  */
 export default function DiveTransition({
     active,
     originX = 0.5,
-    onComplete,
+    onReveal,
+    onDone,
 }: DiveTransitionProps) {
+    // 呼び出し側が飛び込みごとに key を変えて再マウントするため、
+    // ここで "rise" に戻す必要はない。
+    const [phase, setPhase] = useState<Phase>("rise");
+
     useEffect(() => {
         if (!active) return;
-        const timer = setTimeout(onComplete, DURATION);
-        return () => clearTimeout(timer);
-    }, [active, onComplete]);
+
+        // 覆いきったところで中身を差し替え、少し溜めてから引かせる
+        const revealTimer = setTimeout(() => {
+            onReveal();
+            setPhase("drain");
+        }, RISE_MS);
+
+        const doneTimer = setTimeout(onDone, RISE_MS + HOLD_MS + DRAIN_MS);
+
+        return () => {
+            clearTimeout(revealTimer);
+            clearTimeout(doneTimer);
+        };
+    }, [active, onReveal, onDone]);
 
     const entryLeft = `${originX * 100}%`;
+    const draining = phase === "drain";
 
     return (
         <AnimatePresence>
             {active && (
-                <motion.div
-                    className="pointer-events-none fixed inset-0 z-[10000] overflow-hidden"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35 }}
-                >
-                    {/* 立ち上がる水面 */}
+                <div className="pointer-events-none fixed inset-0 z-[10000] overflow-hidden">
+                    {/* 水。立ち上がって覆い、溜めのあと引いていく */}
                     <motion.div
-                        className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-pool-light to-pool-deep"
+                        className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-pool-light via-pool to-pool-deep"
                         initial={{ height: "0%" }}
-                        animate={{ height: "100%" }}
-                        transition={{ duration: 0.75, ease: [0.4, 0, 0.2, 1] }}
+                        animate={{ height: draining ? "0%" : "100%" }}
+                        transition={{
+                            duration: draining ? DRAIN_MS / 1000 : RISE_MS / 1000,
+                            delay: draining ? HOLD_MS / 1000 : 0,
+                            ease: draining ? [0.6, 0, 0.35, 1] : [0.4, 0, 0.2, 1],
+                        }}
                     />
 
                     {/* 水面のふち。白い泡の線 */}
                     <motion.div
-                        className="absolute inset-x-0 h-[3px] bg-white/70"
+                        className="absolute inset-x-0 h-[2px] bg-white/80"
                         initial={{ bottom: "0%" }}
-                        animate={{ bottom: "100%" }}
-                        transition={{ duration: 0.75, ease: [0.4, 0, 0.2, 1] }}
+                        animate={{ bottom: draining ? "0%" : "100%" }}
+                        transition={{
+                            duration: draining ? DRAIN_MS / 1000 : RISE_MS / 1000,
+                            delay: draining ? HOLD_MS / 1000 : 0,
+                            ease: draining ? [0.6, 0, 0.35, 1] : [0.4, 0, 0.2, 1],
+                        }}
                     />
 
-                    {/* 弧を描いて入水するスイマー */}
-                    <motion.div
-                        className="absolute w-40 text-white sm:w-56"
-                        style={{ left: entryLeft, marginLeft: "-7rem" }}
-                        initial={{ top: "-18%", rotate: -18, opacity: 0 }}
-                        animate={{
-                            top: ["-18%", "26%", "78%"],
-                            rotate: [-18, 34, 76],
-                            opacity: [0, 1, 1],
-                        }}
-                        transition={{ duration: 0.72, ease: "easeIn", times: [0, 0.45, 1] }}
-                    >
-                        <Swimmer className="w-full drop-shadow-[0_4px_12px_rgba(1,34,62,0.45)]" />
-                    </motion.div>
+                    {/* 立ち上がり中のみ: 弧を描いて入水するスイマー */}
+                    {!draining && (
+                        <>
+                            {/* 気泡の尾 */}
+                            {TRAIL.map((b) => (
+                                <motion.span
+                                    key={b.id}
+                                    className="absolute rounded-full border border-white/70"
+                                    style={{
+                                        left: entryLeft,
+                                        width: b.size,
+                                        height: b.size,
+                                        marginLeft: b.offset,
+                                    }}
+                                    initial={{ top: "40%", opacity: 0 }}
+                                    animate={{ top: "8%", opacity: [0, 0.9, 0] }}
+                                    transition={{
+                                        duration: 0.7,
+                                        delay: 0.24 + b.delay,
+                                        ease: "easeOut",
+                                    }}
+                                />
+                            ))}
 
-                    {/* 入水点の波紋 */}
-                    {[0, 1, 2].map((i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute top-[58%] h-24 w-24 rounded-full border-2 border-white/60"
-                            style={{ left: entryLeft, marginLeft: "-3rem" }}
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: [0, 2.6 + i * 0.9], opacity: [0.75, 0] }}
-                            transition={{
-                                duration: 0.85,
-                                delay: 0.62 + i * 0.09,
-                                ease: "easeOut",
-                            }}
-                        />
-                    ))}
-                </motion.div>
+                            <motion.div
+                                className="absolute w-40 text-white sm:w-56"
+                                style={{ left: entryLeft, marginLeft: "-7rem" }}
+                                initial={{ top: "-20%", rotate: -16, opacity: 0 }}
+                                animate={{
+                                    top: ["-20%", "24%", "76%"],
+                                    rotate: [-16, 36, 78],
+                                    opacity: [0, 1, 1],
+                                }}
+                                transition={{
+                                    duration: 0.6,
+                                    ease: "easeIn",
+                                    times: [0, 0.45, 1],
+                                }}
+                            >
+                                <Swimmer className="w-full drop-shadow-[0_4px_14px_rgba(1,34,62,0.5)]" />
+                            </motion.div>
+
+                            {/* しぶき */}
+                            {DROPLETS.map((d) => (
+                                <motion.span
+                                    key={d.id}
+                                    className="absolute rounded-full bg-white"
+                                    style={{
+                                        left: entryLeft,
+                                        top: "56%",
+                                        width: d.size,
+                                        height: d.size,
+                                    }}
+                                    initial={{ x: 0, y: 0, opacity: 0 }}
+                                    animate={{
+                                        x: d.x,
+                                        y: [0, d.y, d.y + 90],
+                                        opacity: [0, 0.95, 0],
+                                    }}
+                                    transition={{
+                                        duration: 0.75,
+                                        delay: 0.5 + d.delay,
+                                        ease: "easeOut",
+                                        times: [0, 0.4, 1],
+                                    }}
+                                />
+                            ))}
+
+                            {/* 入水点の波紋 */}
+                            {[0, 1, 2].map((i) => (
+                                <motion.span
+                                    key={`ring-${i}`}
+                                    className="absolute top-[56%] block h-24 w-24 rounded-full border-2 border-white/70"
+                                    style={{ left: entryLeft, marginLeft: "-3rem" }}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: [0, 2.4 + i * 0.9], opacity: [0.8, 0] }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.5 + i * 0.08,
+                                        ease: "easeOut",
+                                    }}
+                                />
+                            ))}
+                        </>
+                    )}
+                </div>
             )}
         </AnimatePresence>
     );

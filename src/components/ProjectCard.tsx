@@ -2,21 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-
-type ProjectStatus = "live" | "development" | "archived";
-
-export interface ProjectType {
-    title: string;
-    description: string;
-    features?: string[];
-    image?: string;
-    techStack: string[];
-    githubUrl?: string;
-    liveUrl?: string;
-    status?: ProjectStatus;
-    iframePreview?: boolean;
-    details?: string;
-}
+import type { ProjectStatus, ProjectType } from "@/data/projects";
 
 interface ProjectLaneProps {
     project: ProjectType;
