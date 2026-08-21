@@ -1,38 +1,66 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useSpring } from "framer-motion";
+import { motion, useSpring, useTransform } from "framer-motion";
+
+/** プールの全長(m)。進捗をこの距離に読み替える */
+const POOL_LENGTH = 50;
 
 /**
- * スクロール進捗バーコンポーネント
- * ページ上部にスクロール進捗をグラデーションバーで表示する
+ * 進捗表示。
+ *
+ * 画面右端の細いレールに現在地を打ち、いま何メートル地点かを
+ * 出す。ページの読み進みを「泳いだ距離」として見せる。
  */
 export default function ScrollProgress() {
-    const [progress, setProgress] = useState(0);
-    const springProgress = useSpring(0, { stiffness: 100, damping: 30 });
+    const [distance, setDistance] = useState(0);
+    const progress = useSpring(0, { stiffness: 120, damping: 30 });
+
+    /** 進捗(0-1)をレール上の位置に変換する */
+    const markerTop = useTransform(progress, (v) => `${v * 100}%`);
 
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
             const docHeight =
                 document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
-            setProgress(scrollPercent);
-            springProgress.set(scrollPercent);
+            const ratio = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0;
+            progress.set(ratio);
+            setDistance(Math.round(ratio * POOL_LENGTH));
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [springProgress]);
+    }, [progress]);
 
     return (
-        <motion.div
-            className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left"
-            style={{
-                scaleX: springProgress,
-                background:
-                    "linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)",
-            }}
-        />
+        <>
+            {/* 上端の細いバー。モバイルではこれだけ */}
+            <motion.div
+                className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-pool-light"
+                style={{ scaleX: progress }}
+            />
+
+            {/* 右端の距離レール */}
+            <div className="pointer-events-none fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 lg:flex">
+                <span className="font-led text-[0.6rem] tracking-[0.15em] text-ink-faint">
+                    0m
+                </span>
+                <div className="relative h-40 w-px bg-hairline">
+                    <motion.div
+                        className="absolute inset-x-0 top-0 h-full origin-top bg-pool-light"
+                        style={{ scaleY: progress }}
+                    />
+                    <motion.div
+                        className="absolute -left-[3px] h-1.5 w-1.5 rounded-full bg-pool"
+                        style={{ top: markerTop }}
+                    />
+                </div>
+                <span className="font-led text-[0.6rem] tracking-[0.15em] text-pool">
+                    {distance}m
+                </span>
+            </div>
+        </>
     );
 }

@@ -5,16 +5,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
-/** ナビゲーションリンクの定義 */
 const navLinks = [
     { href: "#top", label: "HOME" },
+    { href: "#entry", label: "ENTRY" },
     { href: "#projects", label: "PROJECTS" },
     { href: "#about", label: "ABOUT" },
     { href: "#contact", label: "CONTACT" },
 ];
 
+const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+
 /**
- * 固定ナビバーコンポーネント (Neo-Brutalism版)
+ * 固定ナビ。
+ *
+ * Hero の上では水に溶かし、スクロールすると白い面に切り替える。
+ * 現在地はレーン番号の付いた下線で示す。
  */
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -22,36 +27,25 @@ export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
-        /** スクロール検知 */
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
+        const handleScroll = () => setScrolled(window.scrollY > 80);
 
-        /** IntersectionObserverでアクティブセクションを検知 */
-        const sectionIds = ["top", "projects", "about", "contact"];
         const observers: IntersectionObserver[] = [];
-
         sectionIds.forEach((id) => {
-            const el =
-                id === "top" ? document.body : document.getElementById(id);
+            const el = document.getElementById(id);
             if (!el) return;
-
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            setActiveSection(id);
-                        }
+                        if (entry.isIntersecting) setActiveSection(id);
                     });
                 },
-                { threshold: 0.3, rootMargin: "-80px 0px 0px 0px" }
+                { threshold: 0.25, rootMargin: "-72px 0px -40% 0px" }
             );
-
             observer.observe(el);
             observers.push(observer);
         });
 
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll();
 
         return () => {
@@ -60,106 +54,121 @@ export default function Navbar() {
         };
     }, []);
 
-    /** スムーズスクロールでナビゲーション */
     const handleClick = (href: string) => {
         setMobileOpen(false);
         if (href === "#top") {
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
-        const el = document.querySelector(href);
-        if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-        }
+        document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     };
 
     return (
         <>
-            <motion.nav
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                        ? "bg-white border-b-4 border-black shadow-[0_4px_0_#000]"
-                        : "bg-transparent"
-                    }`}
+            <nav
+                className={`fixed inset-x-0 top-0 z-50 transition-colors duration-500 ${
+                    scrolled
+                        ? "border-b border-hairline bg-surface/85 backdrop-blur-md"
+                        : "border-b border-transparent"
+                }`}
             >
-                <div className="container mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-                    {/* ロゴ */}
+                <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:h-18">
                     <button
                         onClick={() => handleClick("#top")}
-                        className="neo-brutal-box p-1 hover:translate-x-[2px] hover:translate-y-[2px] transition-transform cursor-pointer overflow-hidden rounded-none"
+                        className="cursor-pointer overflow-hidden rounded-[3px] transition-opacity hover:opacity-70"
+                        aria-label="トップへ"
                     >
                         <Image
                             src="/logo.png"
                             alt="skphooh"
-                            width={32}
-                            height={32}
+                            width={30}
+                            height={30}
                             className="object-cover"
                             priority
                         />
                     </button>
 
-                    {/* デスクトップナビ */}
-                    <div className="hidden md:flex items-center gap-2">
-                        {navLinks.map((link) => (
-                            <button
-                                key={link.href}
-                                onClick={() => handleClick(link.href)}
-                                className={`relative px-4 py-2 text-sm font-black transition-colors cursor-pointer border-2 border-transparent ${activeSection === link.href.replace("#", "")
-                                        ? "text-black"
-                                        : "text-gray-600 hover:text-black hover:border-black hover:bg-yellow-100 hover:shadow-[2px_2px_0_#000] hover:-translate-y-0.5"
+                    {/* デスクトップ */}
+                    <div className="hidden items-center gap-1 md:flex">
+                        {navLinks.map((link, i) => {
+                            const id = link.href.replace("#", "");
+                            const active = activeSection === id;
+                            return (
+                                <button
+                                    key={link.href}
+                                    onClick={() => handleClick(link.href)}
+                                    className={`relative cursor-pointer px-4 py-2 font-led text-[0.7rem] tracking-[0.16em] transition-colors ${
+                                        active
+                                            ? scrolled
+                                                ? "text-pool"
+                                                : "text-white"
+                                            : scrolled
+                                              ? "text-ink-faint hover:text-ink"
+                                              : "text-white/60 hover:text-white"
                                     }`}
-                            >
-                                {activeSection === link.href.replace("#", "") && (
-                                    <motion.div
-                                        layoutId="activeNav"
-                                        className="absolute inset-0 bg-[var(--color-neo-yellow)] border-2 border-black shadow-[2px_2px_0_#000]"
-                                        transition={{
-                                            type: "spring",
-                                            stiffness: 380,
-                                            damping: 30,
-                                        }}
-                                    />
-                                )}
-                                <span className="relative z-10">{link.label}</span>
-                            </button>
-                        ))}
+                                >
+                                    <span className="mr-2 opacity-50">
+                                        {String(i + 1).padStart(2, "0")}
+                                    </span>
+                                    {link.label}
+                                    {active && (
+                                        <motion.span
+                                            layoutId="navActive"
+                                            className={`absolute inset-x-3 bottom-1 h-px ${
+                                                scrolled ? "bg-pool" : "bg-white"
+                                            }`}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 380,
+                                                damping: 32,
+                                            }}
+                                        />
+                                    )}
+                                </button>
+                            );
+                        })}
                     </div>
 
-                    {/* モバイルメニューボタン */}
+                    {/* モバイル */}
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}
-                        className="md:hidden p-2 border-2 border-black bg-white shadow-[2px_2px_0_#000] text-black hover:bg-[var(--color-neo-yellow)] transition-all cursor-pointer hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+                        className={`cursor-pointer rounded-[3px] p-2 transition-colors md:hidden ${
+                            scrolled ? "text-ink hover:bg-canvas" : "text-white hover:bg-white/10"
+                        }`}
                         aria-label="メニュー"
+                        aria-expanded={mobileOpen}
                     >
-                        {mobileOpen ? <X size={22} className="stroke-[3]" /> : <Menu size={22} className="stroke-[3]" />}
+                        {mobileOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
                 </div>
-            </motion.nav>
+            </nav>
 
-            {/* モバイルメニュー */}
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                        transition={{ duration: 0.2, type: "spring" }}
-                        className="fixed inset-x-4 top-20 z-40 bg-white border-4 border-black shadow-[8px_8px_0_#000] md:hidden p-4 flex flex-col gap-3"
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                        className="card fixed inset-x-4 top-[4.5rem] z-40 flex flex-col overflow-hidden md:hidden"
                     >
-                        {navLinks.map((link) => (
-                            <button
-                                key={link.href}
-                                onClick={() => handleClick(link.href)}
-                                className={`text-left px-5 py-3 text-lg font-black transition-all cursor-pointer border-2 border-black ${activeSection === link.href.replace("#", "")
-                                        ? "bg-[var(--color-neo-yellow)] shadow-[4px_4px_0_#000] -translate-y-1"
-                                        : "bg-white text-black hover:bg-gray-100 hover:shadow-[4px_4px_0_#000] hover:-translate-y-1"
+                        {navLinks.map((link, i) => {
+                            const active = activeSection === link.href.replace("#", "");
+                            return (
+                                <button
+                                    key={link.href}
+                                    onClick={() => handleClick(link.href)}
+                                    className={`flex cursor-pointer items-center gap-3 border-b border-hairline px-5 py-4 text-left font-led text-xs tracking-[0.16em] last:border-b-0 ${
+                                        active ? "text-pool" : "text-ink-soft"
                                     }`}
-                            >
-                                {link.label}
-                            </button>
-                        ))}
+                                >
+                                    <span className="opacity-50">
+                                        {String(i + 1).padStart(2, "0")}
+                                    </span>
+                                    {link.label}
+                                </button>
+                            );
+                        })}
                     </motion.div>
                 )}
             </AnimatePresence>

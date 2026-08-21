@@ -6,29 +6,28 @@ import Projects from "@/components/Projects";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import BackToTop from "@/components/BackToTop";
-import LaneRope from "@/components/pool/LaneRope";
 
 export default function Home() {
   return (
-    <main className="relative z-10 flex min-h-screen flex-col overflow-hidden bg-transparent text-pool-line">
-      {/* ナビゲーション */}
+    <main className="relative flex min-h-screen flex-col overflow-hidden">
       <Navbar />
       <ScrollProgress />
 
-      {/* START: 飛び込み */}
+      {/* START */}
       <Hero />
-      <LaneRope />
 
-      {/* エントリーカード */}
+      {/* エントリー */}
       <EntryCard />
-      <LaneRope reverse />
 
-      {/* 各セクション: スクロールで表示 */}
+      {/* LAP 01 — プロダクト */}
       <Projects />
+
+      {/* LAP 03 — About */}
       <About />
+
+      {/* FINISH */}
       <Contact />
 
-      {/* フローティングUI */}
       <BackToTop />
     </main>
   );

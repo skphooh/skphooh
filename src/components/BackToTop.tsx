@@ -2,40 +2,35 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUp } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 
 /**
- * トップへ戻るボタン (Neo-Brutalism)
+ * ターン。スタート壁まで戻る。
  */
 export default function BackToTop() {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setVisible(window.scrollY > 500);
-        };
-
+        const handleScroll = () => setVisible(window.scrollY > 600);
         window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    };
 
     return (
         <AnimatePresence>
             {visible && (
                 <motion.button
-                    initial={{ opacity: 0, y: 50, scale: 0.5 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 50, scale: 0.5 }}
-                    transition={{ duration: 0.4, type: "spring", bounce: 0.6 }}
-                    onClick={scrollToTop}
-                    className="neo-brutal-btn fixed bottom-8 right-8 z-50 p-4 bg-[var(--color-neo-yellow)]"
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.85 }}
+                    transition={{ duration: 0.25 }}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                    className="group fixed bottom-8 right-8 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-pool-deep px-4 py-3 text-white shadow-[var(--shadow-rise)] transition-colors hover:bg-pool"
                     aria-label="トップへ戻る"
                 >
-                    <ArrowUp className="w-6 h-6 stroke-[3]" />
+                    <RotateCcw className="h-4 w-4 transition-transform duration-500 group-hover:-rotate-180" />
+                    <span className="font-led text-[0.65rem] tracking-[0.18em]">TURN</span>
                 </motion.button>
             )}
         </AnimatePresence>
