@@ -1,13 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { awards, seasonLog, KIND_LABEL, type RecordKind } from "@/data/records";
+import {
+    awards,
+    seasonLog,
+    KIND_LABEL,
+    type LogEntry,
+    type RecordKind,
+} from "@/data/records";
+import { club } from "@/data/club";
 
 /** 種別ごとのバッジ色 */
 const KIND_STYLE: Record<RecordKind, string> = {
     conference: "border-pool/30 text-pool",
     hackathon: "border-rope-red/35 text-rope-red",
     internship: "border-pool-light/50 text-pool-light",
+    athletics: "border-rope-yellow/60 text-[#b8890a]",
 };
 
 /** LED が灯るときのちらつき。掲示板の各行に使う */
@@ -24,6 +32,23 @@ const flickerIn = {
  *                インターンを 1 本にまとめる
  */
 export default function Records() {
+    /**
+     * 体育会の在籍は他の活動より前から続いているので、時系列の
+     * 先頭に置く。club.name が未入力のあいだは出さない。
+     */
+    const clubEntry: LogEntry[] = club.name
+        ? [
+              {
+                  period: club.period,
+                  kind: "athletics",
+                  title: club.name,
+                  detail: club.detail,
+              },
+          ]
+        : [];
+
+    const log = [...clubEntry, ...seasonLog];
+
     return (
         <section id="records" className="relative z-10 bg-canvas py-24 sm:py-32">
             <div className="mx-auto max-w-4xl px-6">
@@ -114,7 +139,7 @@ export default function Records() {
                         />
 
                         <ol className="space-y-10">
-                            {seasonLog.map((entry, i) => (
+                            {log.map((entry, i) => (
                                 <motion.li
                                     key={`${entry.period}-${entry.title}`}
                                     initial={{ opacity: 0, x: -12 }}

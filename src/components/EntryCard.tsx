@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
 import { profile } from "@/data/profile";
+import { club } from "@/data/club";
 
 /** 掲示の 1 行。値が空なら行ごと出さない */
 function EntryRow({ label, value }: { label: string; value: string }) {
@@ -81,6 +82,7 @@ export default function EntryCard() {
                             <EntryRow label="ROMAJI" value={profile.fullNameEn} />
                             <EntryRow label="HANDLE" value={profile.handle} />
                             <EntryRow label="TEAM" value={affiliationLine} />
+                            <EntryRow label="CLUB" value={club.name} />
                             <EntryRow label="EVENT" value={profile.title} />
                         </dl>
                     </div>
