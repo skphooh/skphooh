@@ -9,6 +9,12 @@ interface StartBlockProps {
     start?: StartType;
     /** 親がホバーされているか。構えが深くなる */
     ready?: boolean;
+    /** 飛び出したあと。台の上から消す */
+    launched?: boolean;
+    /** スイムキャップの色 */
+    capColor?: string;
+    /** ゴーグルの色 */
+    goggleColor?: string;
 }
 
 /**
@@ -25,7 +31,7 @@ interface StartBlockProps {
  * どちらのスタートでも実際に人がいる位置から取るため。
  */
 const StartBlock = forwardRef<HTMLDivElement, StartBlockProps>(function StartBlock(
-    { className = "", start = "forward", ready = false },
+    { className = "", start = "forward", ready = false, launched = false, capColor, goggleColor },
     ref
 ) {
     const backstroke = start === "backstroke";
@@ -98,13 +104,21 @@ const StartBlock = forwardRef<HTMLDivElement, StartBlockProps>(function StartBlo
              */}
             <div
                 ref={ref}
-                className={`absolute transition-transform duration-300 ${
+                className={`absolute transition-all duration-200 ${
+                    launched ? "opacity-0" : "opacity-100"
+                } ${
                     backstroke
                         ? `bottom-[6%] left-[54%] w-[42%] ${ready ? "-translate-x-0.5" : ""}`
                         : `bottom-[36%] left-[18%] w-[50%] ${ready ? "-translate-y-0.5 rotate-[5deg]" : ""}`
                 }`}
             >
-                <Swimmer pose="crouch" start={start} className="h-full w-full" />
+                <Swimmer
+                    pose="crouch"
+                    start={start}
+                    capColor={capColor}
+                    goggleColor={goggleColor}
+                    className="h-full w-full"
+                />
             </div>
         </div>
     );

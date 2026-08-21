@@ -58,7 +58,12 @@ export default function ScrollProgress() {
                         className="absolute -left-[14px] -mt-3 w-7 text-pool"
                         style={{ top: markerTop }}
                     >
-                        <Swimmer pose="streamline" className="w-full rotate-90" />
+                        <Swimmer
+                            pose="streamline"
+                            capColor="var(--color-rope-red)"
+                            goggleColor="var(--color-pool-deep)"
+                            className="w-full rotate-90"
+                        />
                     </motion.div>
                 </div>
                 <span className="font-led text-[0.6rem] tracking-[0.15em] text-pool">

@@ -270,11 +270,31 @@ interface SwimmerProps {
     duration?: number;
     /** 再生を始めるまでの待ち(秒) */
     delay?: number;
+    /** スイムキャップの色 */
+    capColor?: string;
+    /** ゴーグルの色 */
+    goggleColor?: string;
 }
 
 const SUIT = "#01223e";
-const CAP = "#e63946";
-const SKIN = "#ffffff";
+
+/**
+ * レーンごとのキャップとゴーグルの色。
+ *
+ * 実際の競技会でも選手ごとにキャップの色は違う。レーンロープの
+ * 配色から採って、同じ画面の中で色が喧嘩しないようにしている。
+ * ゴーグルはキャップに対して明暗が逆になるよう選ぶ。
+ */
+export const LANE_COLORS: { cap: string; goggle: string }[] = [
+    { cap: "#e63946", goggle: "#01223e" }, // 赤
+    { cap: "#00b4d8", goggle: "#01223e" }, // 水色
+    { cap: "#ffd60a", goggle: "#01223e" }, // 黄
+    { cap: "#0077b6", goggle: "#cfeaf3" }, // 青
+    { cap: "#f4f8fa", goggle: "#e63946" }, // 白
+];
+
+export const colorsForLane = (index: number) =>
+    LANE_COLORS[((index % LANE_COLORS.length) + LANE_COLORS.length) % LANE_COLORS.length];
 
 /**
  * 水着とキャップを着けた棒人間スイマー。
@@ -288,6 +308,8 @@ export default function Swimmer({
     start = "forward",
     duration = 1.0,
     delay = 0,
+    capColor = LANE_COLORS[0].cap,
+    goggleColor = LANE_COLORS[0].goggle,
 }: SwimmerProps) {
     const frames = FRAMES[start];
     const moving = pose === "dive";
@@ -317,7 +339,7 @@ export default function Swimmer({
         from: keyof Joints,
         to: keyof Joints,
         width: number,
-        color: string = SKIN
+        color: string = "currentColor"
     ) => (
         <motion.line
             stroke={color}
@@ -379,7 +401,7 @@ export default function Swimmer({
             {/* 頭 = スイムキャップ */}
             <motion.circle
                 r={L.head}
-                fill={CAP}
+                fill={capColor}
                 cx={first(seq("head", 0))}
                 cy={first(seq("head", 1))}
                 initial={{ cx: first(seq("head", 0)), cy: first(seq("head", 1)) }}
@@ -388,7 +410,7 @@ export default function Swimmer({
             />
 
             {/* ゴーグル */}
-            {bone("goggleA", "goggleB", 4, SUIT)}
+            {bone("goggleA", "goggleB", 4, goggleColor)}
         </svg>
     );
 }
