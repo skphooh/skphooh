@@ -4,76 +4,86 @@ import { useId } from "react";
 
 interface LaneRopeProps {
     className?: string;
-    /** 流れる向き。既定は左方向 */
+    /** 流れる向き */
     reverse?: boolean;
+    /** 水の上に置く場合に明るくする */
+    onWater?: boolean;
 }
 
-/** フロート 1 個あたりの間隔(px)。タイル幅 = PITCH * 4 = 112 */
-const PITCH = 28;
+/** フロート 1 個あたりの間隔(px)。タイル幅 = PITCH * 4 = 96 */
+const PITCH = 24;
 
-/** 競泳レーンロープの配色。赤・白・青・黄の 4 個で 1 周期 */
+/** 赤・白・青・黄の 4 個で 1 周期 */
 const FLOAT_COLORS = [
     "var(--color-rope-red)",
     "#ffffff",
-    "var(--color-pool-water)",
+    "var(--color-pool-light)",
     "var(--color-rope-yellow)",
 ];
 
 /**
- * セクション間の区切りに敷くレーンロープ。
+ * レーンロープ。
  *
- * SVG の pattern をタイルしているので、画面幅がいくら広がっても
- * フロートの大きさは一定のまま途切れない。タイル幅ちょうど
- * (112px) だけ平行移動させることで、継ぎ目のない流れになる。
+ * セクションの境目とプロダクト一覧の区切りに使う、このサイトの
+ * 基調モチーフ。背景の帯は敷かず、ロープだけを浮かせることで
+ * 罫線としても図版としても読めるようにしている。
+ *
+ * SVG の pattern をタイルしているので、画面幅がどれだけ広がっても
+ * フロートの大きさは変わらず、途切れもしない。
  */
-export default function LaneRope({ className = "", reverse = false }: LaneRopeProps) {
-    // 同一ページに複数並ぶので pattern の id は毎回ユニークにする
-    const patternId = `lane-rope-${useId().replace(/:/g, "")}`;
+export default function LaneRope({
+    className = "",
+    reverse = false,
+    onWater = false,
+}: LaneRopeProps) {
+    // 同一ページに複数並ぶので pattern の id はユニークにする
+    const patternId = `rope-${useId().replace(/:/g, "")}`;
 
     return (
         <div
             aria-hidden="true"
-            className={`relative w-full overflow-hidden border-y-4 border-pool-line bg-pool-water ${className}`}
+            className={`w-full overflow-hidden ${className}`}
         >
-            <svg className="block h-7 w-full" role="presentation">
+            <svg
+                className="block h-4 w-full"
+                role="presentation"
+                style={{ opacity: onWater ? 0.95 : 0.85 }}
+            >
                 <defs>
                     <pattern
                         id={patternId}
                         width={PITCH * FLOAT_COLORS.length}
-                        height="28"
+                        height="16"
                         patternUnits="userSpaceOnUse"
                     >
                         {/* フロートを貫くケーブル */}
                         <rect
-                            y="12"
+                            y="7"
                             width={PITCH * FLOAT_COLORS.length}
-                            height="4"
-                            fill="var(--color-pool-line)"
-                            opacity="0.4"
+                            height="2"
+                            fill={onWater ? "rgba(255,255,255,0.5)" : "var(--color-hairline)"}
                         />
                         {FLOAT_COLORS.map((color, i) => (
                             <rect
                                 key={i}
                                 x={i * PITCH + 3}
                                 y="2"
-                                width="22"
-                                height="24"
-                                rx="7"
+                                width="18"
+                                height="12"
+                                rx="6"
                                 fill={color}
-                                stroke="var(--color-pool-line)"
-                                strokeWidth="2"
                             />
                         ))}
                     </pattern>
                 </defs>
 
-                {/* タイル 1 枚ぶん余分に描いておき、その幅だけ動かして繰り返す */}
+                {/* タイル 1 枚ぶん余分に描き、その幅だけ動かして繰り返す */}
                 <g className={reverse ? "animate-rope-drift-reverse" : "animate-rope-drift"}>
                     <rect
                         x={-PITCH * FLOAT_COLORS.length}
                         y="0"
                         width="200%"
-                        height="28"
+                        height="16"
                         fill={`url(#${patternId})`}
                     />
                 </g>

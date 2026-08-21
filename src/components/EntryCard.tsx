@@ -6,16 +6,16 @@ import { motion } from "framer-motion";
 import { User } from "lucide-react";
 import { profile } from "@/data/profile";
 
-/** 掲示板の行。値が空なら行ごと出さない */
+/** 掲示の 1 行。値が空なら行ごと出さない */
 function EntryRow({ label, value }: { label: string; value: string }) {
     if (!value) return null;
 
     return (
-        <div className="flex flex-col gap-1 border-b-2 border-pool-line/15 py-3 sm:flex-row sm:items-baseline sm:gap-6 sm:py-4">
-            <dt className="shrink-0 font-led text-xs tracking-[0.18em] text-pool-water sm:w-28 sm:text-sm">
+        <div className="flex flex-col gap-0.5 py-3 sm:flex-row sm:items-baseline sm:gap-8">
+            <dt className="shrink-0 font-led text-[0.7rem] tracking-[0.2em] text-ink-faint sm:w-24">
                 {label}
             </dt>
-            <dd className="text-lg font-bold text-pool-line sm:text-xl">{value}</dd>
+            <dd className="text-lg text-ink">{value}</dd>
         </div>
     );
 }
@@ -23,57 +23,52 @@ function EntryRow({ label, value }: { label: string; value: string }) {
 /**
  * エントリーカード。
  *
- * 大会の選手紹介パネルの体裁で、顔写真と所属を出す。
- * 表示する値は src/data/profile.ts にのみ置いている。
+ * 大会の選手紹介パネル。表示する値は src/data/profile.ts にのみ置く。
  */
 export default function EntryCard() {
     const [photoFailed, setPhotoFailed] = useState(false);
 
-    // 所属と学年は 1 行にまとめる。どちらか欠けていても崩れない
     const affiliationLine = [profile.affiliation, profile.grade]
         .filter(Boolean)
-        .join("  ");
+        .join("　");
 
     return (
-        <section
-            id="entry"
-            className="tile-grid relative z-10 bg-pool-tile py-24 sm:py-32"
-        >
-            <div className="container mx-auto max-w-5xl px-6">
+        <section id="entry" className="tile-grid relative z-10 bg-canvas py-24 sm:py-32">
+            <div className="mx-auto max-w-4xl px-6">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.6 }}
-                    className="pool-panel"
+                    transition={{ duration: 0.7 }}
+                    className="card overflow-hidden"
                 >
-                    {/* カードのヘッダー */}
-                    <div className="led-board flex items-center justify-between border-0 border-b-4 px-5 py-3 shadow-none sm:px-8">
-                        <span className="led-text relative z-10 text-xs tracking-[0.22em] sm:text-sm">
+                    {/* ヘッダー */}
+                    <div className="led-board flex items-center justify-between px-5 py-2.5 sm:px-7">
+                        <span className="led-text relative z-10 text-[0.7rem] tracking-[0.25em]">
                             ENTRY
                         </span>
-                        <span className="led-text led-text-gold relative z-10 text-xs tracking-[0.22em] sm:text-sm">
+                        <span className="led-text led-text-gold relative z-10 text-[0.7rem] tracking-[0.25em]">
                             LANE 1
                         </span>
                     </div>
 
-                    <div className="grid gap-8 p-6 sm:p-10 md:grid-cols-[220px_1fr] md:gap-12">
+                    <div className="grid gap-8 p-7 sm:p-10 md:grid-cols-[180px_1fr] md:gap-12">
                         {/* 顔写真 */}
-                        <div className="relative mx-auto aspect-square w-44 shrink-0 overflow-hidden border-4 border-pool-line bg-pool-foam shadow-[var(--shadow-pool-sm)] md:mx-0 md:w-full">
+                        <div className="relative mx-auto aspect-square w-40 shrink-0 overflow-hidden rounded-[3px] bg-foam md:mx-0 md:w-full">
                             {profile.photo && !photoFailed ? (
                                 <Image
                                     src={profile.photo}
                                     alt={profile.fullName || profile.handle}
                                     fill
-                                    sizes="(max-width: 768px) 176px, 220px"
+                                    sizes="(max-width: 768px) 160px, 180px"
                                     className="object-cover"
                                     onError={() => setPhotoFailed(true)}
                                     priority
                                 />
                             ) : (
-                                <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-pool-water">
-                                    <User className="h-14 w-14 stroke-[1.5]" />
-                                    <span className="font-led text-[10px] tracking-[0.15em]">
+                                <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-pool-light">
+                                    <User className="h-12 w-12 stroke-[1.25]" />
+                                    <span className="font-led text-[0.6rem] tracking-[0.15em]">
                                         NO PHOTO
                                     </span>
                                 </div>
@@ -81,7 +76,7 @@ export default function EntryCard() {
                         </div>
 
                         {/* 掲示内容 */}
-                        <dl className="flex flex-col justify-center">
+                        <dl className="flex flex-col justify-center divide-y divide-hairline">
                             <EntryRow label="NAME" value={profile.fullName} />
                             <EntryRow label="ROMAJI" value={profile.fullNameEn} />
                             <EntryRow label="HANDLE" value={profile.handle} />

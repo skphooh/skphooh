@@ -3,25 +3,25 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ArrowDown } from "lucide-react";
-import PoolCanvas from "./pool/PoolCanvas";
+import WaterSurface from "./pool/WaterSurface";
+import LaneRope from "./pool/LaneRope";
 
-/** タイピングアニメーションで表示するフレーズ */
+/** タイピングで切り替えるフレーズ */
 const phrases = [
     "Next.js × Supabase で構築",
-    "圧倒的インパクトを、Webに",
-    "常識を壊すUIデザイン",
     "アイデアを形にする爆速開発",
+    "研究とプロダクトを行き来する",
 ];
 
-/** スタート合図が「位置について」から「号砲」に切り替わるまでの時間(ms) */
+/** 「位置について」から号砲までの時間(ms) */
 const START_SIGNAL_DELAY = 1800;
 
 /**
- * ヒーローセクション (50m POOL / START)
+ * ヒーローセクション (START)
  *
- * 飛び込み台から水面を見下ろした画。水のグラデーションの上に
- * PoolCanvas でコースティクスと泡を重ね、プール底のレーンライン
- * と T マークを透かしている。
+ * 画面いっぱいの水。中央に名前だけを置き、装飾は足さない。
+ * 面白さは水そのもの（コースティクス・泡・クリックの波紋）と、
+ * 下端のレーンロープが担う。
  */
 export default function Hero() {
     const [phraseIndex, setPhraseIndex] = useState(0);
@@ -29,15 +29,13 @@ export default function Hero() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [started, setStarted] = useState(false);
 
-    /** スタート合図: 入場直後に「TAKE YOUR MARKS」から「GO」へ切り替える */
+    /** スタート合図 */
     useEffect(() => {
         const timer = setTimeout(() => setStarted(true), START_SIGNAL_DELAY);
         return () => clearTimeout(timer);
     }, []);
 
-    /** タイピングアニメーション。
-     *  状態更新はすべて setTimeout の中で行い、effect 内での
-     *  同期的な setState を避けている。 */
+    /** タイピング。状態更新はすべて setTimeout の中で行う */
     useEffect(() => {
         const currentPhrase = phrases[phraseIndex];
         let timeout: ReturnType<typeof setTimeout>;
@@ -48,12 +46,12 @@ export default function Hero() {
                     setDisplayText(currentPhrase.slice(0, displayText.length + 1));
                 }, 80);
             } else {
-                timeout = setTimeout(() => setIsDeleting(true), 2000);
+                timeout = setTimeout(() => setIsDeleting(true), 2200);
             }
         } else if (displayText.length > 0) {
             timeout = setTimeout(() => {
                 setDisplayText(displayText.slice(0, -1));
-            }, 40);
+            }, 35);
         } else {
             timeout = setTimeout(() => {
                 setIsDeleting(false);
@@ -64,7 +62,6 @@ export default function Hero() {
         return () => clearTimeout(timeout);
     }, [displayText, isDeleting, phraseIndex]);
 
-    /** スムーズスクロール */
     const scrollTo = (id: string) => {
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -73,109 +70,97 @@ export default function Hero() {
     return (
         <section
             id="top"
-            className="relative flex min-h-screen items-center justify-center overflow-hidden pt-20"
+            className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden"
         >
-            {/* 水。水面から深部へのグラデーション */}
-            <div className="absolute inset-0 bg-gradient-to-b from-pool-shallow via-pool-water to-pool-abyss" />
+            {/* 水 */}
+            <WaterSurface depth={0.12} density={1} />
 
-            {/* プール底のレーンライン。中央の T マークと左右のライン */}
-            <div className="pointer-events-none absolute inset-0 flex justify-center opacity-25">
-                <div className="h-full w-[3px] bg-pool-line" />
-            </div>
-            <div className="pointer-events-none absolute inset-y-0 left-[12%] w-[3px] bg-pool-line opacity-15" />
-            <div className="pointer-events-none absolute inset-y-0 right-[12%] w-[3px] bg-pool-line opacity-15" />
-            {/* T マークの横棒。壁の手前を示す */}
-            <div className="pointer-events-none absolute bottom-24 left-1/2 h-[3px] w-40 -translate-x-1/2 bg-pool-line opacity-25" />
-
-            {/* 水面の光と泡 */}
-            <div className="absolute inset-0">
-                <PoolCanvas depth={0.25} density={1} />
+            {/* プール底のレーンライン。ごく薄く敷いて奥行きだけ出す */}
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-white/20" />
+                <div className="absolute inset-y-0 left-[18%] w-px bg-white/10" />
+                <div className="absolute inset-y-0 right-[18%] w-px bg-white/10" />
             </div>
 
-            <div className="container relative z-10 mx-auto max-w-5xl px-6 text-center">
+            <div className="relative z-10 mx-auto w-full max-w-4xl px-6 text-center">
                 {/* スタート合図 */}
                 <motion.div
-                    initial={{ opacity: 0, y: -20, scale: 0.8 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.5, type: "spring", bounce: 0.5 }}
-                    className="mb-10 inline-block"
+                    initial={{ opacity: 0, y: -12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-12 inline-flex items-center gap-3"
                 >
-                    <span className="led-board inline-flex items-center gap-3 px-5 py-2">
-                        <span
-                            className={`relative z-10 h-3 w-3 rounded-full ${
-                                started
-                                    ? "animate-pulse-lamp bg-[#00e676] shadow-[0_0_10px_#00e676]"
-                                    : "bg-rope-red shadow-[0_0_10px_var(--color-rope-red)]"
-                            }`}
-                        />
-                        <span className="led-text relative z-10 text-xs tracking-[0.2em] sm:text-sm">
-                            {started ? "GO — OPEN FOR COLLABORATION" : "TAKE YOUR MARKS"}
-                        </span>
+                    <span
+                        className={`h-2 w-2 rounded-full ${
+                            started
+                                ? "animate-pulse-lamp bg-[#3ddc84]"
+                                : "bg-rope-red"
+                        }`}
+                    />
+                    <span className="font-led text-[0.7rem] tracking-[0.3em] text-white/80 sm:text-xs">
+                        {started ? "OPEN FOR COLLABORATION" : "TAKE YOUR MARKS"}
                     </span>
                 </motion.div>
 
-                {/* メインタイトル */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                {/* 名前 */}
+                <motion.h1
+                    initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 0.8, ease: [0.2, 0.7, 0.3, 1] }}
+                    className="font-display text-[3.5rem] leading-[0.92] tracking-tight text-white sm:text-8xl md:text-[9rem]"
                 >
-                    <h1 className="mb-8 font-display text-7xl leading-[0.9] tracking-tight text-white sm:text-8xl md:text-[11rem] [text-shadow:0_6px_0_rgba(1,42,74,0.55)]">
-                        skphooh
-                    </h1>
-                </motion.div>
+                    skphooh
+                </motion.h1>
 
-                {/* タイピング表示。大会の電光掲示板に見立てる */}
-                <motion.div
+                {/* タイピング */}
+                <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                    className="mb-12 flex justify-center"
+                    transition={{ duration: 0.8, delay: 0.35 }}
+                    className="mt-8 flex min-h-[2rem] items-center justify-center text-base text-white/85 sm:text-lg"
                 >
-                    <p className="led-board flex min-h-[3.5rem] items-center px-6 py-3">
-                        <span className="led-text relative z-10 text-base sm:text-xl md:text-2xl">
-                            {displayText}
-                        </span>
-                        <span className="animate-blink relative z-10 ml-2 inline-block h-6 w-[3px] bg-led-amber" />
-                    </p>
-                </motion.div>
+                    {displayText}
+                    <span className="animate-blink ml-1 inline-block h-5 w-px bg-white/70" />
+                </motion.p>
 
                 {/* CTA */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="flex flex-col items-center justify-center gap-6 sm:flex-row"
+                    className="mt-14 flex flex-col items-center justify-center gap-4 sm:flex-row"
                 >
                     <button
                         onClick={() => scrollTo("projects")}
-                        className="pool-btn w-full px-10 py-5 text-lg sm:w-auto"
+                        className="btn btn-on-water w-full sm:w-auto"
                     >
-                        Dive In
+                        プロジェクトを見る
                     </button>
                     <button
                         onClick={() => scrollTo("contact")}
-                        className="pool-btn w-full bg-white px-10 py-5 text-lg sm:w-auto"
+                        className="w-full cursor-pointer rounded-[3px] border border-white/40 px-8 py-[0.95rem] font-semibold text-white transition-colors hover:border-white hover:bg-white/10 sm:w-auto"
                     >
-                        Touch the Wall
+                        お問い合わせ
                     </button>
                 </motion.div>
+            </div>
 
-                {/* スクロールインジケーター */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, type: "spring", delay: 0.8 }}
-                    className="mt-20 inline-block"
-                >
-                    <button
-                        onClick={() => scrollTo("entry")}
-                        className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-4 border-pool-line bg-white/90 shadow-[var(--shadow-pool-sm)] transition-all hover:translate-y-1 hover:shadow-none"
-                        aria-label="次のセクションへ"
-                    >
-                        <ArrowDown className="h-8 w-8 stroke-[3] text-pool-line" />
-                    </button>
-                </motion.div>
+            {/* スクロール誘導 */}
+            <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.9 }}
+                onClick={() => scrollTo("entry")}
+                className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 cursor-pointer flex-col items-center gap-2 text-white/70 transition-colors hover:text-white"
+                aria-label="次のセクションへ"
+            >
+                <span className="font-led text-[0.65rem] tracking-[0.25em]">SCROLL</span>
+                <ArrowDown className="h-4 w-4 animate-bounce" />
+            </motion.button>
+
+            {/* 水面の終わり */}
+            <div className="absolute inset-x-0 bottom-0 z-10">
+                <LaneRope onWater />
             </div>
         </section>
     );

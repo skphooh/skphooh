@@ -2,95 +2,81 @@
 
 import { motion } from "framer-motion";
 import { Github, Mail, ArrowUpRight } from "lucide-react";
+import WaterSurface from "./pool/WaterSurface";
 
-/** ソーシャルリンク */
-const socialLinks = [
-    { name: "GitHub", icon: Github, url: "https://github.com/skphooh" },
-];
+const socialLinks = [{ name: "GitHub", icon: Github, url: "https://github.com/skphooh" }];
 
 /**
- * お問い合わせセクション (Neo-Brutalism)
+ * Contact (FINISH)
+ *
+ * ゴール側の壁。深い水の上にタッチ板を置く。
  */
 export default function Contact() {
     return (
-        <section id="contact" className="py-32 relative z-20 overflow-hidden bg-[var(--color-neo-pink)] border-b-4 border-black">
-            {/* 装飾 */}
-            <div className="absolute top-10 left-10 w-32 h-32 border-4 border-black bg-[var(--color-neo-yellow)] rounded-full shadow-[8px_8px_0_#000] pointer-events-none" />
-            <div className="absolute bottom-40 right-10 w-48 h-48 border-4 border-black bg-[var(--color-neo-blue)] shadow-[8px_8px_0_#000] pointer-events-none transform rotate-12" />
+        <section
+            id="contact"
+            className="relative z-10 overflow-hidden bg-pool-deep py-28 sm:py-36"
+        >
+            {/* 深い水 */}
+            <WaterSurface depth={0.72} density={0.6} />
 
-            <div className="container px-6 mx-auto max-w-4xl text-center relative z-10">
-                {/* セクションヘッダー */}
+            <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, margin: "-60px" }}
                     transition={{ duration: 0.6 }}
-                    className="mb-16 bg-white border-4 border-black p-10 shadow-[12px_12px_0_#000]"
                 >
-                    <div className="inline-block bg-black text-white border-2 border-black px-6 py-2 mb-8 transform -rotate-2">
-                        <span className="text-sm font-black uppercase tracking-widest">
-                            Contact
-                        </span>
-                    </div>
-                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 uppercase">
-                        Let&apos;s Work
-                        <br />
-                        <span className="text-stroke relative">
-                            Together
-                            <span className="absolute inset-0 text-[var(--color-neo-yellow)] stroke-black" style={{WebkitTextStroke: "2px black", transform: "translate(4px, 4px)", zIndex: -1}}>Together</span>
-                        </span>
+                    <span className="font-led text-[0.7rem] tracking-[0.28em] text-pool-light">
+                        FINISH
+                    </span>
+                    <h2 className="mt-4 font-display text-4xl leading-tight tracking-tight text-white sm:text-6xl">
+                        TOUCH THE WALL
                     </h2>
-                    <p className="text-black font-bold text-xl max-w-xl mx-auto border-t-4 border-black pt-6">
+                    <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-white/70">
                         新しいプロジェクトの立ち上げや、既存プロダクトの改善など、お気軽にご相談ください。
                     </p>
                 </motion.div>
 
-                {/* メールCTA */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                {/* タッチ板 */}
+                <motion.a
+                    href="mailto:skphooh@gmail.com"
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.5, delay: 0.15 }}
+                    className="group mt-12 inline-flex items-center gap-4 rounded-[3px] bg-white/95 px-8 py-5 text-base font-semibold text-pool-deep transition-all duration-300 hover:bg-white hover:shadow-[0_0_40px_-8px_rgba(0,180,216,0.7)] sm:text-lg"
                 >
-                    <a
-                        href="mailto:skphooh@gmail.com"
-                        className="neo-brutal-btn inline-flex items-center gap-4 px-10 py-6 text-xl md:text-2xl bg-[var(--color-neo-green)] group"
-                    >
-                        <Mail className="w-8 h-8 stroke-[3]" />
-                        skphooh@gmail.com
-                        <ArrowUpRight className="w-8 h-8 stroke-[3] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </a>
-                </motion.div>
+                    <Mail className="h-5 w-5" />
+                    skphooh@gmail.com
+                    <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </motion.a>
 
                 {/* フッター */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="mt-32 p-8 bg-black border-4 border-black text-white shadow-[8px_8px_0_var(--color-neo-yellow)]"
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="mt-24 flex flex-col items-center justify-between gap-6 border-t border-white/15 pt-8 sm:flex-row"
                 >
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                        <p className="text-white font-black text-sm uppercase">
-                            © 2026 skphooh.
-                            <br className="md:hidden" /> Built with Next.js & Tailwind.
-                        </p>
+                    <p className="font-led text-[0.7rem] tracking-[0.15em] text-white/50">
+                        © 2026 skphooh — BUILT WITH NEXT.JS
+                    </p>
 
-                        {/* ソーシャルアイコン */}
-                        <div className="flex items-center gap-4">
-                            {socialLinks.map((social) => (
-                                <a
-                                    key={social.name}
-                                    href={social.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="p-3 bg-white text-black border-2 border-white hover:bg-[var(--color-neo-yellow)] hover:border-black hover:shadow-[4px_4px_0_#000] hover:-translate-y-1 transition-all"
-                                    aria-label={social.name}
-                                >
-                                    <social.icon className="w-6 h-6 stroke-[3]" />
-                                </a>
-                            ))}
-                        </div>
+                    <div className="flex items-center gap-3">
+                        {socialLinks.map((social) => (
+                            <a
+                                key={social.name}
+                                href={social.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="rounded-full p-2.5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                                aria-label={social.name}
+                            >
+                                <social.icon className="h-5 w-5" />
+                            </a>
+                        ))}
                     </div>
                 </motion.div>
             </div>

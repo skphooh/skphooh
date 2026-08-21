@@ -1,40 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Github, ChevronRight } from "lucide-react";
-import ProjectCard, { ProjectType } from "./ProjectCard";
+import { X, ExternalLink, Github } from "lucide-react";
+import ProjectLane, { ProjectType } from "./ProjectCard";
+import LaneRope from "./pool/LaneRope";
+import DiveTransition from "./pool/DiveTransition";
 
 /** プロジェクトデータ */
 const projects: ProjectType[] = [
     {
-        title: "Wear-Cast",
-        description:
-            "日々のコーディネートと天気を記録し、\n他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。\n天気に基づいたおすすめの服装提案機能も搭載。",
-        features: ["コーディネート記録", "ソーシャルフィード", "天気連動レコメンド", "プロフィール管理"],
-        techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
-        liveUrl: "https://wearcast.skphooh.com/",
-        status: "live",
-        iframePreview: true,
-        image: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=1470&auto=format&fit=crop",
-        details: "Wear-Castは、毎日の気象データと連動してユーザーの服装記録をサポートするSNSアプリケーションです。\n洗練されたUIとスムーズなトランジションで、ストレスのない記録体験を提供します。",
-    },
-    {
-        title: "Meguri24",
-        description:
-            "AIが24時間の生活リズムを分析し、\n最適な行動パターンを提案する生活習慣改善アプリ。\n円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
-        features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
-        techStack: ["Next.js", "Clerk", "Neon", "Tailwind CSS", "AI"],
-        liveUrl: "https://meguri24.skphooh.com/",
-        status: "live",
-        iframePreview: true,
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470&auto=format&fit=crop",
-        details: "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
-    },
-    {
         title: "うちの子製作所",
         description:
-            "写真・イラスト1枚からAIが高品質な3Dモデルを生成し、\n3Dプリンター用STLデータを即時出力するクリエイティブプラットフォーム。\n🎖 Hack-1グランプリ2026 オーディエンス賞 / セガサミーイノベーション賞 W受賞",
+            "写真・イラスト1枚からAIが高品質な3Dモデルを生成し、\n3Dプリンター用STLデータを即時出力するクリエイティブプラットフォーム。",
         features: [
             "AI 3D Generation (Tripo3D)",
             "ターンアラウンド生成 (Gemini API)",
@@ -48,262 +26,251 @@ const projects: ProjectType[] = [
         githubUrl: "https://github.com/skphooh/Hack-1",
         status: "live",
         iframePreview: true,
-        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1470&auto=format&fit=crop",
-        details: "「うちの子製作所」は、好きなキャラクターや思い出の写真・イラスト1枚から、AIが3Dモデルを自動生成するサービスです。\nTripo3D APIで高品質なGLBを生成し、GeminiAPIで裏面補完、trimeshでSTL変換・台座追加まで全自動。\n🎖 Hack-1グランプリ2026 オーディエンス賞・セガサミーイノベーション賞 W受賞",
+        details:
+            "「うちの子製作所」は、好きなキャラクターや思い出の写真・イラスト1枚から、AIが3Dモデルを自動生成するサービスです。\nTripo3D APIで高品質なGLBを生成し、Gemini APIで裏面補完、trimeshでSTL変換・台座追加まで全自動。\n🎖 Hack-1グランプリ2026 オーディエンス賞・セガサミーイノベーション賞 W受賞",
+    },
+    {
+        title: "Wear-Cast",
+        description:
+            "日々のコーディネートと天気を記録し、他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。\n天気に基づいたおすすめの服装提案機能も搭載。",
+        features: ["コーディネート記録", "ソーシャルフィード", "天気連動レコメンド", "プロフィール管理"],
+        techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
+        liveUrl: "https://wearcast.skphooh.com/",
+        status: "live",
+        iframePreview: true,
+        details:
+            "Wear-Castは、毎日の気象データと連動してユーザーの服装記録をサポートするSNSアプリケーションです。\n洗練されたUIとスムーズなトランジションで、ストレスのない記録体験を提供します。",
+    },
+    {
+        title: "Meguri24",
+        description:
+            "AIが24時間の生活リズムを分析し、最適な行動パターンを提案する生活習慣改善アプリ。\n円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
+        features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
+        techStack: ["Next.js", "Clerk", "Neon", "Tailwind CSS", "AI"],
+        liveUrl: "https://meguri24.skphooh.com/",
+        status: "live",
+        iframePreview: true,
+        details:
+            "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
     },
     {
         title: "skphooh.com",
         description:
-            "このポートフォリオサイト自体。\nNeo-Brutalismデザインを採用し、\n圧倒的なインパクトと個性を表現したフロントエンド体験。",
-        features: ["Neo-Brutalism UI", "タイピング・マーキー", "カスタムカーソル(予定)", "レスポンシブ対応"],
-        techStack: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
+            "このポートフォリオサイト自体。\n50mプールをページ構造に見立て、水・レーン・飛び込みで体験を組み立てている。",
+        features: ["WebGL コースティクス", "レーン構造のプロダクト一覧", "飛び込みトランジション", "レスポンシブ対応"],
+        techStack: ["Next.js", "WebGL", "Framer Motion", "Tailwind CSS", "TypeScript"],
         liveUrl: "https://skphooh.com/",
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
         iframePreview: true,
-        image: "https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1470&auto=format&fit=crop",
     },
 ];
 
-function getAllTags(items: ProjectType[]): string[] {
-    const set = new Set<string>();
-    items.forEach((p) => p.techStack.forEach((t) => set.add(t)));
-    return Array.from(set);
-}
-
 /**
- * プロジェクトセクション (Neo-Brutalism)
+ * プロダクト一覧 (LAP 01)
+ *
+ * カードを並べるのではなく、レーンを縦に積む。行と行の境目は
+ * レーンロープ。行を選ぶと飛び込み演出を挟んでから詳細を開く。
  */
 export default function Projects() {
-    const [activeFilter, setActiveFilter] = useState<string | null>(null);
-    const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null);
-    const allTags = getAllTags(projects);
+    const [selected, setSelected] = useState<ProjectType | null>(null);
+    const [diving, setDiving] = useState<ProjectType | null>(null);
+    const [diveOriginX, setDiveOriginX] = useState(0.5);
 
-    const filtered = activeFilter
-        ? projects.filter((p) => p.techStack.includes(activeFilter))
-        : projects;
-
-    // モーダルオープン時のスクロール制御
+    /** モーダル表示中は背後をスクロールさせない */
     useEffect(() => {
-        if (selectedProject) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "auto";
-        }
+        if (!selected) return;
+        const previous = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
         return () => {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = previous;
         };
-    }, [selectedProject]);
+    }, [selected]);
+
+    /** Esc で閉じる */
+    useEffect(() => {
+        if (!selected) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setSelected(null);
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [selected]);
+
+    const handleSelect = (project: ProjectType, originX: number) => {
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (reduceMotion) {
+            setSelected(project);
+            return;
+        }
+
+        setDiveOriginX(originX);
+        setDiving(project);
+    };
+
+    /** 入水しきったら詳細を開く */
+    const handleDiveComplete = useCallback(() => {
+        setDiving((current) => {
+            if (current) setSelected(current);
+            return null;
+        });
+    }, []);
 
     return (
         <>
-            {/* メインセクション */}
-            <section id="projects" className="py-32 relative z-10 bg-white border-y-4 border-black">
-                <div className="container px-6 mx-auto max-w-7xl">
-                    {/* セクションタイトル */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
-                        className="mb-16"
-                    >
-                        <div className="inline-block bg-[var(--color-neo-pink)] text-black border-4 border-black shadow-[6px_6px_0_#000] px-6 py-2 mb-6 transform -rotate-2">
-                            <span className="text-xl font-black uppercase tracking-widest">
-                                Portfolio
-                            </span>
-                        </div>
-                        <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-4 uppercase text-stroke-sm">
-                            Selected
-                            <br />
-                            <span className="bg-[var(--color-neo-yellow)] px-4 py-2 border-4 border-black shadow-[8px_8px_0_#000] inline-block mt-4 transform rotate-1">
-                                Projects
-                            </span>
-                        </h2>
-                        <p className="text-black font-bold text-lg md:text-xl max-w-2xl mt-10 border-l-4 border-black pl-6 py-2">
-                            個人開発で制作した、これまでの代表的なプロダクトです。
-                        </p>
-                    </motion.div>
-
-                    {/* フィルタータグ */}
+            <section id="projects" className="relative z-10 bg-surface py-24 sm:py-32">
+                <div className="mx-auto max-w-5xl px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: 0.2 }}
-                        className="flex flex-wrap gap-4 mb-16"
+                        viewport={{ once: true, margin: "-80px" }}
+                        transition={{ duration: 0.6 }}
+                        className="mb-14"
                     >
-                        <button
-                            onClick={() => setActiveFilter(null)}
-                            className={`px-6 py-2 text-sm font-black uppercase border-2 border-black transition-all cursor-pointer ${activeFilter === null
-                                ? "bg-black text-white shadow-[4px_4px_0_var(--color-neo-pink)] translate-x-[-2px] translate-y-[-2px]"
-                                : "bg-white text-black shadow-[4px_4px_0_#000] hover:bg-gray-100"
-                                }`}
-                        >
-                            ALL
-                        </button>
-                        {allTags.map((tag) => (
-                            <button
-                                key={tag}
-                                onClick={() =>
-                                    setActiveFilter(activeFilter === tag ? null : tag)
-                                }
-                                className={`px-6 py-2 text-sm font-black uppercase border-2 border-black transition-all cursor-pointer ${activeFilter === tag
-                                    ? "bg-black text-white shadow-[4px_4px_0_var(--color-neo-blue)] translate-x-[-2px] translate-y-[-2px]"
-                                    : "bg-white text-black shadow-[4px_4px_0_#000] hover:bg-[var(--color-neo-blue)] hover:shadow-[4px_4px_0_#000]"
-                                    }`}
-                            >
-                                {tag}
-                            </button>
-                        ))}
+                        <span className="lap-label">LAP 01</span>
+                        <h2 className="mt-3 font-display text-4xl tracking-tight text-ink sm:text-6xl">
+                            PROJECTS
+                        </h2>
+                        <p className="mt-4 max-w-xl text-sm leading-relaxed text-ink-soft">
+                            個人開発で制作した代表的なプロダクトです。レーンを選ぶと詳細が開きます。
+                        </p>
                     </motion.div>
+                </div>
 
-                    {/* プロジェクトグリッド */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {filtered.map((project, index) => (
-                            <ProjectCard
-                                key={project.title}
+                {/* レーン */}
+                <div className="mx-auto max-w-5xl px-2 sm:px-6">
+                    <LaneRope />
+                    {projects.map((project, index) => (
+                        <div key={project.title}>
+                            <ProjectLane
                                 project={project}
                                 index={index}
-                                onClick={() => setSelectedProject(project)}
+                                onSelect={(originX) => handleSelect(project, originX)}
                             />
-                        ))}
-                    </div>
+                            <LaneRope reverse={index % 2 === 1} />
+                        </div>
+                    ))}
                 </div>
             </section>
 
-            {/* プロジェクト詳細モーダル（sectionの外でレンダリングし、ナビバーより上に表示） */}
+            {/* 飛び込み */}
+            <DiveTransition
+                active={diving !== null}
+                originX={diveOriginX}
+                onComplete={handleDiveComplete}
+            />
+
+            {/* 詳細 */}
             <AnimatePresence>
-                {selectedProject && (
+                {selected && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
-                        onClick={() => setSelectedProject(null)}
+                        transition={{ duration: 0.25 }}
+                        className="fixed inset-0 z-[9999] flex items-center justify-center bg-pool-deep/70 p-4 backdrop-blur-sm sm:p-8"
+                        onClick={() => setSelected(null)}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label={selected.title}
                     >
-                        {/* モーダル全体のラッパー（×ボタン + カード） */}
-                        <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-                            {/* モーダル閉じるボタン（カードの外側、右上に配置） */}
+                        <motion.div
+                            initial={{ scale: 0.97, opacity: 0, y: 24 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.97, opacity: 0, y: 24 }}
+                            transition={{ duration: 0.3, ease: [0.2, 0.7, 0.3, 1] }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="card relative flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden"
+                        >
                             <button
-                                onClick={() => setSelectedProject(null)}
-                                className="absolute -top-5 -right-2 sm:-top-6 sm:-right-5 z-[10000] p-3 bg-[var(--color-neo-pink)] border-4 border-black text-black shadow-[4px_4px_0_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
+                                onClick={() => setSelected(null)}
+                                className="absolute right-4 top-4 z-20 cursor-pointer rounded-full bg-surface/90 p-2 text-ink transition-colors hover:bg-canvas"
+                                aria-label="閉じる"
                             >
-                                <X className="w-6 h-6 stroke-[3]" />
+                                <X className="h-5 w-5" />
                             </button>
 
-                            {/* スクロール可能なモーダルカード本体 */}
-                            <motion.div
-                                initial={{ scale: 0.95, opacity: 0, y: 50 }}
-                                animate={{ scale: 1, opacity: 1, y: 0 }}
-                                exit={{ scale: 0.95, opacity: 0, y: 50 }}
-                                transition={{ type: "spring", bounce: 0.4, duration: 0.5 }}
-                                className="w-full max-h-[85vh] overflow-y-auto bg-white border-4 border-black shadow-[16px_16px_0_#000] flex flex-col pointer-events-auto"
-                            >
-                                {/* モーダルのヘッダー領域 */}
-                                <div className="relative w-full h-[50vh] min-h-[400px] bg-[var(--color-neo-yellow)] border-b-4 border-black shrink-0 overflow-hidden group">
-                                    {selectedProject.iframePreview && selectedProject.liveUrl ? (
-                                        <div className="absolute inset-0 w-full h-full pointer-events-auto bg-white overflow-hidden">
-                                            <div
-                                                className="absolute top-0 left-0 origin-top-left w-[300%] h-[300%] scale-[0.3333] sm:w-[200%] sm:h-[200%] sm:scale-[0.5] lg:w-[125%] lg:h-[125%] lg:scale-[0.8]"
-                                            >
-                                                <iframe
-                                                    src={selectedProject.liveUrl}
-                                                    className="w-full h-full border-0"
-                                                    title={`${selectedProject.title} Live Demo`}
-                                                    loading="lazy"
-                                                    allow="geolocation"
-                                                />
-                                            </div>
+                            <div className="overflow-y-auto">
+                                {/* ライブプレビュー */}
+                                {selected.iframePreview && selected.liveUrl && (
+                                    <div className="relative h-[42vh] min-h-[280px] w-full overflow-hidden bg-canvas">
+                                        <div className="absolute left-0 top-0 h-[200%] w-[200%] origin-top-left scale-[0.5] lg:h-[125%] lg:w-[125%] lg:scale-[0.8]">
+                                            <iframe
+                                                src={selected.liveUrl}
+                                                className="h-full w-full border-0"
+                                                title={`${selected.title} Live`}
+                                                loading="lazy"
+                                            />
                                         </div>
-                                    ) : selectedProject.image ? (
-                                        <img
-                                            src={selectedProject.image}
-                                            alt={selectedProject.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center">
-                                            <span className="text-6xl font-black uppercase text-black/20 transform -rotate-12">
-                                                {selectedProject.title}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* モーダルのコンテンツ */}
-                                <div className="p-8 sm:p-12 relative z-10 bg-white">
-                                    <div className="flex flex-wrap items-end gap-6 mb-8 border-b-4 border-black pb-8">
-                                        <h3 className="text-4xl sm:text-6xl font-black text-black uppercase tracking-tighter">
-                                            {selectedProject.title}
-                                        </h3>
-                                        {selectedProject.status && (
-                                            <span className="px-4 py-2 text-sm font-black uppercase tracking-wider bg-[var(--color-neo-green)] border-2 border-black shadow-[4px_4px_0_#000] transform rotate-2">
-                                                {selectedProject.status}
-                                            </span>
-                                        )}
                                     </div>
+                                )}
 
-                                    <div className="flex flex-wrap gap-3 mb-10">
-                                        {selectedProject.techStack.map((tech) => (
-                                            <span
-                                                key={tech}
-                                                className="px-4 py-2 text-xs font-black uppercase bg-black text-white border-2 border-transparent shadow-[4px_4px_0_var(--color-neo-blue)]"
-                                            >
+                                <div className="p-7 sm:p-10">
+                                    <h3 className="font-display text-3xl tracking-tight text-ink sm:text-4xl">
+                                        {selected.title}
+                                    </h3>
+
+                                    <div className="mt-5 flex flex-wrap gap-2">
+                                        {selected.techStack.map((tech) => (
+                                            <span key={tech} className="tag">
                                                 {tech}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <div className="prose prose-lg max-w-none text-black font-medium leading-relaxed mb-10">
-                                        <h4 className="text-2xl font-black uppercase inline-block bg-yellow-300 border-2 border-black px-4 py-1 mb-6 shadow-[4px_4px_0_#000]">OVERVIEW</h4>
-                                        <p className="whitespace-pre-wrap border-l-4 border-black pl-6 py-2 bg-gray-50 text-lg">
-                                            {selectedProject.details || selectedProject.description}
-                                        </p>
+                                    <p className="mt-8 whitespace-pre-wrap text-sm leading-relaxed text-ink-soft">
+                                        {selected.details || selected.description}
+                                    </p>
 
-                                        {selectedProject.features && selectedProject.features.length > 0 && (
-                                            <div className="mt-12">
-                                                <h4 className="text-2xl font-black uppercase inline-block bg-[var(--color-neo-pink)] border-2 border-black px-4 py-1 mb-6 shadow-[4px_4px_0_#000]">FEATURES</h4>
-                                                <ul className="grid sm:grid-cols-2 gap-6 list-none pl-0">
-                                                    {selectedProject.features.map((feature) => (
-                                                        <li key={feature} className="flex items-center gap-4 bg-white border-4 border-black p-4 shadow-[4px_4px_0_#000]">
-                                                            <span className="w-8 h-8 flex items-center justify-center bg-black text-white font-black">✓</span>
-                                                            <span className="font-bold">{feature}</span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </div>
+                                    {selected.features && selected.features.length > 0 && (
+                                        <div className="mt-10">
+                                            <span className="lap-label">FEATURES</span>
+                                            <ul className="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                                                {selected.features.map((feature) => (
+                                                    <li
+                                                        key={feature}
+                                                        className="flex items-baseline gap-3 border-b border-hairline pb-3 text-sm text-ink"
+                                                    >
+                                                        <span className="font-led text-[0.65rem] text-pool-light">
+                                                            ▸
+                                                        </span>
+                                                        {feature}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
 
-                                    {/* リンクアクション */}
-                                    <div className="flex flex-col sm:flex-row items-center gap-6 mt-12 pt-12 border-t-4 border-black">
-                                        {selectedProject.liveUrl && (
+                                    <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+                                        {selected.liveUrl && (
                                             <a
-                                                href={selectedProject.liveUrl}
+                                                href={selected.liveUrl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="neo-brutal-btn w-full sm:w-auto px-10 py-5 bg-[var(--color-neo-blue)] flex items-center justify-center gap-3"
+                                                className="btn"
                                             >
-                                                VISIT SITE
-                                                <ExternalLink className="w-6 h-6 stroke-[3]" />
+                                                サイトを見る
+                                                <ExternalLink className="h-4 w-4" />
                                             </a>
                                         )}
-                                        {selectedProject.githubUrl && (
+                                        {selected.githubUrl && (
                                             <a
-                                                href={selectedProject.githubUrl}
+                                                href={selected.githubUrl}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="neo-brutal-btn w-full sm:w-auto px-10 py-5 bg-white flex items-center justify-center gap-3"
+                                                className="btn-ghost"
                                             >
-                                                <Github className="w-6 h-6" />
-                                                SOURCE CODE
+                                                <Github className="h-4 w-4" />
+                                                ソースコード
                                             </a>
                                         )}
                                     </div>
                                 </div>
-                            </motion.div>
-                        </div>
+                            </div>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
