@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Swimmer from "./Swimmer";
+import Swimmer, { type StartType } from "./Swimmer";
 
 /* ------------------------------------------------------------------
  * 尺
@@ -51,7 +51,7 @@ export interface DiveOrigin {
 }
 
 interface DiveContextValue {
-    dive: (href: string, origin: DiveOrigin) => void;
+    dive: (href: string, origin: DiveOrigin, start: StartType) => void;
 }
 
 const DiveContext = createContext<DiveContextValue | null>(null);
@@ -69,7 +69,26 @@ interface DiveState {
     /** 入水点 */
     entry: DiveOrigin;
     timing: Timing;
+    start: StartType;
 }
+
+/**
+ * 軌道と回転。
+ *
+ * 通常スタートは台の上から前下方へ落ちる。回転は 0 度（直立）から
+ * 128 度まで回して、頭から斜めに刺さる角度にする。90 度で止めると
+ * 水平のまま腹から落ちてしまう。
+ *
+ * 背泳ぎは水中から一度浮き上がってから入水するので、頂点を高く取り、
+ * 反りを残したまま同じく頭から入る。
+ */
+const ARC: Record<
+    StartType,
+    { rotate: number[]; lift: number; scale: number[] }
+> = {
+    forward: { rotate: [0, 58, 128], lift: -0.18, scale: [1, 1.5, 2] },
+    backstroke: { rotate: [0, 46, 118], lift: -0.62, scale: [1, 1.5, 2] },
+};
 
 /** 入水点から飛び散るしぶき */
 const DROPLETS = Array.from({ length: 16 }, (_, i) => {
@@ -110,7 +129,7 @@ export default function DiveProvider({ children }: { children: ReactNode }) {
     const divedOnce = useRef(false);
 
     const dive = useCallback(
-        (href: string, origin: DiveOrigin) => {
+        (href: string, origin: DiveOrigin, start: StartType) => {
             const reduceMotion = window.matchMedia(
                 "(prefers-reduced-motion: reduce)"
             ).matches;
@@ -130,7 +149,7 @@ export default function DiveProvider({ children }: { children: ReactNode }) {
             };
 
             setDraining(false);
-            setState({ key: Date.now(), origin, entry, timing });
+            setState({ key: Date.now(), origin, entry, timing, start });
 
             window.setTimeout(() => {
                 router.push(href);
@@ -183,7 +202,8 @@ function DiveOverlay({
 }
 
 function DiveScene({ state, draining }: { state: DiveState; draining: boolean }) {
-    const { origin, entry, timing } = state;
+    const { origin, entry, timing, start } = state;
+    const arc = ARC[start];
 
     const waterDuration = draining ? timing.drain : timing.cover;
     const waterDelay = draining ? timing.hold : splashAt(timing);
@@ -250,10 +270,11 @@ function DiveScene({ state, draining }: { state: DiveState; draining: boolean })
                         style={{ left: origin.x, top: origin.y }}
                         initial={{ x: 0, y: 0, rotate: 0, scale: 1 }}
                         animate={{
+                            // 中間点を持ち上げて放物線にする
                             x: [0, dx * 0.45, dx],
-                            y: [0, dy * 0.28, dy],
-                            rotate: [0, 34, 84],
-                            scale: [1, 1.5, 2],
+                            y: [0, dy * 0.28 + Math.abs(dy) * arc.lift, dy],
+                            rotate: arc.rotate,
+                            scale: arc.scale,
                         }}
                         transition={{
                             duration: timing.crouch + timing.flight,
@@ -267,6 +288,7 @@ function DiveScene({ state, draining }: { state: DiveState; draining: boolean })
                     >
                         <Swimmer
                             pose="dive"
+                            start={start}
                             className="h-full w-full drop-shadow-[0_4px_10px_rgba(1,34,62,0.4)]"
                             duration={timing.flight}
                             delay={timing.crouch}
