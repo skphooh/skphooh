@@ -47,7 +47,7 @@ const techStack = [
  */
 export default function About() {
     return (
-        <section id="about" className="relative z-10 bg-canvas py-24 sm:py-32">
+        <section id="about" className="relative z-10 bg-surface py-24 sm:py-32">
             <div className="mx-auto max-w-5xl px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

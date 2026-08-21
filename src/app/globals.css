@@ -70,6 +70,18 @@ body {
   }
 }
 
+/* アンカー移動時に固定ナビの下へ潜り込ませない */
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* 枠線を持たない設計なので、キーボード操作の現在地は明示する */
+:focus-visible {
+  outline: 2px solid var(--color-pool-light);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
 /* 水中を落ちていくような細いスクロールバー */
 ::-webkit-scrollbar {
   width: 8px;
@@ -282,6 +294,21 @@ body {
   animation: rope-drift 6s linear infinite;
 }
 
+/* 水面のわずかな上下動。タッチ板やロゴなど、水に浮くものに使う */
+@keyframes float-idle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@utility animate-float-idle {
+  animation: float-idle 5s ease-in-out infinite;
+}
+
 @keyframes rope-drift-reverse {
   from {
     transform: translate3d(-96px, 0, 0);
@@ -298,6 +325,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-blink,
   .animate-pulse-lamp,
+  .animate-float-idle,
   .animate-rope-drift,
   .animate-rope-drift-reverse {
     animation: none !important;
