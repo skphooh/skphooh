@@ -3,79 +3,24 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, Github } from "lucide-react";
-import ProjectLane, { ProjectType } from "./ProjectCard";
+import ProjectLane from "./ProjectCard";
 import LaneRope from "./pool/LaneRope";
 import DiveTransition from "./pool/DiveTransition";
-
-/** プロジェクトデータ */
-const projects: ProjectType[] = [
-    {
-        title: "うちの子製作所",
-        description:
-            "写真・イラスト1枚からAIが高品質な3Dモデルを生成し、\n3Dプリンター用STLデータを即時出力するクリエイティブプラットフォーム。",
-        features: [
-            "AI 3D Generation (Tripo3D)",
-            "ターンアラウンド生成 (Gemini API)",
-            "ブラウザ内 3D Viewer (Three.js)",
-            "Print-Ready STL エクスポート",
-            "マーケットプレイス",
-            "Stripe 決済",
-        ],
-        techStack: ["React", "Vite", "TypeScript", "FastAPI", "Firebase", "Three.js", "Stripe", "Gemini API"],
-        liveUrl: "https://utinoko.skphooh.com",
-        githubUrl: "https://github.com/skphooh/Hack-1",
-        status: "live",
-        iframePreview: true,
-        details:
-            "「うちの子製作所」は、好きなキャラクターや思い出の写真・イラスト1枚から、AIが3Dモデルを自動生成するサービスです。\nTripo3D APIで高品質なGLBを生成し、Gemini APIで裏面補完、trimeshでSTL変換・台座追加まで全自動。\n🎖 Hack-1グランプリ2026 オーディエンス賞・セガサミーイノベーション賞 W受賞",
-    },
-    {
-        title: "Wear-Cast",
-        description:
-            "日々のコーディネートと天気を記録し、他のユーザーの投稿と交流できるSNS型ライフスタイルアプリ。\n天気に基づいたおすすめの服装提案機能も搭載。",
-        features: ["コーディネート記録", "ソーシャルフィード", "天気連動レコメンド", "プロフィール管理"],
-        techStack: ["Next.js", "React", "Tailwind CSS", "Supabase"],
-        liveUrl: "https://wearcast.skphooh.com/",
-        status: "live",
-        iframePreview: true,
-        details:
-            "Wear-Castは、毎日の気象データと連動してユーザーの服装記録をサポートするSNSアプリケーションです。\n洗練されたUIとスムーズなトランジションで、ストレスのない記録体験を提供します。",
-    },
-    {
-        title: "Meguri24",
-        description:
-            "AIが24時間の生活リズムを分析し、最適な行動パターンを提案する生活習慣改善アプリ。\n円形の24時間時計UIでタスク管理、睡眠分析、日記機能を提供。",
-        features: ["24時間時計UI", "AI生活リズム分析", "タスク管理", "日記・ふりかえり"],
-        techStack: ["Next.js", "Clerk", "Neon", "Tailwind CSS", "AI"],
-        liveUrl: "https://meguri24.skphooh.com/",
-        status: "live",
-        iframePreview: true,
-        details:
-            "Meguri24は、独自の円形UIを採用した新しい形のタスク・生活管理アプリです。\nAIを活用し、日々の記録からより良い習慣形成をサポートします。\nClerkによる安全な認証基盤を備えています。",
-    },
-    {
-        title: "skphooh.com",
-        description:
-            "このポートフォリオサイト自体。\n50mプールをページ構造に見立て、水・レーン・飛び込みで体験を組み立てている。",
-        features: ["WebGL コースティクス", "レーン構造のプロダクト一覧", "飛び込みトランジション", "レスポンシブ対応"],
-        techStack: ["Next.js", "WebGL", "Framer Motion", "Tailwind CSS", "TypeScript"],
-        liveUrl: "https://skphooh.com/",
-        githubUrl: "https://github.com/skphooh/skphooh",
-        status: "live",
-        iframePreview: true,
-    },
-];
+import { projects, type ProjectType } from "@/data/projects";
 
 /**
  * プロダクト一覧 (LAP 01)
  *
  * カードを並べるのではなく、レーンを縦に積む。行と行の境目は
- * レーンロープ。行を選ぶと飛び込み演出を挟んでから詳細を開く。
+ * レーンロープ。行を選ぶと水が画面を覆い、その裏で詳細に
+ * 差し替わってから水が引く。
  */
 export default function Projects() {
     const [selected, setSelected] = useState<ProjectType | null>(null);
     const [diving, setDiving] = useState<ProjectType | null>(null);
     const [diveOriginX, setDiveOriginX] = useState(0.5);
+    /** 飛び込むたびに DiveTransition を作り直し、演出を頭から再生させる */
+    const [diveKey, setDiveKey] = useState(0);
 
     /** モーダル表示中は背後をスクロールさせない */
     useEffect(() => {
@@ -108,16 +53,20 @@ export default function Projects() {
         }
 
         setDiveOriginX(originX);
+        setDiveKey((k) => k + 1);
         setDiving(project);
     };
 
-    /** 入水しきったら詳細を開く */
-    const handleDiveComplete = useCallback(() => {
+    /** 水が画面を覆いきった瞬間。この裏で詳細を立ち上げる */
+    const handleReveal = useCallback(() => {
         setDiving((current) => {
             if (current) setSelected(current);
-            return null;
+            return current;
         });
     }, []);
+
+    /** 水が引ききった */
+    const handleDone = useCallback(() => setDiving(null), []);
 
     return (
         <>
@@ -135,7 +84,7 @@ export default function Projects() {
                             PROJECTS
                         </h2>
                         <p className="mt-4 max-w-xl text-sm leading-relaxed text-ink-soft">
-                            個人開発で制作した代表的なプロダクトです。レーンを選ぶと詳細が開きます。
+                            個人開発で制作した代表的なプロダクトです。レーンを選ぶと飛び込みます。
                         </p>
                     </motion.div>
                 </div>
@@ -156,14 +105,7 @@ export default function Projects() {
                 </div>
             </section>
 
-            {/* 飛び込み */}
-            <DiveTransition
-                active={diving !== null}
-                originX={diveOriginX}
-                onComplete={handleDiveComplete}
-            />
-
-            {/* 詳細 */}
+            {/* 詳細。水に覆われている間に立ち上がる */}
             <AnimatePresence>
                 {selected && (
                     <motion.div
@@ -178,10 +120,10 @@ export default function Projects() {
                         aria-label={selected.title}
                     >
                         <motion.div
-                            initial={{ scale: 0.97, opacity: 0, y: 24 }}
+                            initial={{ scale: 0.98, opacity: 0, y: 30 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.97, opacity: 0, y: 24 }}
-                            transition={{ duration: 0.3, ease: [0.2, 0.7, 0.3, 1] }}
+                            exit={{ scale: 0.98, opacity: 0, y: 30 }}
+                            transition={{ duration: 0.5, ease: [0.2, 0.7, 0.3, 1] }}
                             onClick={(e) => e.stopPropagation()}
                             className="card relative flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden"
                         >
@@ -274,6 +216,15 @@ export default function Projects() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* 飛び込み。モーダルより上に重なって切り替えを隠す */}
+            <DiveTransition
+                key={diveKey}
+                active={diving !== null}
+                originX={diveOriginX}
+                onReveal={handleReveal}
+                onDone={handleDone}
+            />
         </>
     );
 }
