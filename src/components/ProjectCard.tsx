@@ -1,13 +1,16 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import StartBlock from "./pool/StartBlock";
 import type { ProjectStatus, ProjectType } from "@/data/projects";
 
 interface ProjectLaneProps {
     project: ProjectType;
     index: number;
-    onSelect: (originX: number) => void;
+    /** 飛び込みの開始点（ビューポート座標 px）を渡す */
+    onSelect: (origin: { x: number; y: number }) => void;
 }
 
 const statusLabel: Record<ProjectStatus, string> = {
@@ -19,14 +22,23 @@ const statusLabel: Record<ProjectStatus, string> = {
 /**
  * プロダクト 1 件 = 1 レーン。
  *
- * 左にレーン番号、中央に内容、右にプレビュー。ホバーすると
- * 水がレーンを左から満たし、番号が浮き上がる。
+ * 左にレーン番号とスタート台。行を押すと、台の上に立っている
+ * その子がそのまま飛び込む。ホバーすると水がレーンを満たし、
+ * スイマーが構えを深くする。
  */
 export default function ProjectLane({ project, index, onSelect }: ProjectLaneProps) {
     const status = project.status ?? "live";
+    const blockRef = useRef<HTMLDivElement>(null);
+    const [ready, setReady] = useState(false);
 
-    const handleSelect = (clientX: number) => {
-        onSelect(clientX / window.innerWidth);
+    const handleSelect = () => {
+        const rect = blockRef.current?.getBoundingClientRect();
+        if (!rect) {
+            onSelect({ x: window.innerWidth / 2, y: window.innerHeight / 3 });
+            return;
+        }
+        // 台の上面あたりを開始点にする
+        onSelect({ x: rect.left + rect.width * 0.42, y: rect.top + rect.height * 0.35 });
     };
 
     return (
@@ -36,18 +48,23 @@ export default function ProjectLane({ project, index, onSelect }: ProjectLanePro
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, delay: index * 0.08 }}
-            onClick={(e) => handleSelect(e.clientX)}
+            onClick={handleSelect}
+            onMouseEnter={() => setReady(true)}
+            onMouseLeave={() => setReady(false)}
+            onFocus={() => setReady(true)}
+            onBlur={() => setReady(false)}
             className="group relative block w-full cursor-pointer overflow-hidden px-4 py-8 text-left sm:px-8 sm:py-10"
         >
             {/* ホバーで満ちる水 */}
             <span className="pointer-events-none absolute inset-0 origin-left scale-x-0 bg-gradient-to-r from-pool-light/12 to-transparent transition-transform duration-500 ease-out group-hover:scale-x-100" />
 
-            <span className="relative flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-                {/* レーン番号 */}
-                <span className="shrink-0">
+            <span className="relative flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
+                {/* レーン番号とスタート台 */}
+                <span className="flex shrink-0 items-center gap-3">
                     <span className="block font-display text-5xl leading-none text-hairline transition-colors duration-300 group-hover:text-pool-light sm:text-6xl">
                         {String(index + 1).padStart(2, "0")}
                     </span>
+                    <StartBlock ref={blockRef} ready={ready} className="text-ink" />
                 </span>
 
                 {/* 内容 */}

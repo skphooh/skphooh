@@ -43,8 +43,8 @@ export default function Projects() {
                         <ProjectLane
                             project={project}
                             index={index}
-                            onSelect={(originX) =>
-                                dive(`/projects/${project.slug}`, originX, index + 1)
+                            onSelect={(origin) =>
+                                dive(`/projects/${project.slug}`, origin)
                             }
                         />
                         <LaneRope reverse={index % 2 === 1} />

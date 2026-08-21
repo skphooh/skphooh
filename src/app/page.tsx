@@ -9,6 +9,7 @@ import Contact from "@/components/Contact";
 import BackToTop from "@/components/BackToTop";
 import LaneRope from "@/components/pool/LaneRope";
 import BackstrokeFlags from "@/components/pool/BackstrokeFlags";
+import { hasProfilePhoto } from "@/lib/profilePhoto";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
       <Hero />
 
       {/* エントリー */}
-      <EntryCard />
+      <EntryCard photoAvailable={hasProfilePhoto()} />
 
       {/* LAP 01 — プロダクト */}
       <Projects />
