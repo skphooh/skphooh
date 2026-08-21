@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Anton, Share_Tech_Mono, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+import DiveProvider from "@/components/pool/DiveProvider";
 
 /** 本文欧文 */
 const inter = Inter({
@@ -58,7 +59,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${anton.variable} ${shareTechMono.variable} ${notoSansJP.variable} min-h-screen bg-canvas text-ink antialiased selection:bg-pool-light/30`}
       >
-        {children}
+        <DiveProvider>{children}</DiveProvider>
       </body>
     </html>
   );

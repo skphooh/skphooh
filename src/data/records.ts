@@ -7,12 +7,13 @@
  */
 
 /** 活動の種別。バッジの色分けに使う */
-export type RecordKind = "conference" | "hackathon" | "internship";
+export type RecordKind = "conference" | "hackathon" | "internship" | "athletics";
 
 export const KIND_LABEL: Record<RecordKind, string> = {
     conference: "学会",
     hackathon: "ハッカソン",
     internship: "インターン",
+    athletics: "体育会",
 };
 
 export interface Award {

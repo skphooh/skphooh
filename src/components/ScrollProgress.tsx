@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, useSpring, useTransform } from "framer-motion";
+import Swimmer from "./pool/Swimmer";
 
 /** プールの全長(m)。進捗をこの距離に読み替える */
 const POOL_LENGTH = 50;
@@ -52,10 +53,13 @@ export default function ScrollProgress() {
                         className="absolute inset-x-0 top-0 h-full origin-top bg-pool-light"
                         style={{ scaleY: progress }}
                     />
+                    {/* 進捗にあわせてレーンを下っていくスイマー */}
                     <motion.div
-                        className="absolute -left-[3px] h-1.5 w-1.5 rounded-full bg-pool"
+                        className="absolute -left-[14px] -mt-3 w-7 text-pool"
                         style={{ top: markerTop }}
-                    />
+                    >
+                        <Swimmer className="w-full rotate-90" still />
+                    </motion.div>
                 </div>
                 <span className="font-led text-[0.6rem] tracking-[0.15em] text-pool">
                     {distance}m

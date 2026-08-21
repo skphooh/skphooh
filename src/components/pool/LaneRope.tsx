@@ -8,6 +8,11 @@ interface LaneRopeProps {
     reverse?: boolean;
     /** 水の上に置く場合に明るくする */
     onWater?: boolean;
+    /**
+     * ラスト 5m 区間。公式競技では壁の手前 5m のフロートが
+     * 赤一色になるので、FINISH 直前のロープにこれを使う。
+     */
+    finish?: boolean;
 }
 
 /** フロート 1 個あたりの間隔(px)。タイル幅 = PITCH * 4 = 96 */
@@ -35,9 +40,15 @@ export default function LaneRope({
     className = "",
     reverse = false,
     onWater = false,
+    finish = false,
 }: LaneRopeProps) {
     // 同一ページに複数並ぶので pattern の id はユニークにする
     const patternId = `rope-${useId().replace(/:/g, "")}`;
+
+    // ラスト 5m は全フロートが赤
+    const colors = finish
+        ? FLOAT_COLORS.map(() => "var(--color-rope-red)")
+        : FLOAT_COLORS;
 
     return (
         <div
@@ -63,7 +74,7 @@ export default function LaneRope({
                             height="2"
                             fill={onWater ? "rgba(255,255,255,0.5)" : "var(--color-hairline)"}
                         />
-                        {FLOAT_COLORS.map((color, i) => (
+                        {colors.map((color, i) => (
                             <rect
                                 key={i}
                                 x={i * PITCH + 3}

@@ -7,6 +7,8 @@ import Records from "@/components/Records";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import BackToTop from "@/components/BackToTop";
+import LaneRope from "@/components/pool/LaneRope";
+import BackstrokeFlags from "@/components/pool/BackstrokeFlags";
 
 export default function Home() {
   return (
@@ -28,6 +30,12 @@ export default function Home() {
 
       {/* LAP 03 — About */}
       <About />
+
+      {/* ラスト5m: 旗とロープで壁が近いことを知らせる */}
+      <div className="relative z-10 bg-surface text-pool">
+        <BackstrokeFlags />
+        <LaneRope finish />
+      </div>
 
       {/* FINISH */}
       <Contact />
