@@ -33,11 +33,11 @@ export interface Profile {
 }
 
 export const profile: Profile = {
-    fullName: "",
-    fullNameEn: "",
+    fullName: "桒村 駿輔",
+    fullNameEn: "KUWAMURA SHUNSUKE",
     handle: "skphooh",
-    affiliation: "",
-    grade: "",
-    title: "大学院生 / Fullstack Engineer",
+    affiliation: "東京都市大学 情報データ科学研究科 情報データ科学専攻 ソーシャルシステムデザイン領域",
+    grade: "博士前期課程1年",
+    title: "大学院生",
     photo: "/profile.jpg",
 };
