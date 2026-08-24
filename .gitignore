@@ -32,6 +32,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# キー名だけの雛形は公開してよい
+!.env.example
+
+# 作業中に置いた画像。公開リポジトリに紛れ込ませない
+/image.png
 
 # vercel
 .vercel

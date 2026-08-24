@@ -10,6 +10,8 @@ import BackToTop from "@/components/BackToTop";
 import LaneRope from "@/components/pool/LaneRope";
 import BackstrokeFlags from "@/components/pool/BackstrokeFlags";
 import { hasProfilePhoto } from "@/lib/profilePhoto";
+import { profile } from "@/data/profile";
+import { club } from "@/data/club";
 
 export default function Home() {
   return (
@@ -21,13 +23,17 @@ export default function Home() {
       <Hero />
 
       {/* エントリー */}
-      <EntryCard photoAvailable={hasProfilePhoto()} />
+      <EntryCard
+        profile={profile}
+        club={club}
+        photoAvailable={hasProfilePhoto()}
+      />
 
       {/* LAP 01 — プロダクト */}
       <Projects />
 
       {/* LAP 02 — 受賞歴・活動歴 */}
-      <Records />
+      <Records club={club} />
 
       {/* LAP 03 — About */}
       <About />

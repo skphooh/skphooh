@@ -4,8 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
-import { profile } from "@/data/profile";
-import { club } from "@/data/club";
+import type { Profile } from "@/data/profile";
+import type { Club } from "@/data/club";
 
 /** 掲示の 1 行。値が空なら行ごと出さない */
 function EntryRow({ label, value }: { label: string; value: string }) {
@@ -22,6 +22,13 @@ function EntryRow({ label, value }: { label: string; value: string }) {
 }
 
 interface EntryCardProps {
+    /**
+     * 表示する値。中身は環境変数由来なのでサーバーコンポーネントで
+     * 読み、ここへ props として渡す。クライアントから process.env は
+     * 見えないため、直接 import してはいけない。
+     */
+    profile: Profile;
+    club: Club;
     /** public/ に顔写真が実在するか。サーバー側で判定して渡す */
     photoAvailable: boolean;
 }
@@ -31,7 +38,7 @@ interface EntryCardProps {
  *
  * 大会の選手紹介パネル。表示する値は src/data/profile.ts にのみ置く。
  */
-export default function EntryCard({ photoAvailable }: EntryCardProps) {
+export default function EntryCard({ profile, club, photoAvailable }: EntryCardProps) {
     const [photoFailed, setPhotoFailed] = useState(false);
 
     const affiliationLine = [profile.affiliation, profile.grade]

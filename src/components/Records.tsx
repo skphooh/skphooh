@@ -8,7 +8,7 @@ import {
     type LogEntry,
     type RecordKind,
 } from "@/data/records";
-import { club } from "@/data/club";
+import type { Club } from "@/data/club";
 
 /** 種別ごとのバッジ色 */
 const KIND_STYLE: Record<RecordKind, string> = {
@@ -31,7 +31,12 @@ const flickerIn = {
  *   SEASON LOG … レーンラインに沿った時系列。学会・ハッカソン・
  *                インターンを 1 本にまとめる
  */
-export default function Records() {
+interface RecordsProps {
+    /** 体育会の所属。環境変数由来なのでサーバー側から渡す */
+    club: Club;
+}
+
+export default function Records({ club }: RecordsProps) {
     /**
      * 体育会の在籍は他の活動より前から続いているので、時系列の
      * 先頭に置く。club.name が未入力のあいだは出さない。
