@@ -31,12 +31,14 @@ export interface LogEntry {
     kind: RecordKind;
     /** 大会・研究会・企業の名前 */
     title: string;
-    /** 発表形式や担当業務 */
+    /** 発表形式や担当業務。未確定なら空文字にすると行ごと出ない */
     detail: string;
     /** この活動で得た賞。あれば行内に併記する */
     award?: string;
     /** 進行中なら true。バッジが明滅する */
     ongoing?: boolean;
+    /** まだ始まっていない予定なら true。終わった実績と区別して表示する */
+    upcoming?: boolean;
 }
 
 /** 受賞歴。掲示板に出す */
@@ -86,5 +88,30 @@ export const seasonLog: LogEntry[] = [
         title: "LINEヤフー株式会社",
         detail: "セキュリティエンジニア / 脆弱性診断",
         ongoing: true,
+    },
+    {
+        period: "2026.08 – 09",
+        kind: "internship",
+        title: "株式会社野村総合研究所",
+        detail: "セキュリティスペシャリスト",
+    },
+    {
+        period: "2026.09",
+        kind: "internship",
+        title: "デロイト トーマツ サイバー合同会社",
+        detail: "SOC（セキュリティオペレーションセンター）",
+    },
+    {
+        period: "2026.09",
+        kind: "internship",
+        title: "株式会社三菱UFJ銀行",
+        detail: "サイバーセキュリティ",
+    },
+    {
+        period: "2026.10",
+        kind: "internship",
+        title: "富士通株式会社",
+        detail: "",
+        upcoming: true,
     },
 ];

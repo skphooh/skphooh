@@ -150,7 +150,10 @@ export default function Records({ club }: RecordsProps) {
                                     initial={{ opacity: 0, x: -12 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 0.5, delay: 0.2 + i * 0.12 }}
+                                    // 各行は自分が画面に入った時点で動き出すので、遅延を
+                                    // 並び順で積み上げると下の行ほど待たされる。最初に
+                                    // まとめて見える上の数件だけずらす。
+                                    transition={{ duration: 0.5, delay: 0.15 + Math.min(i, 3) * 0.1 }}
                                     className="relative"
                                 >
                                     {/* マーカー */}
@@ -162,7 +165,9 @@ export default function Records({ club }: RecordsProps) {
                                             className={`relative h-[11px] w-[11px] rounded-full ${
                                                 entry.ongoing
                                                     ? "bg-pool-light"
-                                                    : "border border-hairline bg-surface"
+                                                    : entry.upcoming
+                                                      ? "border border-dashed border-pool-light bg-surface"
+                                                      : "border border-hairline bg-surface"
                                             }`}
                                         />
                                     </span>
@@ -181,15 +186,22 @@ export default function Records({ club }: RecordsProps) {
                                                 ● IN PROGRESS
                                             </span>
                                         )}
+                                        {entry.upcoming && (
+                                            <span className="font-led text-[0.6rem] tracking-[0.14em] text-ink-faint">
+                                                ○ UPCOMING
+                                            </span>
+                                        )}
                                     </div>
 
                                     <h3 className="mt-2 text-base font-medium leading-snug text-ink sm:text-lg">
                                         {entry.title}
                                     </h3>
 
-                                    <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">
-                                        {entry.detail}
-                                    </p>
+                                    {entry.detail && (
+                                        <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">
+                                            {entry.detail}
+                                        </p>
+                                    )}
 
                                     {entry.award && (
                                         <p className="mt-2.5 flex items-baseline gap-2 text-sm text-ink">
