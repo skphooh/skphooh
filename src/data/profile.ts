@@ -44,5 +44,5 @@ export const profile: Profile = {
 
     // 以下は個人を特定しないのでソースに置く
     handle: "skphooh",
-    photo: "/profile.jpg",
+    photo: "/profile.png",
 };

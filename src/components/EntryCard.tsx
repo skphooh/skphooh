@@ -66,15 +66,16 @@ export default function EntryCard({ profile, club, photoAvailable }: EntryCardPr
                     </div>
 
                     <div className="grid gap-8 p-7 sm:p-10 md:grid-cols-[180px_1fr] md:gap-12">
-                        {/* 顔写真 */}
-                        <div className="relative mx-auto aspect-square w-40 shrink-0 overflow-hidden rounded-[3px] bg-foam md:mx-0 md:w-full">
+                        {/* 顔写真。証明写真と同じ 3:4 の縦長枠にする。縦長の写真を正方形で
+                            切ると頭が欠けやすいので、切り取り位置も上寄りにしている */}
+                        <div className="relative mx-auto aspect-[3/4] w-40 shrink-0 overflow-hidden rounded-[3px] bg-foam md:mx-0 md:w-full">
                             {photoAvailable && !photoFailed ? (
                                 <Image
                                     src={profile.photo}
                                     alt={profile.fullName || profile.handle}
                                     fill
                                     sizes="(max-width: 768px) 160px, 180px"
-                                    className="object-cover"
+                                    className="object-cover object-[50%_20%]"
                                     onError={() => setPhotoFailed(true)}
                                     priority
                                 />
