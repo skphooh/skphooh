@@ -18,16 +18,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const { slug } = await params;
     const project = projects.find((p) => p.slug === slug);
 
-    if (!project) return { title: "Not Found | skphooh" };
+    if (!project) return { title: "Not Found" };
 
     const summary = project.description.replace(/\n/g, " ");
+    const path = `/projects/${project.slug}`;
 
+    // title は layout の template で「… | skphooh」になる
     return {
-        title: `${project.title} | skphooh`,
+        title: project.title,
         description: summary,
+        alternates: {
+            canonical: path,
+        },
         openGraph: {
             title: `${project.title} | skphooh`,
             description: summary,
+            url: path,
             type: "article",
         },
     };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Anton, Share_Tech_Mono, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import DiveProvider from "@/components/pool/DiveProvider";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 /** 本文欧文 */
 const inter = Inter({
@@ -31,14 +32,42 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "skphooh | Portfolio",
-  description:
-    "skphoohのポートフォリオサイト。50mプールに見立てたページ構造で、開発したプロダクトと経歴を紹介しています。",
+  // 相対パスの基準。canonical と OG 画像の URL がこれを起点に絶対化される
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} | Portfolio`,
+    // 下層ページは title にページ名だけ入れればよい
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "skphooh | Portfolio",
+    title: `${SITE_NAME} | Portfolio`,
     description:
       "50mプールに見立てたポートフォリオ。プロダクト・研究発表・経歴をまとめています。",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "ja_JP",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} | Portfolio`,
+    description:
+      "50mプールに見立てたポートフォリオ。プロダクト・研究発表・経歴をまとめています。",
   },
 };
 
