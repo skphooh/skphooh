@@ -72,6 +72,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    creator: "@skphooh",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
   },
@@ -92,7 +93,7 @@ const personJsonLd = {
   image: new URL(profile.photo, SITE_URL).toString(),
   jobTitle: "セキュリティエンジニア志望 / Webエンジニア",
   knowsAbout: ["Webセキュリティ", "脆弱性診断", "Next.js", "React"],
-  sameAs: ["https://github.com/skphooh"],
+  sameAs: ["https://github.com/skphooh", "https://x.com/skphooh"],
 };
 
 export default function RootLayout({
