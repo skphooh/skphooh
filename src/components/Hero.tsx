@@ -38,8 +38,11 @@ const stats = [
  *
  * 画面いっぱいの水の上に、名前・肩書き・実績を重ねる。
  * 名前は 1 文字ずつ水面から浮き上がり、その下に反射が映る。
+ *
+ * fullName は環境変数由来なのでサーバー側から渡す。見出しの読み上げ
+ * テキストに含め、氏名で検索されたときにもこのページと結びつける。
  */
-export default function Hero() {
+export default function Hero({ fullName = "" }: { fullName?: string }) {
     const [phraseIndex, setPhraseIndex] = useState(0);
     const [displayText, setDisplayText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
@@ -117,7 +120,7 @@ export default function Hero() {
 
                 {/* 名前。1 文字ずつ浮き上がる */}
                 <h1 className="font-display text-[3.5rem] leading-[0.92] tracking-tight text-white sm:text-8xl md:text-[9rem]">
-                    <span className="sr-only">{NAME}</span>
+                    <span className="sr-only">{fullName ? `${fullName}（${NAME}）` : NAME}</span>
                     <span aria-hidden="true" className="inline-flex">
                         {NAME.split("").map((char, i) => (
                             <motion.span

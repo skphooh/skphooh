@@ -20,7 +20,7 @@ export default function Home() {
       <ScrollProgress />
 
       {/* START */}
-      <Hero />
+      <Hero fullName={profile.fullName} />
 
       {/* エントリー */}
       <EntryCard
