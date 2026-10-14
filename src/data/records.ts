@@ -23,6 +23,14 @@ export interface Award {
     event: string;
     /** YYYY.MM */
     date: string;
+    /** 受賞を報じた記事。あれば賞の名前がリンクになる */
+    url?: string;
+}
+
+/** 外部の裏付け。予稿・受賞記事など */
+export interface RecordLink {
+    label: string;
+    url: string;
 }
 
 export interface LogEntry {
@@ -35,6 +43,8 @@ export interface LogEntry {
     detail: string;
     /** この活動で得た賞。あれば行内に併記する */
     award?: string;
+    /** 予稿や受賞記事へのリンク */
+    links?: RecordLink[];
     /** 進行中なら true。バッジが明滅する */
     ongoing?: boolean;
     /** まだ始まっていない予定なら true。終わった実績と区別して表示する */
@@ -47,16 +57,19 @@ export const awards: Award[] = [
         title: "東京支部学生奨励賞",
         event: "電子情報通信学会 第31回 東京支部 学生会研究発表会",
         date: "2026.03",
+        url: "https://informatics.tcu.ac.jp/news/award/?&p=1023",
     },
     {
         title: "オーディエンス賞",
         event: "Hack-1グランプリ 2026",
         date: "2026.05",
+        url: "https://www.tcu.ac.jp/news/all/20260527-71348/",
     },
     {
         title: "セガサミーイノベーション賞",
         event: "Hack-1グランプリ 2026",
         date: "2026.05",
+        url: "https://www.tcu.ac.jp/news/all/20260527-71348/",
     },
 ];
 
@@ -68,6 +81,10 @@ export const seasonLog: LogEntry[] = [
         title: "電子情報通信学会 第31回 東京支部 学生会研究発表会",
         detail: "口頭発表 / 国内学会 / 査読なし",
         award: "東京支部学生奨励賞",
+        links: [
+            { label: "予稿 (PDF)", url: "https://www.ieice.org/tokyo/gakusei/activity/kenkyuu-happyoukai/happyou-ronbun/31/pdf/112.pdf" },
+            { label: "受賞記事", url: "https://informatics.tcu.ac.jp/news/award/?&p=1023" },
+        ],
     },
     {
         period: "2026.04 – 05",
@@ -75,19 +92,25 @@ export const seasonLog: LogEntry[] = [
         title: "Hack-1グランプリ 2026",
         detail: "1ヶ月でプロダクトを立ち上げ、成果発表を行う",
         award: "オーディエンス賞・セガサミーイノベーション賞 W受賞",
+        links: [{ label: "受賞記事", url: "https://www.tcu.ac.jp/news/all/20260527-71348/" }],
     },
     {
         period: "2026.05",
         kind: "conference",
         title: "電子情報通信学会 LOIS研究会",
         detail: "口頭発表 / 国内学会 / 査読なし",
+        links: [
+            {
+                label: "発表概要",
+                url: "https://www.ieice.org/publications/ken/summary.php?contribution_id=143404&society_cd=ISS&ken_id=IE&year=2026&presen_date=2026-05-07&schedule_id=8977&lang=jp&expandable=3",
+            },
+        ],
     },
     {
         period: "2026.08 – 09",
         kind: "internship",
         title: "LINEヤフー株式会社",
         detail: "セキュリティエンジニア / 脆弱性診断",
-        ongoing: true,
     },
     {
         period: "2026.08 – 09",
@@ -112,6 +135,6 @@ export const seasonLog: LogEntry[] = [
         kind: "internship",
         title: "富士通株式会社",
         detail: "",
-        upcoming: true,
+        ongoing: true,
     },
 ];

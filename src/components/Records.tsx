@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import {
     awards,
     seasonLog,
@@ -106,9 +107,21 @@ export default function Records({ club }: RecordsProps) {
                                     ★
                                 </span>
                                 <span className="min-w-0 flex-1">
-                                    <span className="led-text block text-sm sm:text-base">
-                                        {award.title}
-                                    </span>
+                                    {award.url ? (
+                                        <a
+                                            href={award.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="led-text group inline-flex items-baseline gap-1 text-sm underline-offset-4 hover:underline sm:text-base"
+                                        >
+                                            {award.title}
+                                            <ArrowUpRight className="h-3.5 w-3.5 shrink-0 self-center opacity-60 transition-opacity group-hover:opacity-100" />
+                                        </a>
+                                    ) : (
+                                        <span className="led-text block text-sm sm:text-base">
+                                            {award.title}
+                                        </span>
+                                    )}
                                     <span className="led-text led-text-dim mt-1 block text-[0.7rem] leading-relaxed">
                                         {award.event}
                                     </span>
@@ -208,6 +221,23 @@ export default function Records({ club }: RecordsProps) {
                                             <span className="text-rope-yellow">★</span>
                                             {entry.award}
                                         </p>
+                                    )}
+
+                                    {entry.links && entry.links.length > 0 && (
+                                        <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1">
+                                            {entry.links.map((link) => (
+                                                <a
+                                                    key={link.url}
+                                                    href={link.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1 font-led text-[0.65rem] tracking-[0.12em] text-pool underline-offset-4 transition-colors hover:text-pool-light hover:underline"
+                                                >
+                                                    {link.label}
+                                                    <ArrowUpRight className="h-3 w-3" />
+                                                </a>
+                                            ))}
+                                        </div>
                                     )}
                                 </motion.li>
                             ))}
