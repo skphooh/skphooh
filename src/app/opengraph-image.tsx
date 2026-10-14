@@ -8,7 +8,7 @@ import { ImageResponse } from "next/og";
  * 既定のフォントに和文グリフが無いため、文字は欧文だけにしている。
  */
 
-export const alt = "skphooh — Portfolio";
+export const alt = "skphooh — Security / Web Engineering Portfolio";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

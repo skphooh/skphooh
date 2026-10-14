@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import { Inter, Anton, Share_Tech_Mono, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import DiveProvider from "@/components/pool/DiveProvider";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { profile } from "@/data/profile";
+import {
+  SITE_AUTHOR,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/site";
 
 /** 本文欧文 */
 const inter = Inter({
@@ -35,12 +42,13 @@ export const metadata: Metadata = {
   // 相対パスの基準。canonical と OG 画像の URL がこれを起点に絶対化される
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} | Portfolio`,
+    default: SITE_TITLE,
     // 下層ページは title にページ名だけ入れればよい
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
+  authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
   alternates: {
     canonical: "/",
   },
@@ -55,9 +63,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: `${SITE_NAME} | Portfolio`,
-    description:
-      "50mプールに見立てたポートフォリオ。プロダクト・研究発表・経歴をまとめています。",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
     locale: "ja_JP",
@@ -65,10 +72,27 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} | Portfolio`,
-    description:
-      "50mプールに見立てたポートフォリオ。プロダクト・研究発表・経歴をまとめています。",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
+};
+
+/**
+ * 検索エンジンに「skphooh = この人物」と結びつけてもらうための構造化データ。
+ * 氏名が未設定ならハンドルを name に使う。
+ */
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.fullName || SITE_NAME,
+  alternateName: [profile.fullNameEn, SITE_NAME].filter(
+    (n) => n && n !== (profile.fullName || SITE_NAME),
+  ),
+  url: SITE_URL,
+  image: new URL(profile.photo, SITE_URL).toString(),
+  jobTitle: "セキュリティエンジニア志望 / Webエンジニア",
+  knowsAbout: ["Webセキュリティ", "脆弱性診断", "Next.js", "React"],
+  sameAs: ["https://github.com/skphooh"],
 };
 
 export default function RootLayout({
@@ -84,6 +108,10 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7449511351198603"
           crossOrigin="anonymous"
         ></script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
       </head>
       <body
         className={`${inter.variable} ${anton.variable} ${shareTechMono.variable} ${notoSansJP.variable} min-h-screen bg-canvas text-ink antialiased selection:bg-pool-light/30`}
