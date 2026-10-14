@@ -81,8 +81,8 @@ export default function About() {
                     <p>
                         いま一番の関心は
                         <strong className="font-medium text-ink">セキュリティ</strong>
-                        です。現在は LINEヤフー株式会社でセキュリティエンジニアとして
-                        Web アプリケーションの脆弱性診断に取り組んでいます。自分で作ってきたからこそ、
+                        です。LINEヤフー株式会社のインターンでは、セキュリティエンジニアとして
+                        Web アプリケーションの脆弱性診断に取り組みました。自分で作ってきたからこそ、
                         どこが壊れやすいのかを実装の側から考えられる——
                         <strong className="font-medium text-ink">
                             作る視点と壊す視点の両方を持つこと
