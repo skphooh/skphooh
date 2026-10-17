@@ -86,7 +86,11 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: profile.fullName || SITE_NAME,
-  alternateName: [profile.fullNameEn, SITE_NAME].filter(
+  alternateName: [
+    ...profile.fullNameAliases,
+    profile.fullNameEn,
+    SITE_NAME,
+  ].filter(
     (n) => n && n !== (profile.fullName || SITE_NAME),
   ),
   url: SITE_URL,

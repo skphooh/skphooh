@@ -21,7 +21,7 @@ export const SITE_AUTHOR = profile.fullName
     ? `${profile.fullName}（${SITE_NAME}）`
     : SITE_NAME;
 
-export const SITE_TITLE = `${SITE_AUTHOR} | セキュリティ × Web開発 ポートフォリオ`;
+export const SITE_TITLE = `${SITE_AUTHOR} | ポートフォリオ`;
 
 export const SITE_DESCRIPTION =
     `${SITE_AUTHOR}のポートフォリオ。セキュリティエンジニア志望の大学院生として、` +

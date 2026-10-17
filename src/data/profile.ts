@@ -23,6 +23,8 @@ export interface Profile {
     fullName: string;
     /** 氏名のローマ字表記 */
     fullNameEn: string;
+    /** 氏名の別表記（異体字など）。検索用の別名として構造化データに入れる */
+    fullNameAliases: string[];
     /** ハンドルネーム */
     handle: string;
     /** 所属 */
@@ -38,6 +40,10 @@ export interface Profile {
 export const profile: Profile = {
     fullName: process.env.PROFILE_FULL_NAME ?? "",
     fullNameEn: process.env.PROFILE_FULL_NAME_EN ?? "",
+    fullNameAliases: (process.env.PROFILE_FULL_NAME_ALIASES ?? "")
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean),
     affiliation: process.env.PROFILE_AFFILIATION ?? "",
     grade: process.env.PROFILE_GRADE ?? "",
     title: process.env.PROFILE_TITLE ?? "",
