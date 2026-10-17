@@ -90,7 +90,7 @@ export const projects: ProjectType[] = [
             "レスポンシブ対応",
         ],
         techStack: ["Next.js", "WebGL", "Framer Motion", "Tailwind CSS", "TypeScript"],
-        liveUrl: "https://skphooh.com/",
+        liveUrl: "https://www.skphooh.com/",
         githubUrl: "https://github.com/skphooh/skphooh",
         status: "live",
         iframePreview: true,
