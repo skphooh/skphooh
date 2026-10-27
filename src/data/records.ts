@@ -7,12 +7,13 @@
  */
 
 /** 活動の種別。バッジの色分けに使う */
-export type RecordKind = "conference" | "hackathon" | "internship" | "athletics";
+export type RecordKind = "conference" | "hackathon" | "internship" | "ctf" | "athletics";
 
 export const KIND_LABEL: Record<RecordKind, string> = {
     conference: "学会",
     hackathon: "ハッカソン",
     internship: "インターン",
+    ctf: "CTF",
     athletics: "体育会",
 };
 
@@ -76,6 +77,12 @@ export const awards: Award[] = [
 /** 活動歴。上から古い順 */
 export const seasonLog: LogEntry[] = [
     {
+        period: "2024.08",
+        kind: "internship",
+        title: "ニフティ株式会社",
+        detail: "バックエンド / Webサービスの障害の原因究明と再発防止策の立案",
+    },
+    {
         period: "2026.03",
         kind: "conference",
         title: "電子情報通信学会 第31回 東京支部 学生会研究発表会",
@@ -107,16 +114,22 @@ export const seasonLog: LogEntry[] = [
         ],
     },
     {
+        period: "2026.06",
+        kind: "ctf",
+        title: "SECCON Beginners CTF 2026",
+        detail: "Web 分野の問題に取り組む",
+    },
+    {
         period: "2026.08 – 09",
         kind: "internship",
         title: "LINEヤフー株式会社",
-        detail: "セキュリティエンジニア / 脆弱性診断",
+        detail: "セキュリティエンジニア / ホワイトボックス型の脆弱性診断（約6週間）",
     },
     {
         period: "2026.08 – 09",
         kind: "internship",
         title: "株式会社野村総合研究所",
-        detail: "セキュリティスペシャリスト",
+        detail: "セキュリティスペシャリスト / MSS・SOC の業務に参加",
     },
     {
         period: "2026.09",
@@ -125,7 +138,7 @@ export const seasonLog: LogEntry[] = [
         detail: "SOC（セキュリティオペレーションセンター）",
     },
     {
-        period: "2026.09",
+        period: "2026.08 – 09",
         kind: "internship",
         title: "株式会社三菱UFJ銀行",
         detail: "サイバーセキュリティ",
@@ -134,7 +147,19 @@ export const seasonLog: LogEntry[] = [
         period: "2026.10",
         kind: "internship",
         title: "富士通株式会社",
-        detail: "",
-        ongoing: true,
+        detail: "インフラエンジニア / ゼロトラスト・SASE",
+    },
+    {
+        period: "2026.11",
+        kind: "conference",
+        title: "電子情報通信学会 LOIS研究会",
+        detail: "口頭発表「Wi-Fiフィンガープリントに用いる位置測定手法の検討」/ 国内学会 / 査読なし",
+        upcoming: true,
+        links: [
+            {
+                label: "プログラム",
+                url: "https://ken.ieice.org/ken/program/index.php?mode=program&tgs_regid=1e1c08fd856ca645fb80a134caca05df86a8dd8ae2d00a62f27db18e6ab43ea7&tgid=LOIS&layout=html2&lang=jpn",
+            },
+        ],
     },
 ];
