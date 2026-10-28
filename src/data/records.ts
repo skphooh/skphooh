@@ -44,6 +44,8 @@ export interface LogEntry {
     detail: string;
     /** この活動で得た賞。あれば行内に併記する */
     award?: string;
+    /** 賞以外の目に見える成果（記事掲載など）。行内に併記する */
+    output?: string;
     /** 予稿や受賞記事へのリンク */
     links?: RecordLink[];
     /** 進行中なら true。バッジが明滅する */
@@ -124,6 +126,8 @@ export const seasonLog: LogEntry[] = [
         kind: "internship",
         title: "LINEヤフー株式会社",
         detail: "セキュリティエンジニア / ホワイトボックス型の脆弱性診断（約6週間）",
+        output: "LINEヤフー Tech Blog にインターンレポート掲載「Security by DesignでAI生成Webアプリを検証する」",
+        links: [{ label: "インターンレポート", url: "https://techblog.lycorp.co.jp/ja/20261027b" }],
     },
     {
         period: "2026.08 – 09",

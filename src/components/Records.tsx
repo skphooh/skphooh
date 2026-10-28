@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
 import {
     awards,
     seasonLog,
@@ -221,6 +221,13 @@ export default function Records({ club }: RecordsProps) {
                                         <p className="mt-2.5 flex items-baseline gap-2 text-sm text-ink">
                                             <span className="text-rope-yellow">★</span>
                                             {entry.award}
+                                        </p>
+                                    )}
+
+                                    {entry.output && (
+                                        <p className="mt-2.5 flex items-baseline gap-2 text-sm text-ink">
+                                            <FileText className="h-3.5 w-3.5 shrink-0 translate-y-0.5 text-pool" />
+                                            {entry.output}
                                         </p>
                                     )}
 
