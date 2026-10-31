@@ -46,6 +46,8 @@ export interface LogEntry {
     award?: string;
     /** 賞以外の目に見える成果（記事掲載など）。行内に併記する */
     output?: string;
+    /** 取得したオープンバッジの画像。public/ からのパス */
+    badge?: { src: string; alt: string };
     /** 予稿や受賞記事へのリンク */
     links?: RecordLink[];
     /** 進行中なら true。バッジが明滅する */
@@ -152,6 +154,8 @@ export const seasonLog: LogEntry[] = [
         kind: "internship",
         title: "富士通株式会社",
         detail: "インフラエンジニア / ゼロトラスト・SASE",
+        output: "オープンバッジ「Fujitsu Internship 2026」を取得",
+        badge: { src: "/badges/fujitsu-internship-2026.png", alt: "Fujitsu Internship 2026 オープンバッジ" },
     },
     {
         period: "2026.11",

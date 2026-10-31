@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowUpRight, FileText } from "lucide-react";
 import {
@@ -224,12 +225,24 @@ export default function Records({ club }: RecordsProps) {
                                         </p>
                                     )}
 
-                                    {entry.output && (
-                                        <p className="mt-2.5 flex items-baseline gap-2 text-sm text-ink">
-                                            <FileText className="h-3.5 w-3.5 shrink-0 translate-y-0.5 text-pool" />
-                                            {entry.output}
-                                        </p>
-                                    )}
+                                    {entry.output &&
+                                        (entry.badge ? (
+                                            <div className="mt-3 flex items-center gap-4">
+                                                <Image
+                                                    src={entry.badge.src}
+                                                    alt={entry.badge.alt}
+                                                    width={72}
+                                                    height={72}
+                                                    className="h-[72px] w-[72px] shrink-0 rounded-[3px] border border-hairline"
+                                                />
+                                                <p className="text-sm leading-relaxed text-ink">{entry.output}</p>
+                                            </div>
+                                        ) : (
+                                            <p className="mt-2.5 flex items-baseline gap-2 text-sm text-ink">
+                                                <FileText className="h-3.5 w-3.5 shrink-0 translate-y-0.5 text-pool" />
+                                                {entry.output}
+                                            </p>
+                                        ))}
 
                                     {entry.links && entry.links.length > 0 && (
                                         <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1">
