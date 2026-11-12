@@ -17,6 +17,12 @@ export const KIND_LABEL: Record<RecordKind, string> = {
     athletics: "体育会",
 };
 
+/** 外部の裏付け。予稿・受賞記事など */
+export interface RecordLink {
+    label: string;
+    url: string;
+}
+
 export interface Award {
     /** 賞の名前 */
     title: string;
@@ -24,14 +30,11 @@ export interface Award {
     event: string;
     /** YYYY.MM */
     date: string;
-    /** 受賞を報じた記事。あれば賞の名前がリンクになる */
-    url?: string;
-}
-
-/** 外部の裏付け。予稿・受賞記事など */
-export interface RecordLink {
-    label: string;
-    url: string;
+    /**
+     * 受賞を報じた記事。1件目は賞の名前のリンクになり、
+     * 2件目以降は賞の下にラベルで並ぶ。
+     */
+    links?: RecordLink[];
 }
 
 export interface LogEntry {
@@ -62,19 +65,25 @@ export const awards: Award[] = [
         title: "東京支部学生奨励賞",
         event: "電子情報通信学会 第31回 東京支部 学生会研究発表会",
         date: "2026.03",
-        url: "https://informatics.tcu.ac.jp/news/award/?&p=1023",
+        links: [{ label: "受賞記事", url: "https://informatics.tcu.ac.jp/news/award/?&p=1023" }],
     },
     {
         title: "オーディエンス賞",
         event: "Hack-1グランプリ 2026",
         date: "2026.05",
-        url: "https://www.tcu.ac.jp/news/all/20260527-71348/",
+        links: [
+            { label: "受賞記事", url: "https://www.tcu.ac.jp/news/all/20260527-71348/" },
+            { label: "デモデーレポート", url: "https://developers.gmo.jp/events/83497/" },
+        ],
     },
     {
         title: "セガサミーイノベーション賞",
         event: "Hack-1グランプリ 2026",
         date: "2026.05",
-        url: "https://www.tcu.ac.jp/news/all/20260527-71348/",
+        links: [
+            { label: "受賞記事", url: "https://www.tcu.ac.jp/news/all/20260527-71348/" },
+            { label: "デモデーレポート", url: "https://developers.gmo.jp/events/83497/" },
+        ],
     },
 ];
 
@@ -85,6 +94,14 @@ export const seasonLog: LogEntry[] = [
         kind: "internship",
         title: "ニフティ株式会社",
         detail: "バックエンド / Webサービスの障害の原因究明と再発防止策の立案",
+    },
+    {
+        period: "2025.12",
+        kind: "conference",
+        title: "コミュニケーションとインタラクション合同研究討論会",
+        detail:
+            "口頭発表「Wi-Fiフィンガープリントを用いた位置証明システムの開発」/ B型（発表 10分・質疑 5分）/ " +
+            "東京都市大学・東京工科大学・東京工芸大学・筑波大学・島根大学・工学院大学の合同開催",
     },
     {
         period: "2026.03",
@@ -103,7 +120,10 @@ export const seasonLog: LogEntry[] = [
         title: "Hack-1グランプリ 2026",
         detail: "1ヶ月でプロダクトを立ち上げ、成果発表を行う",
         award: "オーディエンス賞・セガサミーイノベーション賞 W受賞",
-        links: [{ label: "受賞記事", url: "https://www.tcu.ac.jp/news/all/20260527-71348/" }],
+        links: [
+            { label: "受賞記事", url: "https://www.tcu.ac.jp/news/all/20260527-71348/" },
+            { label: "デモデーレポート", url: "https://developers.gmo.jp/events/83497/" },
+        ],
     },
     {
         period: "2026.05",

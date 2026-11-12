@@ -109,9 +109,9 @@ export default function Records({ club }: RecordsProps) {
                                     ★
                                 </span>
                                 <span className="min-w-0 flex-1">
-                                    {award.url ? (
+                                    {award.links && award.links.length > 0 ? (
                                         <a
-                                            href={award.url}
+                                            href={award.links[0].url}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="led-text group inline-flex items-baseline gap-1 text-sm underline-offset-4 hover:underline sm:text-base"
@@ -127,6 +127,23 @@ export default function Records({ club }: RecordsProps) {
                                     <span className="led-text led-text-dim mt-1 block text-[0.7rem] leading-relaxed">
                                         {award.event}
                                     </span>
+                                    {/* 2件目以降の記事。賞名のリンクに入らない分をここに並べる */}
+                                    {award.links && award.links.length > 1 && (
+                                        <span className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+                                            {award.links.slice(1).map((link) => (
+                                                <a
+                                                    key={link.url}
+                                                    href={link.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="led-text led-text-dim inline-flex items-center gap-1 text-[0.7rem] underline-offset-4 transition-opacity hover:underline hover:opacity-100"
+                                                >
+                                                    {link.label}
+                                                    <ArrowUpRight className="h-2.5 w-2.5 shrink-0" />
+                                                </a>
+                                            ))}
+                                        </span>
+                                    )}
                                 </span>
                                 <span className="led-text led-text-dim shrink-0 text-[0.7rem]">
                                     {award.date}
