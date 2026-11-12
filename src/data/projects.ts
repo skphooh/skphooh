@@ -1,5 +1,11 @@
 export type ProjectStatus = "live" | "development" | "archived";
 
+/** 外部掲載ページなど、サイト・ソースコード以外のリンク */
+export interface ProjectLink {
+    label: string;
+    url: string;
+}
+
 export interface ProjectType {
     /** URL に使う識別子。/projects/<slug> になる */
     slug: string;
@@ -13,6 +19,8 @@ export interface ProjectType {
     status?: ProjectStatus;
     iframePreview?: boolean;
     details?: string;
+    /** 掲載記事・作品ページなど。リンクボタンの末尾に並ぶ */
+    links?: ProjectLink[];
 }
 
 /** プロダクト。上から見せたい順に並べる */
@@ -42,6 +50,12 @@ export const projects: ProjectType[] = [
         ],
         liveUrl: "https://utinoko.skphooh.com",
         githubUrl: "https://github.com/skphooh/Hack-1",
+        links: [
+            {
+                label: "作品ページ",
+                url: "https://student.redesigner.jp/portfolios/PF75c1f33ff2281285306fcba61a4d443a",
+            },
+        ],
         status: "live",
         iframePreview: true,
         details:

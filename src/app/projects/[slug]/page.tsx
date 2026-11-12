@@ -178,6 +178,18 @@ export default async function ProjectPage({ params }: PageProps) {
                             ソースコード
                         </a>
                     )}
+                    {project.links?.map((link) => (
+                        <a
+                            key={link.url}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-ghost"
+                        >
+                            {link.label}
+                            <ExternalLink className="h-4 w-4" />
+                        </a>
+                    ))}
                 </div>
             </section>
 

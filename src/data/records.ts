@@ -123,6 +123,10 @@ export const seasonLog: LogEntry[] = [
         links: [
             { label: "受賞記事", url: "https://www.tcu.ac.jp/news/all/20260527-71348/" },
             { label: "デモデーレポート", url: "https://developers.gmo.jp/events/83497/" },
+            {
+                label: "作品ページ",
+                url: "https://student.redesigner.jp/portfolios/PF75c1f33ff2281285306fcba61a4d443a",
+            },
         ],
     },
     {
