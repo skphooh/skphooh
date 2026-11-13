@@ -52,7 +52,8 @@ export const projects: ProjectType[] = [
         githubUrl: "https://github.com/skphooh/Hack-1",
         links: [
             {
-                label: "作品ページ",
+                // チームメンバーのポートフォリオに載っている、この作品の紹介ページ
+                label: "メンバーの作品ページ",
                 url: "https://student.redesigner.jp/portfolios/PF75c1f33ff2281285306fcba61a4d443a",
             },
         ],
