@@ -7,13 +7,21 @@
  */
 
 /** 活動の種別。バッジの色分けに使う */
-export type RecordKind = "conference" | "hackathon" | "internship" | "ctf" | "athletics";
+export type RecordKind =
+    | "conference"
+    | "hackathon"
+    | "internship"
+    | "ctf"
+    | "event"
+    | "athletics";
 
 export const KIND_LABEL: Record<RecordKind, string> = {
     conference: "学会",
     hackathon: "ハッカソン",
     internship: "インターン",
     ctf: "CTF",
+    /** 選考を伴う単日〜数日の企業イベント。インターンとは分ける */
+    event: "イベント",
     athletics: "体育会",
 };
 
@@ -180,6 +188,30 @@ export const seasonLog: LogEntry[] = [
         detail: "インフラエンジニア / ゼロトラスト・SASE",
         output: "オープンバッジ「Fujitsu Internship 2026」を取得",
         badge: { src: "/badges/fujitsu-internship-2026.png", alt: "Fujitsu Internship 2026 オープンバッジ" },
+    },
+    {
+        period: "2026.11",
+        kind: "ctf",
+        title: "katagaitai CTF",
+        detail:
+            "NRIセキュアテクノロジーズの社員有志チームが開催する学生向け CTF / " +
+            "Web・crypto・pwn・reversing の問題に取り組む",
+    },
+    {
+        period: "2026.11",
+        kind: "event",
+        title: "伊藤忠テクノソリューションズ株式会社",
+        detail:
+            "セキュリティ特別イベント（書類選考通過者限定）/ " +
+            "脆弱性診断・SOC・CSIRT・セキュリティコンサルの業務紹介と座談会",
+    },
+    {
+        period: "2026.11",
+        kind: "event",
+        title: "株式会社NTTドコモ",
+        detail:
+            "Tech Workshop セキュリティ「Purple Flair」（書類選考通過者限定）/ " +
+            "攻撃と防御の両面を扱うハンズオン演習",
     },
     {
         period: "2026.11",

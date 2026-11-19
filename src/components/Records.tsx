@@ -18,6 +18,7 @@ const KIND_STYLE: Record<RecordKind, string> = {
     hackathon: "border-rope-red/35 text-rope-red",
     internship: "border-pool-light/50 text-pool-light",
     ctf: "border-ink/25 text-ink",
+    event: "border-ink-soft/30 text-ink-soft",
     athletics: "border-rope-yellow/60 text-[#b8890a]",
 };
 
