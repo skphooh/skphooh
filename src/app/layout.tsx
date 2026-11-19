@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Anton, Share_Tech_Mono, Noto_Sans_JP } from "next/font/google";
+import { Inter, Anton, Share_Tech_Mono } from "next/font/google";
 import "./globals.css";
 import DiveProvider from "@/components/pool/DiveProvider";
 import { profile } from "@/data/profile";
@@ -31,12 +31,18 @@ const shareTechMono = Share_Tech_Mono({
   weight: "400",
 });
 
-/** 日本語。Inter は和文グリフを持たないため明示的に指定する */
-const notoSansJP = Noto_Sans_JP({
-  variable: "--font-noto-sans-jp",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
+/*
+ * 日本語の Noto Sans JP は next/font では読み込まず、<head> の
+ * stylesheet で配信している。next/font はビルド時に Google Fonts の
+ * CSS を取得してフォントを自前ホストするが、和文は unicode-range で
+ * 300以上の @font-face に分割されており、ビルド環境によっては Google が
+ * `/l/font?kit=...` 形式の URL を返す。この URL は `?` を含むため
+ * Turbopack のフォント解決が失敗し、ビルドが落ちる。
+ * ブラウザから直接読めば UA に応じた正しい CSS が返り、必要な
+ * unicode-range のぶんだけ取得されるので和文では不利も小さい。
+ */
+const NOTO_SANS_JP_CSS =
+  "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap";
 
 export const metadata: Metadata = {
   // 相対パスの基準。canonical と OG 画像の URL がこれを起点に絶対化される
@@ -108,6 +114,14 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
+        {/* 和文フォント。next/font を通さない理由は NOTO_SANS_JP_CSS の注記を参照 */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="stylesheet" href={NOTO_SANS_JP_CSS} />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7449511351198603"
@@ -119,7 +133,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${anton.variable} ${shareTechMono.variable} ${notoSansJP.variable} min-h-screen bg-canvas text-ink antialiased selection:bg-pool-light/30`}
+        className={`${inter.variable} ${anton.variable} ${shareTechMono.variable} min-h-screen bg-canvas text-ink antialiased selection:bg-pool-light/30`}
       >
         <DiveProvider>{children}</DiveProvider>
       </body>

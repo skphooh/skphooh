@@ -11,8 +11,11 @@
    ========================================================= */
 @theme {
   /* --- フォント --- */
-  --font-sans: var(--font-inter), var(--font-noto-sans-jp);
-  --font-display: var(--font-anton), var(--font-noto-sans-jp);
+  /* 和文。Noto Sans JP が届くまでは OS 標準のゴシックで代替する */
+  --font-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic UI",
+    "Yu Gothic", Meiryo, sans-serif;
+  --font-sans: var(--font-inter), var(--font-jp);
+  --font-display: var(--font-anton), var(--font-jp);
   --font-led: var(--font-share-tech-mono);
 
   /* --- 文字 --- */
