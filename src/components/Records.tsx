@@ -14,6 +14,7 @@ import type { Club } from "@/data/club";
 
 /** 種別ごとのバッジ色 */
 const KIND_STYLE: Record<RecordKind, string> = {
+    journal: "border-pool/70 bg-pool/10 text-pool",
     conference: "border-pool/30 text-pool",
     hackathon: "border-rope-red/35 text-rope-red",
     internship: "border-pool-light/50 text-pool-light",
@@ -221,7 +222,7 @@ export default function Records({ club }: RecordsProps) {
                                         )}
                                         {entry.upcoming && (
                                             <span className="font-led text-[0.6rem] tracking-[0.14em] text-ink-faint">
-                                                ○ UPCOMING
+                                                ○ {entry.upcomingLabel ?? "UPCOMING"}
                                             </span>
                                         )}
                                     </div>

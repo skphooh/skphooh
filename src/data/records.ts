@@ -8,6 +8,7 @@
 
 /** 活動の種別。バッジの色分けに使う */
 export type RecordKind =
+    | "journal"
     | "conference"
     | "hackathon"
     | "internship"
@@ -16,6 +17,8 @@ export type RecordKind =
     | "athletics";
 
 export const KIND_LABEL: Record<RecordKind, string> = {
+    /** 査読を経て論文誌に載る論文。査読なしの口頭発表（conference）とは分ける */
+    journal: "査読付き論文",
     conference: "学会",
     hackathon: "ハッカソン",
     internship: "インターン",
@@ -65,6 +68,11 @@ export interface LogEntry {
     ongoing?: boolean;
     /** まだ始まっていない予定なら true。終わった実績と区別して表示する */
     upcoming?: boolean;
+    /**
+     * upcoming の見出し文言。既定の "UPCOMING" だと未着手に見えてしまう
+     * ケース（採録は決まっているが発行待ちの論文など）で差し替える。
+     */
+    upcomingLabel?: string;
 }
 
 /** 受賞歴。掲示板に出す */
@@ -223,5 +231,16 @@ export const seasonLog: LogEntry[] = [
                 url: "https://ken.ieice.org/ken/program/index.php?mode=program&tgs_regid=1e1c08fd856ca645fb80a134caca05df86a8dd8ae2d00a62f27db18e6ab43ea7&tgid=LOIS&layout=html2&lang=jpn",
             },
         ],
+    },
+    {
+        period: "2027.04",
+        kind: "journal",
+        title: "電子情報通信学会 和文論文誌D 学生論文特集",
+        detail:
+            "論文「Wi-Fiフィンガープリントを用いた教室内外位置の2値判定検証」/ " +
+            "筆頭著者（共著: 戸崎泰史・関良明）/ 国内論文誌 / 査読あり",
+        output: "採録決定 — 2027年4月発行の学生論文特集号に掲載予定",
+        upcoming: true,
+        upcomingLabel: "採録決定",
     },
 ];
