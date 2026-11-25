@@ -65,6 +65,14 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
   overflow-x: hidden;
+
+  /* 和文の折り返し位置。
+     auto-phrase は文節（意味のまとまり）の区切りで改行させる指定で、
+     「脆弱 / 性診断」のような途中切れを防ぐ。対応は Chromium 系のみだが、
+     未対応のブラウザでは通常の禁則処理に落ちるだけなので害はない。
+     line-break: strict は小書きのかなや長音符を行頭に出さないため。 */
+  word-break: auto-phrase;
+  line-break: strict;
 }
 
 @media (prefers-reduced-motion: reduce) {

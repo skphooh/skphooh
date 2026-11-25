@@ -16,7 +16,10 @@ function EntryRow({ label, value }: { label: string; value: string }) {
             <dt className="shrink-0 font-led text-[0.7rem] tracking-[0.2em] text-ink-faint sm:w-24">
                 {label}
             </dt>
-            <dd className="text-lg text-ink">{value}</dd>
+            {/* 固有名詞の列なので、語の内側では折り返さず空白の位置だけで
+                改行させる（「情報データ / 科学研究科」のような切れ方を防ぐ）。
+                1 語が行幅に入り切らないときだけ wrap-anywhere で折る */}
+            <dd className="break-keep wrap-anywhere text-lg text-ink">{value}</dd>
         </div>
     );
 }
